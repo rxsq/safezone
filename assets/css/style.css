@@ -300,7 +300,8 @@ textarea,
 }
 
 input[type="checkbox"],
-input[type="radio"] {
+input[type="radio"],
+input[type="file"] {
   margin-right: 10px;
 }
 
