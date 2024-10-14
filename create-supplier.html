@@ -99,6 +99,9 @@
               <li class="breadcrumb-item">
                 <a href="index.html">Dashboard</a>
               </li>
+              <li class="breadcrumb-item">
+                <a href="supplier.html">Suppliers</a>
+              </li>
               <li class="breadcrumb-item active" aria-current="page">
                 Create Supplier
               </li>
@@ -114,20 +117,20 @@
                 <div class="">
                   <div class="two-column">
                     <div class="form-group">
-                      <label for="firstname">Firstname</label>
+                      <label for="supplier-code">Supplier Code</label>
                       <input
                         type="text"
-                        id="firstname"
-                        name="firstname"
+                        id="supplier-code"
+                        name="supplier-code"
                         required
                       />
                     </div>
                     <div class="form-group">
-                      <label for="lastname">Lastname</label>
+                      <label for="supplier-name">Supplier Name</label>
                       <input
                         type="text"
-                        id="lastname"
-                        name="lastname"
+                        id="supplier-name"
+                        name="supplier-name"
                         required
                       />
                     </div>
@@ -168,9 +171,8 @@
                 </div>
               </fieldset>
               <div class="form-group submit-btn-container">
-                <button type="submit" class="submit-btn" type="submit">
-                  Create Supplier
-                </button>
+                <button class="cancel-btn" onclick="window.location.href='supplier.html';">Cancel</button>
+                <button type="submit" class="submit-btn" type="submit">Create Supplier</button>
               </div>
             </form>
           </section>
