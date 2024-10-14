@@ -300,7 +300,8 @@ textarea,
 }
 
 input[type="checkbox"],
-input[type="radio"] {
+input[type="radio"],
+input[type="file"] {
   margin-right: 10px;
 }
 
@@ -337,7 +338,6 @@ textarea {
 }
 
 .submit-btn {
-  background-color: #333;
   border: none;
   border-radius: 5px;
   color: white;
@@ -348,6 +348,58 @@ textarea {
 
 .submit-btn:hover {
   background-color: #555;
+}
+
+/***** Supplier *****/
+
+.action-header {
+  transform: translateX(55%);
+}
+
+.new-suppliers-btn {
+  margin-bottom: 25px;
+}
+
+.view-btn {
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.edit-btn, .delete-btn {
+  margin-right: 10px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.action-buttons-td {
+  text-align: right;
+}
+
+.action-buttons-td button {
+  margin-left: 5px;
+}
+
+.cancel-btn {
+  border: none;
+  border-radius: 5px;
+  color: #555;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  font-size: 1em;
+  padding: 8px 16px;
+  margin-right: 10px;
+}
+
+.cancel-btn:hover {
+  background-color: #d0d0d0;
 }
 
 /***** DASHBOARD *****/
