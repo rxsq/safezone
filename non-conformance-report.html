@@ -98,19 +98,19 @@
                     <div class="two-column">
                         <div class="form-group">
                             <label for="ncr-no">NCR No.</label>
-                            <input type="text" id="ncr-no" name="ncr-no" required>
+                            <input type="text" id="ncr-no" name="ncr-no">
                         </div>
                         <div class="form-group">
-                            <label for="document-no">Document Title</label>
-                            <input type="text" id="document-no" name="document-no" required>
+                            <label for="document-no">Document Number</label>
+                            <input type="text" id="document-no" name="document-no">
                         </div>
                         <div class="form-group">
                             <label for="date">Date</label>
-                            <input type="date" id="date" name="date" required>
+                            <input type="date" id="ncr-date" name="date">
                         </div>
                         <div class="form-group">
                             <label for="status">Status</label>
-                            <select id="status" name="status" required>
+                            <select id="status" name="status">
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
                                 <option value="in-progress">In Progress</option>
@@ -125,14 +125,14 @@
             <div class="two-column">
                 <div class="form-group">
                     <label for="supplier-name">Supplier Name</label>
-                    <input type="text" id="supplier-name" name="supplier-name" required>
+                    <input type="text" id="supplier-name" name="supplier-name">
                 </div>
                 <div class="form-group">
                     <label>Identify Process Applicable</label>
                     <div class="checkbox-group">
-                        <label><input type="checkbox" name="process-applicable" value="supplier"> Supplier or
+                        <label><input type="checkbox" name="process-applicable" value="supplier" id="recInsp"> Supplier or
                             Rec-Insp</label>
-                        <label><input type="checkbox" name="process-applicable" value="wip"> WIP (Production
+                        <label><input type="checkbox" name="process-applicable" value="wip" id="wip"> WIP (Production
                             Order)</label>
                     </div>
                 </div>
@@ -141,30 +141,29 @@
             <div class="four-column">
                 <div class="form-group">
                     <label for="po-prod-no">PO or Prod. No.</label>
-                    <input type="text" id="po-prod-no" name="po-prod-no" required>
+                    <input type="text" id="po-prod-no" name="po-prod-no">
                 </div>
                 <div class="form-group">
                     <label for="sales-order-no">Sales Order No.</label>
-                    <input type="text" id="sales-order-no" name="sales-order-no" required>
+                    <input type="text" id="sales-order-no" name="sales-order-no">
                 </div>
                 <div class="form-group">
                     <label for="quantity-received">Quantity Received</label>
-                    <input type="text" id="quantity-received" name="quantity-received" required>
+                    <input type="text" id="quantity-received" name="quantity-received">
                 </div>
                 <div class="form-group">
                     <label for="quantity-defective">Quantity Defective</label>
-                    <input type="text" id="quantity-defective" name="quantity-defective" required>
+                    <input type="text" id="quantity-defective" name="quantity-defective">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="description-item">Description of Item (including SAP No.)</label>
-                <textarea id="description-item" name="description-item" rows="3" class="full-width" required></textarea>
+                <textarea id="description-item" name="description-item" rows="3" class="full-width"></textarea>
             </div>
             <div class="form-group">
                 <label for="description-defect">Description of Defect</label>
-                <textarea id="description-defect" name="description-defect" rows="3" class="full-width"
-                    required></textarea>
+                <textarea id="description-defect" name="description-defect" rows="3" class="full-width"></textarea>
             </div>
 
             <div class="two-column">
@@ -183,22 +182,25 @@
                 </div>
                 <div class="form-group">
                     <label for="quality-rep-name">Quality Representative's Name</label>
-                    <input type="text" id="quality-rep-name" name="quality-rep-name" required>
+                    <input type="text" id="quality-rep-name" name="quality-rep-name">
                 </div>
                 <div class="form-group">
                     <label for="quality-rep-date">Date</label>
-                    <input type="date" id="quality-rep-date" name="quality-rep-date" required>
+                    <input type="date" id="quality-rep-date" name="quality-rep-date">
                 </div>
             </div>
         </fieldset>
 
         <div class="form-group submit-btn-container">
-            <button type="submit" class="submit-btn">Submit</button>
+            <button type="submit" class="submit-btn" id="submit-btn">Submit</button>
         </div>
         </form>
     </div>
     </div>
+
     <script src="assets/js/main/sidebar.js"></script>
+    <script defer src="assets/js/ncr/validation.js"></script>
+
 </body>
 
 </html>
