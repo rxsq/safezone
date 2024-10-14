@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <!-- Bootstrap Icons link -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Bootstrap link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styless.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo-content">
+            <div class="logo">
+                <!-- <i class='bx bxs-hot'></i>
+                <div class="logo-name">CrossFire Niagara</div> -->
+                <a href="index.html">
+                <img src="/assets/images/crossfire logo edited.png" alt="">
+                </a>
+            </div>
+            <i class="bi bi-list" id="btn-close"></i>
+        </div>
+        <ul class="nav-list">
+            <div class="search-box">
+                <li>
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Search">
+                    <!-- <span class="tooltip">Dashboard</span> -->
+                </li>
+            </div>
+            <li>
+                <a href="index.html">
+                    <i class="bi bi-speedometer2"></i>
+                    <span class="links-name">Dashboard</span>
+                </a>
+                <!-- <span class="tooltip">Dashboard</span> -->
+            </li>
+            <li>
+                <a href="non-conformance-report.html">
+                    <i class="bi bi-file-earmark-richtext"></i>
+                    <span class="links-name">Non-Conformance Report</span>
+                </a>
+                <!-- <span class="tooltip">Dashboard</span> -->
+            </li>
+            <li>
+                <a href="product.html">
+                    <i class="bi bi-cart2"></i>
+                    <span class="links-name">Products</span>
+                </a>
+                <!-- <span class="tooltip">Dashboard</span> -->
+            </li>
+            <li>
+                <a href="Employee.html">
+                    <i class="bi bi-people"></i>
+                    <span class="links-name">Employees</span>
+                </a>
+                <!-- <span class="tooltip">Dashboard</span> -->
+            </li>
+            <li>
+                <a href="#">
+                    <i class="bi bi-box-seam"></i>
+                    <span class="links-name">Suppliers</span>
+                </a>
+                <!-- <span class="tooltip">Dashboard</span> -->
+            </li>
+        </ul>
+        <div class="profile-content">
+            <div class="profile">
+                <div class="profile-details">
+                    <img src="/assets/images/Crossfire Logo.PNG" alt="" class="">
+                    <div class="name-job">
+                        <div class="name">CrossFire Niagara</div>
+                        <div class="job">Admin</div>
+                    </div>
+                </div>
+                <i class="bi bi-box-arrow-left" id="log-out"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <main class="solid-fluid">
+
+           
+
+            <!--Dashboard-->
+            <section class="summary">
+                <div class="box">
+                    <h2>Total Order</h2>
+                    <p>2345</p>
+                    <small>22.7%</small>
+                </div>
+                <div class="box">
+                    <h2>Montly Revenue</h2>
+                    <p>$41,789</p>
+                    <small>16.8%</small>
+                </div>
+                <div class="box over">
+                    <h2>Out of Stock</h2>
+                    <p>44 Items</p>
+                </div>
+            </section>
+
+            <section class="products">
+                <div class="table-controls">
+                    <button>All Stock</button>
+                    <button>Edit</button>
+                    <button>View</button>
+                    <button>Out of Stock</button>
+
+                    <div class="filters">
+                        <input type="text" placeholder="Search orders........">
+                        <input type="date">
+                        <button>Filters</button>
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>SKU</th>
+                            <th>Category</th>
+                            <th>Stock</th>
+                            <th>Price</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="leather-pouch.png" alt="Leather Pouch"></td>
+                            <td>302012</td>
+                            <td>Bag & Pouch</td>
+                            <td>10</td>
+                            <td>$400</td>
+                            <td><button>Edit</button><button>Delete</button></td>
+                        </tr>
+
+                        <tr>
+                            <td><img src="xiaomi-watch.png" alt="Xiaomi Watch"></td>
+                            <td>302011</td>
+                            <td>Watch</td>
+                            <td>204</td>
+                            <td>$220</td>
+                            <td><button>Edit</button><button>Delete</button></td>
+                        </tr>
+
+                        <tr>
+                            <td><img src="smartwatch-e1.png" alt="Smartwatch"></td>
+                            <td>302002</td>
+                            <td>Watch</td>
+                            <td>48</td>
+                            <td>$180</td>
+                            <td><button>Edit</button><button>Delete</button></td>
+                        </tr>
+
+                        <tr>
+                            <td><img src="headphones.png" alt="Headphones"></td>
+                            <td>301901</td>
+                            <td>Audio</td>
+                            <td>401</td>
+                            <td>$90</td>
+                            <td><button>Edit</button><button>Delete</button></td>
+                        </tr>
+                        <tr>
+                            <td><img src="iphone-12.png" alt="iPhone 12"></td>
+                            <td>301900</td>
+                            <td>Smartphone</td>
+                            <td>120</td>
+                            <td>$607</td>
+                            <td><button>Edit</button><button>Delete</button></td>
+                        </tr>
+
+                        <tr>
+                            <td><img src="puma-classic.png" alt="Puma Shoes"></td>
+                            <td>301881</td>
+                            <td>Shoes</td>
+                            <td>432</td>
+                            <td>$234</td>
+                            <td><button>Edit</button><button>Delete</button></td>
+                        </tr>
+
+                        <tr>
+                            <td><img src="mouse.png" alt="Logitech Mouse"></td>
+                            <td>301643</td>
+                            <td>Accessories</td>
+                            <td>0</td>
+                            <td>$760</td>
+                            <td><button>Edit</button><button>Delete</button></td>
+                        </tr>
+
+                        <tr>
+                            <td><img src="iphone-xr.png" alt="iPhone XR"></td>
+                            <td>301600</td>
+                            <td>Smartphone</td>
+                            <td>347</td>
+                            <td>$400</td>
+                            <td><button>Edit</button><button>Delete</button></td>
+                        </tr>
+
+                        <tr>
+                            <td><img src="ps4-controller.png" alt="PS4 Controller"></td>
+                            <td>301555</td>
+                            <td>Toys</td>
+                            <td>299</td>
+                            <td>$812</td>
+                            <td><button>Edit</button><button>Delete</button></td>
+                        </tr>
+                        <tr>
+                            <td><img src="nike-shoes.png" alt="Nike Shoes"></td>
+                            <td>301678</td>
+                            <td>Shoes</td>
+                            <td>160</td>
+                            <td>$130</td>
+                            <td><button>Edit</button><button>Delete</button></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
