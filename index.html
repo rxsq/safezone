@@ -86,7 +86,7 @@
     <div class="home-content">
         <div>
             <header>
-                <h1>Non-Conformance Report (NCR) Dashboard</h1>
+                <h1>Non-Conformance Report Dashboard</h1>
                 <div class="actions">
                     <a href="non-conformance-report.html">
                         <button class="new-ncr-btn">+ New NCR</button>
@@ -102,27 +102,26 @@
 
             <section class="key-metrics">
                 <div class="metric-card">
-                    <h2>Total NCR's</h2>
+                    <h2>Total</h2>
                     <p>45</p>
-                    <small>+10% from last month</small>
                 </div>
                 <div class="metric-card">
-                    <h2>Active NCR's</h2>
+                    <h2>Active</h2>
                     <p>12</p>
                 </div>
                 <div class="metric-card">
-                    <h2>Inactive NCR's</h2>
+                    <h2>Inactive</h2>
                     <p>30</p>
                 </div>
                 <div class="metric-card overdue">
-                    <h2>Overdue NCR's</h2>
+                    <h2>Overdue</h2>
                     <p>3</p>
                 </div>
             </section>
 
             <section class="ncr-trends">
                 <h2>Most Recent NCR's</h2>
-                <table class="table table-striped">
+                <table class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th>NCR No.</th>
@@ -130,6 +129,7 @@
                             <th>Supplier</th>
                             <th>Defect Description</th>
                             <th>Status</th>
+                            <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -139,6 +139,17 @@
                             <td>ABC Supplies</td>
                             <td>Cracks on surface</td>
                             <td>Active</td>
+                            <td class="action-buttons-td">
+                                <button class="view-btn">
+                                  <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="edit-btn">
+                                  <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="delete-btn">
+                                  <i class="bi bi-trash"></i>
+                                </button>
+                              </td>
                         </tr>
                         <tr>
                             <td>NCR-002</td>
@@ -146,6 +157,17 @@
                             <td>XYZ Corp</td>
                             <td>Part size larger than specification</td>
                             <td>Inactive</td>
+                            <td class="action-buttons-td">
+                                <button class="view-btn">
+                                  <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="edit-btn">
+                                  <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="delete-btn">
+                                  <i class="bi bi-trash"></i>
+                                </button>
+                              </td>
                         </tr>
                         <tr>
                             <td>NCR-003</td>
@@ -153,6 +175,17 @@
                             <td>Acme Welding</td>
                             <td>Poor weld quality</td>
                             <td>In Progress</td>
+                            <td class="action-buttons-td">
+                                <button class="view-btn">
+                                  <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="edit-btn">
+                                  <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="delete-btn">
+                                  <i class="bi bi-trash"></i>
+                                </button>
+                              </td>
                         </tr>
                         <tr>
                             <td>NCR-004</td>
@@ -160,6 +193,17 @@
                             <td>PaintPro</td>
                             <td>Scratches on painted surface</td>
                             <td>Active</td>
+                            <td class="action-buttons-td">
+                                <button class="view-btn">
+                                  <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="edit-btn">
+                                  <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="delete-btn">
+                                  <i class="bi bi-trash"></i>
+                                </button>
+                              </td>
                         </tr>
                         <tr>
                             <td>NCR-005</td>
@@ -167,6 +211,17 @@
                             <td>MetalWorks Inc.</td>
                             <td>Aluminum used instead of steel</td>
                             <td>Inactive</td>
+                            <td class="action-buttons-td">
+                                <button class="view-btn">
+                                  <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="edit-btn">
+                                  <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="delete-btn">
+                                  <i class="bi bi-trash"></i>
+                                </button>
+                              </td>
                         </tr>
                         <tr>
                             <td>NCR-006</td>
@@ -174,6 +229,17 @@
                             <td>SafePack Ltd.</td>
                             <td>Packaging torn on arrival</td>
                             <td>Active</td>
+                            <td class="action-buttons-td">
+                                <button class="view-btn">
+                                  <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="edit-btn">
+                                  <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="delete-btn">
+                                  <i class="bi bi-trash"></i>
+                                </button>
+                              </td>
                         </tr>
                         <tr>
                             <td>NCR-007</td>
@@ -181,6 +247,17 @@
                             <td>ColorCo</td>
                             <td>Color does not match specification</td>
                             <td>In Progress</td>
+                            <td class="action-buttons-td">
+                                <button class="view-btn">
+                                  <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="edit-btn">
+                                  <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="delete-btn">
+                                  <i class="bi bi-trash"></i>
+                                </button>
+                              </td>
                         </tr>
                         <tr>
                             <td>NCR-008</td>
@@ -188,13 +265,35 @@
                             <td>Industrial Cleaners</td>
                             <td>Contaminants found on material</td>
                             <td>Inactive</td>
+                            <td class="action-buttons-td">
+                                <button class="view-btn">
+                                  <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="edit-btn">
+                                  <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="delete-btn">
+                                  <i class="bi bi-trash"></i>
+                                </button>
+                              </td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td>NCR-009</td>
                             <td>Part Misalignment</td>
                             <td>Precision Parts</td>
                             <td>Parts not aligning as per design</td>
                             <td>Active</td>
+                            <td class="action-buttons-td">
+                                <button class="view-btn">
+                                  <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="edit-btn">
+                                  <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="delete-btn">
+                                  <i class="bi bi-trash"></i>
+                                </button>
+                              </td>
                         </tr>
                         <tr>
                             <td>NCR-010</td>
@@ -202,7 +301,18 @@
                             <td>FastTrack Logistics</td>
                             <td>Delivery not made on time</td>
                             <td>Inactive</td>
-                        </tr>
+                            <td class="action-buttons-td">
+                                <button class="view-btn">
+                                  <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="edit-btn">
+                                  <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="delete-btn">
+                                  <i class="bi bi-trash"></i>
+                                </button>
+                              </td>
+                        </tr> -->
                     </tbody>
                 </table>
             </section>
