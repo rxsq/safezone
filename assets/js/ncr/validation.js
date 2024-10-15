@@ -44,6 +44,11 @@ form.addEventListener('submit', e => {
 //Array which stores issues
 let error_list = [];
 
+ //Define modal
+ var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+
+ var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+
 //Function to validate inputs
 const validateInputs = () => {
     //Clear error list
@@ -69,7 +74,7 @@ const validateInputs = () => {
 
     //NCR number patten
     const ncrPattern = /^20\d{2}-\d{3}$/;
-    
+
     //Required field validation
     if(!ncrNoValue){
         error_list.push("NCR Number is required.")
@@ -157,10 +162,13 @@ const validateInputs = () => {
     //Check isValid variable
     if(!isValid){ // If not valid
         const errorMessages = error_list.join('\n');
-        alert(`Validation Errors:\n${errorMessages}`) //Temp alert for testing
+        //alert(`Validation Errors:\n${errorMessages}`) //Temp alert for testing
+        document.getElementById('errorModalBody').innerText = `Validation Errors:\n${errorMessages}`;
+        errorModal.show();
     }
     else{ //If valid
-        alert('Success!')
+        document.getElementById('successModalBody').innerText = "Success!";
+        successModal.show();
     }
 };
 
