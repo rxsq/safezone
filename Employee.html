@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <div class="sidebar">
@@ -83,233 +83,176 @@
             </div>
         </div>
     </div>
-    <div class="Employee-content">
+    <div class="home-content">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="justify-content: flex-start">
+          <li class="breadcrumb-item">
+            <a href="index.html">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Employees
+          </li>
+        </ol>
+      </nav>
         <div class="Employee">
             <header>
-                <h1>Non-Conformance Report (NCR) Employees</h1>
+                <h1>CrossFire Niagara Employees</h1>
                 <div class="power">
                     <a href="create-employee.html">
                         <button class="new-emp-btn">+ New Employee</button>
                     </a>
-                    <button class="create-data-btn">Create</button>
-                    <button class="View-data-btn">👁️ view</button>
                 </div>
             </header>
-            <section class="employee-trends">
-                <div class="ncr-search">
-                <h2>NCR Employees</h2>
-                <input type="text" placeholder="Search">
-                </div>
-
-                <div class="table table-striped table-hover">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Employee Name</th>
-                                <th>Employee ID</th>
-                                <th>Email</th>
-                                <th>Address</th>
-                                <th>Phone Number</th>
-                                <th>Position</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Ahmad Nurdin M.Z</td>
-                                <td>213412410</td>
-                                <td>ahmad@gmail.com</td>
-                                <td>123 Main St, Cityville</td>
-                                <td>+1234567890</td>
-                                <td>Product Design</td>
-                                <td class="action-buttons-td">
-                                    <button class="view-btn">
-                                      <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="edit-btn">
-                                      <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="delete-btn">
-                                      <i class="bi bi-trash"></i>
-                                    </button>
-                                  </td>
-                            </tr>
-                            <tr>
-                                <td>Haylie Kenter</td>
-                                <td>2134124410</td>
-                                <td>haylie@gmail.com</td>
-                                <td>789 Pine St, Villagetown</td>
-                                <td>+1212345678</td>
-                                <td>Product Design</td>
-                                <td class="action-buttons-td">
-                                    <button class="view-btn">
-                                      <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="edit-btn">
-                                      <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="delete-btn">
-                                      <i class="bi bi-trash"></i>
-                                    </button>
-                                  </td>
-                            </tr>
-                            <tr>
-                                <td>Zain Calzoni</td>
-                                <td>1412312423</td>
-                                <td>zain@gmail.com</td>
-                                <td>101 River Rd, Cityville</td>
-                                <td>+1122334455</td>
-                                <td>Social Media</td>
-                                <td class="action-buttons-td">
-                                    <button class="view-btn">
-                                      <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="edit-btn">
-                                      <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="delete-btn">
-                                      <i class="bi bi-trash"></i>
-                                    </button>
-                                  </td>
-                            </tr>
-                            <tr>
-                                <td>Phillip Workman</td>
-                                <td>123143323</td>
-                                <td>philip@gmail.com</td>
-                                <td>202 Mountain St, Townsville</td>
-                                <td>+1223344556</td>
-                                <td>Marketing</td>
-                                <td class="action-buttons-td">
-                                    <button class="view-btn">
-                                      <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="edit-btn">
-                                      <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="delete-btn">
-                                      <i class="bi bi-trash"></i>
-                                    </button>
-                                  </td>
-                            </tr>
-                            <tr>
-                                <td>Miracle Philips</td>
-                                <td>12312315</td>
-                                <td>miracle@gmail.com</td>
-                                <td>303 Valley Rd, Villagetown</td>
-                                <td>+1334455667</td>
-                                <td>Engineer</td>
-                                <td class="action-buttons-td">
-                                    <button class="view-btn">
-                                      <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="edit-btn">
-                                      <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="delete-btn">
-                                      <i class="bi bi-trash"></i>
-                                    </button>
-                                  </td>
-                            </tr>
-                            <tr>
-                                <td>Tatiana Rhiel Madsen</td>
-                                <td>12312415</td>
-                                <td>tatiana@gmail.com</td>
-                                <td>404 Lake St, Townsville</td>
-                                <td>+1445566778</td>
-                                <td>Engineer</td>
-                                <td class="action-buttons-td">
-                                    <button class="view-btn">
-                                      <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="edit-btn">
-                                      <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="delete-btn">
-                                      <i class="bi bi-trash"></i>
-                                    </button>
-                                  </td>
-                            </tr>
-                            <tr>
-                                <td>Martin Geidt</td>
-                                <td>24123123</td>
-                                <td>martin@gmail.com</td>
-                                <td>505 River Rd, Cityville</td>
-                                <td>+1556677889</td>
-                                <td>Engineer</td>
-                                <td class="action-buttons-td">
-                                    <button class="view-btn">
-                                      <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="edit-btn">
-                                      <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="delete-btn">
-                                      <i class="bi bi-trash"></i>
-                                    </button>
-                                  </td>
-                            </tr>
-                            <tr>
-                                <td>Roger Saris</td>
-                                <td>124212131</td>
-                                <td>roger@gmail.com</td>
-                                <td>606 Hill St, Villagetown</td>
-                                <td>+1667788990</td>
-                                <td>Marketing</td>
-                                <td class="action-buttons-td">
-                                    <button class="view-btn">
-                                      <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="edit-btn">
-                                      <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="delete-btn">
-                                      <i class="bi bi-trash"></i>
-                                    </button>
-                                  </td>
-                            </tr>
-                            <tr>
-                                <td>Carla Calzoni</td>
-                                <td>123215125</td>
-                                <td>carla@gmail.com</td>
-                                <td>707 Forest Rd, Cityville</td>
-                                <td>+1778899001</td>
-                                <td>Social Media</td>
-                                <td class="action-buttons-td">
-                                    <button class="view-btn">
-                                      <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="edit-btn">
-                                      <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="delete-btn">
-                                      <i class="bi bi-trash"></i>
-                                    </button>
-                                  </td>
-                            </tr>
-                            <tr>
-                                <td>Gustavo Rhiel Madsen</td>
-                                <td>125213213</td>
-                                <td>gustavo@gmail.com</td>
-                                <td>808 River Rd, Townsville</td>
-                                <td>+1889900123</td>
-                                <td>Product Design</td>
-                                <td class="action-buttons-td">
-                                    <button class="view-btn">
-                                      <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="edit-btn">
-                                      <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="delete-btn">
-                                      <i class="bi bi-trash"></i>
-                                    </button>
-                                  </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-            <div class="paginstion">
+            <section class="ncr-trends">
+              <h2>Employees List</h2>
+              <table class="table table-striped table-hover">
+                  <thead>
+                      <tr>
+                          <th>Employee Name</th>
+                          <th>Employee ID</th>
+                          <th>Email</th>
+                          <th>Address</th>
+                          <th>Phone Number</th>
+                          <th>Position</th>
+                          <th class="text-center">Actions</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>Ahmad Nurdin M.Z</td>
+                          <td>213412410</td>
+                          <td>ahmad@gmail.com</td>
+                          <td>123 Main St, Cityville</td>
+                          <td>+1234567890</td>
+                          <td>Product Design</td>
+                          <td class="action-buttons-td">
+                              <button class="view-btn"><i class="bi bi-eye"></i></button>
+                              <button class="edit-btn"><i class="bi bi-pencil"></i></button>
+                              <button class="delete-btn"><i class="bi bi-trash"></i></button>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>Haylie Kenter</td>
+                          <td>2134124410</td>
+                          <td>haylie@gmail.com</td>
+                          <td>789 Pine St, Villagetown</td>
+                          <td>+1212345678</td>
+                          <td>Product Design</td>
+                          <td class="action-buttons-td">
+                              <button class="view-btn"><i class="bi bi-eye"></i></button>
+                              <button class="edit-btn"><i class="bi bi-pencil"></i></button>
+                              <button class="delete-btn"><i class="bi bi-trash"></i></button>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>Zain Calzoni</td>
+                          <td>1412312423</td>
+                          <td>zain@gmail.com</td>
+                          <td>101 River Rd, Cityville</td>
+                          <td>+1122334455</td>
+                          <td>Social Media</td>
+                          <td class="action-buttons-td">
+                              <button class="view-btn"><i class="bi bi-eye"></i></button>
+                              <button class="edit-btn"><i class="bi bi-pencil"></i></button>
+                              <button class="delete-btn"><i class="bi bi-trash"></i></button>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>Phillip Workman</td>
+                          <td>123143323</td>
+                          <td>philip@gmail.com</td>
+                          <td>202 Mountain St, Townsville</td>
+                          <td>+1223344556</td>
+                          <td>Marketing</td>
+                          <td class="action-buttons-td">
+                              <button class="view-btn"><i class="bi bi-eye"></i></button>
+                              <button class="edit-btn"><i class="bi bi-pencil"></i></button>
+                              <button class="delete-btn"><i class="bi bi-trash"></i></button>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>Miracle Philips</td>
+                          <td>12312315</td>
+                          <td>miracle@gmail.com</td>
+                          <td>303 Valley Rd, Villagetown</td>
+                          <td>+1334455667</td>
+                          <td>Engineer</td>
+                          <td class="action-buttons-td">
+                              <button class="view-btn"><i class="bi bi-eye"></i></button>
+                              <button class="edit-btn"><i class="bi bi-pencil"></i></button>
+                              <button class="delete-btn"><i class="bi bi-trash"></i></button>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>Tatiana Rhiel Madsen</td>
+                          <td>12312415</td>
+                          <td>tatiana@gmail.com</td>
+                          <td>404 Lake St, Townsville</td>
+                          <td>+1445566778</td>
+                          <td>Engineer</td>
+                          <td class="action-buttons-td">
+                              <button class="view-btn"><i class="bi bi-eye"></i></button>
+                              <button class="edit-btn"><i class="bi bi-pencil"></i></button>
+                              <button class="delete-btn"><i class="bi bi-trash"></i></button>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>Martin Geidt</td>
+                          <td>24123123</td>
+                          <td>martin@gmail.com</td>
+                          <td>505 River Rd, Cityville</td>
+                          <td>+1556677889</td>
+                          <td>Engineer</td>
+                          <td class="action-buttons-td">
+                              <button class="view-btn"><i class="bi bi-eye"></i></button>
+                              <button class="edit-btn"><i class="bi bi-pencil"></i></button>
+                              <button class="delete-btn"><i class="bi bi-trash"></i></button>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>Roger Saris</td>
+                          <td>124212131</td>
+                          <td>roger@gmail.com</td>
+                          <td>606 Hill St, Villagetown</td>
+                          <td>+1667788990</td>
+                          <td>Marketing</td>
+                          <td class="action-buttons-td">
+                              <button class="view-btn"><i class="bi bi-eye"></i></button>
+                              <button class="edit-btn"><i class="bi bi-pencil"></i></button>
+                              <button class="delete-btn"><i class="bi bi-trash"></i></button>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>Carla Calzoni</td>
+                          <td>123215125</td>
+                          <td>carla@gmail.com</td>
+                          <td>707 Forest Rd, Cityville</td>
+                          <td>+1778899001</td>
+                          <td>Social Media</td>
+                          <td class="action-buttons-td">
+                              <button class="view-btn"><i class="bi bi-eye"></i></button>
+                              <button class="edit-btn"><i class="bi bi-pencil"></i></button>
+                              <button class="delete-btn"><i class="bi bi-trash"></i></button>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>Gustavo Rhiel Madsen</td>
+                          <td>125213213</td>
+                          <td>gustavo@gmail.com</td>
+                          <td>808 River Rd, Townsville</td>
+                          <td>+1889900123</td>
+                          <td>Product Design</td>
+                          <td class="action-buttons-td">
+                              <button class="view-btn"><i class="bi bi-eye"></i></button>
+                              <button class="edit-btn"><i class="bi bi-pencil"></i></button>
+                              <button class="delete-btn"><i class="bi bi-trash"></i></button>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </section>
+          
+            <div class="pagination">
                 <a href="#">Back</a>
                 <a href="#">1</a>
                 <a href="#">2</a>

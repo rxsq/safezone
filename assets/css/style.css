@@ -280,7 +280,7 @@ body {
 
 h1 {
   color: #173451;
-  margin-left: 32px;
+  /* margin-left: 32px; */
   text-align: left;
 }
 
@@ -496,4 +496,31 @@ button:hover {
   color: #173451;
   font-size: 1.25em;
   margin-bottom: 20px;
+}
+
+/***** Pagination *****/  
+.pagination{
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination a {
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+  margin: 0 4px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.pagination a.active {
+  background-color: #3f51b5;
+  color: white;
+  border: 1px solid #3f51b5;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
 }
