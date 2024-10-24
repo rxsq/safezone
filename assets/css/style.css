@@ -329,7 +329,8 @@ input[type="date"],
 textarea,
 #status,
 #supplier-name,
-#po-prod-no {
+#po-prod-no,
+#active {
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 8px;
