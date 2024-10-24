@@ -6,6 +6,7 @@
 }
 
 body {
+  display: flex;
   min-height: 100vh;
   overflow: hidden;
   position: relative;
@@ -71,6 +72,7 @@ body {
 
 .home-content,
 .content {
+  width: calc(100% - 300px); 
   transition: all 0.5s ease;
 }
 
@@ -375,8 +377,6 @@ textarea {
   padding: 10px 0;
 }
 
-
-
 .submit-btn {
   border: none;
   border-radius: 5px;
@@ -387,7 +387,8 @@ textarea {
 }
 
 /***** Supplier *****/
-.new-suppliers-btn {
+.new-suppliers-btn,
+.new-employee-btn {
   margin-bottom: 25px;
 }
 
@@ -417,8 +418,9 @@ header {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
+  margin-bottom: 20px;
   justify-content: space-between;
-  padding: 10px;
+  padding: 20px;
 }
 
 header h1 {
@@ -454,7 +456,8 @@ button:hover {
 
 .key-metrics {
   display: flex;
-  gap: 20px;
+  gap: 30px;
+  margin-bottom: 20px;
   justify-content: space-around;
 }
 
@@ -527,3 +530,78 @@ button:hover {
 .pagination a:hover:not(.active) {
   background-color: #ddd;
 }
+
+
+/* Media Query for split screen */
+@media only screen and (max-width: 960px) {
+  .sidebar {
+    width: 275px; 
+    position: fixed; 
+    left: 0;
+    top: 0;
+    height: 100vh; 
+  }
+
+  .home-content {
+    left: 275px; 
+    width: calc(100% - 275px); 
+  }
+
+  /* When sidebar is collapsed */
+  .sidebar.collapsed {
+    width: 50px; 
+  }
+
+  .sidebar.collapsed .nav-list .links-name {
+    display: none; 
+  }
+
+  .sidebar .logo {
+    height: 40px; 
+    width: auto; 
+    margin: 10px auto; 
+  }
+
+  .sidebar li {
+    font-size: 1em; 
+  }
+
+  .two-column .form-group,
+  .four-column .form-group {
+    flex: 1 1 100%; 
+  }
+
+  .submit-btn-container {
+    justify-content: center; 
+  }
+
+  .profile .profile-details .name-job .name,
+  .profile .profile-details .name-job .job {
+    font-size: 0.9em; 
+  }
+
+  .metric-card {
+    padding: 10px; 
+  }
+
+  .metric-card h2 {
+    font-size: 1.1em; 
+  }
+
+  .metric-card p {
+    font-size: 1.5em; 
+  }
+  
+  .breadcrumb {
+    font-size: 0.9em; 
+  }
+
+  h1 {
+    font-size: 1.2em; 
+  }
+
+  button {
+    padding: 8px 16px; 
+  }
+}
+
