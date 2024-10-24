@@ -327,7 +327,9 @@ textarea {
 input[type="text"],
 input[type="date"],
 textarea,
-#status {
+#status,
+#supplier-name,
+#po-prod-no {
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 8px;
