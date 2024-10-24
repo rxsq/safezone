@@ -59,7 +59,10 @@ const validateInputs = () => {
     const docNoValue = docNo.value.trim();
     const ncrDateValue = ncrDate.value.trim();
     const statusValue = ncrStatus.value.trim();
-    const suppNameValue = suppName.value.trim();
+    
+    const selectedSupplierOption = suppName.options[suppName.selectedIndex]; // Get the selected option
+    const suppNameValue = selectedSupplierOption ? selectedSupplierOption.text : ''; // Get the name
+
     const prodNoValue = prodNo.value.trim();
     const salesNoValue = salesNo.value.trim();
     const receiveQuantityValue = receiveQuantity.value.trim();
@@ -167,8 +170,41 @@ const validateInputs = () => {
         errorModal.show();
     }
     else{ //If valid
-        document.getElementById('successModalBody').innerText = "Success!";
-        successModal.show();
+        createNewNCR({
+            ncrFormNo: ncrNoValue,
+            ncrDocumentNo: docNoValue,
+            ncrDescription: descriptionValue,
+            ncrIssueDate: ncrDateValue,
+            ncrImageFileName: null,
+            prodID: prodNoValue,
+            ncrSalesOrderNo: salesNoValue,
+            ncrQtyRecieved: receiveQuantityValue,
+            ncrQtyDefective: defectiveQuantityValue,
+            ncrDefectDesc: defectDescValue,
+            ncrStatusID: null,
+            ncrSupplierName: suppNameValue
+        });
     }
 };
+
+function createNewNCR(validData) {
+    const storedData = localStorage.getItem('ncrForms');
+    const ncrForms = storedData ? JSON.parse(storedData) : [];
+
+    // Add the new NCR form to the array
+    ncrForms.push(validData);
+
+    // Save the updated array back to local storage
+    localStorage.setItem('ncrForms', JSON.stringify(ncrForms));
+
+    // Optionally show success message
+    const successMessage = 'NCR form created successfully!';
+    document.getElementById('successModalBody').innerText = successMessage;
+    successModal.show();
+
+    // Redirect to the index page after a short delay to allow users to see the success message
+    setTimeout(() => {
+        window.location.href = 'index.html'; // Change this to the path of your index page
+    }, 2000); // Redirects after 2 seconds
+}
 

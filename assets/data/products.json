@@ -1,0 +1,92 @@
+[
+    {
+      "prodID": 1,
+      "prodName": "Paint Coating",
+      "prodCategory": "Surface Treatment",
+      "supID": 1
+    },
+    {
+      "prodID": 2,
+      "prodName": "Resistor",
+      "prodCategory": "Electrical Components",
+      "supID": 2
+    },
+    {
+      "prodID": 3,
+      "prodName": "Mechanical Bearing",
+      "prodCategory": "Mechanical Parts",
+      "supID": 3
+    },
+    {
+      "prodID": 4,
+      "prodName": "Welding Rod",
+      "prodCategory": "Fabrication",
+      "supID": 4
+    },
+    {
+      "prodID": 5,
+      "prodName": "Shipping Box",
+      "prodCategory": "Packaging",
+      "supID": 5
+    },
+    {
+      "prodID": 6,
+      "prodName": "Metal Sheet",
+      "prodCategory": "Surface Treatment",
+      "supID": 1
+  },
+  {
+      "prodID": 7,
+      "prodName": "Electrical Capacitor",
+      "prodCategory": "Electrical Components",
+      "supID": 2
+  },
+  {
+      "prodID": 8,
+      "prodName": "Gearbox",
+      "prodCategory": "Mechanical Parts",
+      "supID": 3
+  },
+  {
+      "prodID": 9,
+      "prodName": "Steel Pipe",
+      "prodCategory": "Fabrication",
+      "supID": 4
+  },
+  {
+      "prodID": 10,
+      "prodName": "Bubble Wrap",
+      "prodCategory": "Packaging",
+      "supID": 5
+  },
+  {
+      "prodID": 11,
+      "prodName": "Corrosion Inhibitor",
+      "prodCategory": "Surface Treatment",
+      "supID": 1
+  },
+  {
+      "prodID": 12,
+      "prodName": "Transistor",
+      "prodCategory": "Electrical Components",
+      "supID": 2
+  },
+  {
+      "prodID": 13,
+      "prodName": "Hydraulic Cylinder",
+      "prodCategory": "Mechanical Parts",
+      "supID": 3
+  },
+  {
+      "prodID": 14,
+      "prodName": "Welding Wire",
+      "prodCategory": "Fabrication",
+      "supID": 4
+  },
+  {
+      "prodID": 15,
+      "prodName": "Cardboard Carton",
+      "prodCategory": "Packaging",
+      "supID": 5
+  }
+  ]
