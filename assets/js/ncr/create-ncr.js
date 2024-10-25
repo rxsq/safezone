@@ -50,7 +50,7 @@ let error_list = [];
  var successModal = new bootstrap.Modal(document.getElementById('successModal'));
 
 //Function to validate inputs
-const validateInputs = () => {
+function validateInputs()  {
     //Clear error list
     error_list = [];
 
