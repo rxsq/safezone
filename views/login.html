@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2 class="text-center">Login</h2>
+        <form id="loginForm">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" placeholder="Enter your username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="#">Forgot Password?</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+        
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Check if employees are already in localStorage
+            const storedEmployees = localStorage.getItem('employees');
+            let employees = [];
+
+            if (storedEmployees) {
+                // If found, parse the data from localStorage
+                employees = JSON.parse(storedEmployees);
+                validateUser();
+            } else {
+                // If not found, fetch the employee data
+                fetch('../assets/data/employees.json') // Update this path to your actual JSON file location
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Store fetched data in localStorage
+                        localStorage.setItem('employees', JSON.stringify(data));
+                        employees = data; // Assign fetched data to employees
+                        validateUser();
+                    })
+                    .catch(error => {
+                        console.error('Error loading employee data:', error);
+                        alert('There was a problem loading employee data. Please try again later.');
+                    });
+            }
+
+            function validateUser() {
+                // Validate username and password
+                const user = employees.find(emp => emp.empUsername === username && emp.empPassword === password);
+                
+                if (user) {
+                    // Fetch the positions data (assuming this is in the same directory as employees.json)
+                    fetch('../assets/data/positions.json') // Update this path as needed
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json().then(positions => ({ user, positions })); // Return both user and positions
+                        })
+                        .then(({ user, positions }) => {
+                            // Find the position description
+                            const position = positions.find(pos => pos.posID === user.posID);
+                            const roleDescription = position ? position.posDescription : 'Unknown Role';
+            
+                            // Store user details in sessionStorage
+                            sessionStorage.setItem('userRole', roleDescription); // Store role description
+                            sessionStorage.setItem('userName', `${user.empFirstName} ${user.empLastName}`); // Store full name
+            
+                            // Redirect to the desired page after successful login
+                            window.location.href = 'index.html'; // Change to your desired page
+                        })
+                        .catch(error => {
+                            console.error('Error loading positions data:', error);
+                            alert('There was a problem with loading positions data. Please try again later.');
+                        });
+                } else {
+                    // Display error message for invalid credentials
+                    alert('Invalid username or password. Please try again.');
+                    console.error('Invalid credentials ' + localStorage.getItem('employees')); // Log error for debugging
+                }
+            }
+        });
+    </script>
+</body>
+</html>

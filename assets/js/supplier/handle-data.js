@@ -46,7 +46,7 @@ function populateSupplierTable(data){
                 <button class="edit-btn" onclick="editSupplier('${supplier.supID}')">
                     <i class="bi bi-pencil"></i>
                 </button>
-                <button class="delete-btn" onclick="deleteSupplier('${supplier.supName}', '${supplier.supID}')">
+                <button class="delete-btn" onclick="deleteSupplier('${supplier.supID}')">
                     <i class="bi bi-trash"></i>
                 </button>
             </td>
@@ -175,7 +175,7 @@ function removeSupplier(supID){
         const suppliers = JSON.parse(storedData);
 
         //filters out all suppliers other than the deleted once
-        const updatedSuppliers = suppliers.filter(suppliers => suppliers.supID != supID);
+        const updatedSuppliers = suppliers.filter(supplier => supplier.supID != supID);
 
         //set to localstorage and repopulate table with updated data
         localStorage.setItem('suppliers', JSON.stringify(updatedSuppliers));

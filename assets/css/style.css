@@ -531,6 +531,10 @@ button:hover {
   background-color: #ddd;
 }
 
+#log-out {
+  cursor: pointer;
+}
+
 
 /* Media Query for split screen */
 @media only screen and (max-width: 960px) {

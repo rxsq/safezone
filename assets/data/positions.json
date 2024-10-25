@@ -1,0 +1,26 @@
+[
+    {
+        "posID": 1,
+        "posDescription": "Quality"
+    },
+    {
+        "posID": 2,
+        "posDescription": "Engineering"
+    },
+    {
+        "posID": 3,
+        "posDescription": "Operations"
+    },
+    {
+        "posID": 4,
+        "posDescription": "Procurement"
+    },
+    {
+        "posID": 5,
+        "posDescription": "Administrator"
+    },
+    {
+        "posID": 6,
+        "posDescription": "Employee"
+    }
+]

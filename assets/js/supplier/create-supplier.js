@@ -106,8 +106,6 @@ function createNewSupplier(validData) {
     const successMessage = 'Supplier added successfully!';
     alert(successMessage); 
 
-    setTimeout(() => {
-        window.location.href = 'supplier.html'; // Change this to the path of your index page
-    }, 2000); // Redirects after 2 seconds
+    window.location.href = 'supplier.html'; // Change this to the path of your index page
 
 }

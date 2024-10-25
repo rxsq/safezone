@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const storedSupplierData = localStorage.getItem('suppliers');
     const storedProductData = localStorage.getItem('products');
 
-    if(storedSupplierData != 'null'){
+    if(storedSupplierData){
         //if exists then parse it and populate table
         const data = JSON.parse(storedSupplierData) 
         populateSupplierDropDownLists(data);
@@ -22,18 +22,19 @@ document.addEventListener('DOMContentLoaded', function(){
         })
     }  
 
-    if(storedProductData != 'null'){
+    if(storedProductData){
         //if exists then parse it and populate table
         const data = JSON.parse(storedProductData) 
         window.products = data;
     }
     else {
         //initially fetch data from json
-        fetch('../assets/data/poducts.json')
+        fetch('../assets/data/products.json')
         .then(response => response.json())
         .then(data => {
             //store fetched data in local storage
             localStorage.setItem('poducts', JSON.stringify(data));
+            console.log(storedProductData);
             window.products = data;
         })
     }  
