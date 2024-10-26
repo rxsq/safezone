@@ -145,7 +145,7 @@
 
 <!-- Edit Modal -->
 <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg"> 
       <div class="modal-content">
           <div class="modal-header">
               <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee Record</h5>
@@ -153,65 +153,67 @@
           </div>
           <div class="modal-body">
               <form id="editEmployeeForm">
-                  <div class="mb-3">
-                      <label for="editEmpFirstName" class="form-label">First Name</label>
-                      <input type="text" class="form-control" id="editEmpFirstName" required>
+                  <div class="row"> 
+                      <div class="col-md-6 mb-3">
+                          <label for="editEmpFirstName" class="form-label">First Name</label>
+                          <input type="text" class="form-control" id="editEmpFirstName" required>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <label for="editEmpLastName" class="form-label">Last Name</label>
+                          <input type="text" class="form-control" id="editEmpLastName" required>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <label for="editEmpEmail" class="form-label">Email</label>
+                          <input type="email" class="form-control" id="editEmpEmail" required>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <label for="editEmpDateHired" class="form-label">Date Hired</label>
+                          <input type="date" class="form-control" id="editEmpDateHired" required>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <label for="editEmpSalary" class="form-label">Salary</label>
+                          <input type="number" class="form-control" id="editEmpSalary" step="0.01" required>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <label for="editEmpPhone" class="form-label">Phone</label>
+                          <input type="text" class="form-control" id="editEmpPhone" required>
+                      </div>
+                      <div class="mb-3">
+                          <label for="editEmpAddress" class="form-label">Address</label>
+                          <input type="text" class="form-control" id="editEmpAddress" required>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <label for="editEmpActive" class="form-label">Active Status</label>
+                          <select class="form-select" id="editEmpActive" required>
+                              <option value="ACTV">Active</option>
+                              <option value="INAC">Inactive</option>
+                          </select>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <label for="editEmpPosition" class="form-label">Position</label>
+                          <select class="form-select" id="editEmpPosition" required>
+                              <option value="1">Quality</option>
+                              <option value="2">Engineering</option>
+                              <option value="3">Operations</option>
+                              <option value="4">Procurement</option>
+                              <option value="5">Administrator</option>
+                              <option value="6">Employee</option>
+                          </select>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <label for="editEmpUsername" class="form-label">Username</label>
+                          <input type="text" class="form-control" id="editEmpUsername" required>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <label for="editEmpPassword" class="form-label">Password</label>
+                          <div class="input-group">
+                              <input type="password" class="form-control" id="editEmpPassword" required>
+                              <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                  <i class="bi bi-eye" id="eyeIcon"></i>
+                              </button>
+                          </div>
+                      </div>
                   </div>
-                  <div class="mb-3">
-                      <label for="editEmpLastName" class="form-label">Last Name</label>
-                      <input type="text" class="form-control" id="editEmpLastName" required>
-                  </div>
-                  <div class="mb-3">
-                      <label for="editEmpEmail" class="form-label">Email</label>
-                      <input type="email" class="form-control" id="editEmpEmail" required>
-                  </div>
-                  <div class="mb-3">
-                      <label for="editEmpDateHired" class="form-label">Date Hired</label>
-                      <input type="date" class="form-control" id="editEmpDateHired" required>
-                  </div>
-                  <div class="mb-3">
-                      <label for="editEmpSalary" class="form-label">Salary</label>
-                      <input type="number" class="form-control" id="editEmpSalary" step="0.01" required>
-                  </div>
-                  <div class="mb-3">
-                      <label for="editEmpPhone" class="form-label">Phone</label>
-                      <input type="text" class="form-control" id="editEmpPhone" required>
-                  </div>
-                  <div class="mb-3">
-                      <label for="editEmpAddress" class="form-label">Address</label>
-                      <input type="text" class="form-control" id="editEmpAddress" required>
-                  </div>
-                  <div class="mb-3">
-                      <label for="editEmpActive" class="form-label">Active Status</label>
-                      <select class="form-select" id="editEmpActive" required>
-                          <option value="ACTV">Active</option>
-                          <option value="INAC">Inactive</option>
-                      </select>
-                  </div>
-                  <div class="mb-3">
-                      <label for="editEmpPosition" class="form-label">Position</label>
-                      <select class="form-select" id="editEmpPosition" required>
-                          <option value="1">Quality</option>
-                          <option value="2">Engineering</option>
-                          <option value="3">Operations</option>
-                          <option value="4">Procurement</option>
-                          <option value="5">Administrator</option>
-                          <option value="6">Employee</option>
-                      </select>
-                  </div>
-                  <div class="mb-3">
-                      <label for="editEmpUsername" class="form-label">Username</label>
-                      <input type="text" class="form-control" id="editEmpUsername" required>
-                  </div>
-                  <div class="mb-3">
-                    <label for="editEmpPassword" class="form-label">Password</label>
-                    <div class="input-group">
-                        <input type="password" class="form-control" id="editEmpPassword" required>
-                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                            <i class="bi bi-eye" id="eyeIcon"></i>
-                        </button>
-                    </div>
-                </div>
                   <input type="hidden" id="editEmpID" /> <!-- Hidden input to store the Employee ID -->
               </form>
           </div>

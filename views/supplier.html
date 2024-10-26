@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,6 +15,7 @@
     crossorigin="anonymous"></script>
   <link rel="stylesheet" href="../assets/css/style.css" />
 </head>
+
 <body>
   <div class="sidebar" id="sidebar">
     <div class="logo-content">
@@ -106,7 +108,7 @@
               </tr>
             </thead>
             <tbody id="supplier-list">
-              
+
             </tbody>
           </table>
         </section>
@@ -115,9 +117,9 @@
           <a href="#">1</a>
           <a href="#">2</a>
           <a href="#">3</a>
-          
+
           <a href="#">Next</a>
-      </div>
+        </div>
       </div>
     </div>
   </div>
@@ -125,104 +127,106 @@
   <!-- Delete Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-    <div class="modal-content">
+      <div class="modal-content">
         <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" id="deleteModalBody">
-            
+
         </div>
         <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnDeleteYes">Yes</button>
-        <button type="button" class="btn btn-primary" id="btnDeleteNo">No</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnDeleteYes">Yes</button>
+          <button type="button" class="btn btn-primary" id="btnDeleteNo">No</button>
         </div>
+      </div>
     </div>
-    </div>
-</div>
+  </div>
 
-    <!-- Edit Modal -->
-<!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Supplier</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editForm">
-                    <div class="mb-3">
-                        <label for="editSupID" class="form-label">Supplier ID</label>
-                        <input type="text" class="form-control" id="editSupID" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editSupplierName" class="form-label">Supplier Name</label>
-                        <input type="text" class="form-control" id="editSupplierName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editContactName" class="form-label">Contact Name</label>
-                        <input type="text" class="form-control" id="editContactName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editContactEmail" class="form-label">Contact Email</label>
-                        <input type="email" class="form-control" id="editContactEmail" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editContactPhone" class="form-label">Contact Phone</label>
-                        <input type="text" class="form-control" id="editContactPhone" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editAddress" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="editAddress" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editCity" class="form-label">City</label>
-                        <input type="text" class="form-control" id="editCity" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editCountry" class="form-label">Country</label>
-                        <input type="text" class="form-control" id="editCountry" required>
-                    </div>
-                    <input type="hidden" id="editSupID" /> <!-- Hidden input to store the supplier ID -->
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="btnSaveChanges">Save Changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- View Modal -->
-<div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+  <!-- Edit Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="viewModalLabel">Supplier Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="viewModalContent">
-                    <p><strong>Supplier ID:</strong> <span id="viewSupplierID"></span></p>
-                    <p><strong>Supplier Name:</strong> <span id="viewSupplierName"></span></p>
-                    <p><strong>Contact Name:</strong> <span id="viewContactName"></span></p>
-                    <p><strong>Contact Email:</strong> <span id="viewContactEmail"></span></p>
-                    <p><strong>Contact Phone:</strong> <span id="viewContactPhone"></span></p>
-                    <p><strong>Address:</strong> <span id="viewAddress"></span></p>
-                    <p><strong>City:</strong> <span id="viewCity"></span></p>
-                    <p><strong>Country:</strong> <span id="viewCountry"></span></p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Edit Supplier</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body">
+          <form id="editForm">
+            <div class="row">
+              <div class="col-md-3 mb-3">
+                <label for="editSupID" class="form-label">Supplier ID</label>
+                <input type="text" class="form-control" id="editSupID" required>
+              </div>
+              <div class="col-md-9 mb-3">
+                <label for="editSupplierName" class="form-label">Supplier Name</label>
+                <input type="text" class="form-control" id="editSupplierName" required>
+              </div>
+              <div class="mb-3">
+                <label for="editContactName" class="form-label">Contact Name</label>
+                <input type="text" class="form-control" id="editContactName" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="editContactEmail" class="form-label">Contact Email</label>
+                <input type="email" class="form-control" id="editContactEmail" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="editContactPhone" class="form-label">Contact Phone</label>
+                <input type="text" class="form-control" id="editContactPhone" required>
+              </div>
+              <div class="mb-3">
+                <label for="editAddress" class="form-label">Address</label>
+                <input type="text" class="form-control" id="editAddress" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="editCity" class="form-label">City</label>
+                <input type="text" class="form-control" id="editCity" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="editCountry" class="form-label">Country</label>
+                <input type="text" class="form-control" id="editCountry" required>
+              </div>
+              <input type="hidden" id="editSupID" /> <!-- Hidden input to store the supplier ID -->
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="btnSaveChanges">Save Changes</button>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+
+  <!-- View Modal -->
+  <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="viewModalLabel">Supplier Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="viewModalContent">
+            <p><strong>Supplier ID:</strong> <span id="viewSupplierID"></span></p>
+            <p><strong>Supplier Name:</strong> <span id="viewSupplierName"></span></p>
+            <p><strong>Contact Name:</strong> <span id="viewContactName"></span></p>
+            <p><strong>Contact Email:</strong> <span id="viewContactEmail"></span></p>
+            <p><strong>Contact Phone:</strong> <span id="viewContactPhone"></span></p>
+            <p><strong>Address:</strong> <span id="viewAddress"></span></p>
+            <p><strong>City:</strong> <span id="viewCity"></span></p>
+            <p><strong>Country:</strong> <span id="viewCountry"></span></p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <script defer src="../assets/js/main/sidebar.js"></script>
   <script defer src="../assets/js/supplier/handle-data.js"></script>
   <script src="../assets/js/main/user-role-handling.js"></script>
 </body>
+
 </html>
