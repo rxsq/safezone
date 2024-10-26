@@ -183,7 +183,7 @@ function editNCR(ncrFormNo){
 
 //save changes event listener attached to edit modal
 document.getElementById('btnSaveChanges').onclick = function() {
-    const ncrFormNo = document.getElementById('editNcrFormNo').value;
+    const ncrFormNo = document.getElementById('editFormNo').value;
     const updatedDocumentNo = document.getElementById('editDocumentNo').value;
     const updatedDescription = document.getElementById('editDescription').value;
     const updatedIssueDate = document.getElementById('editIssueDate').value;
