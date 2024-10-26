@@ -178,7 +178,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="editFormNo" class="form-label">Form No</label>
-                                <input type="text" class="form-control" id="editFormNo" required>
+                                <input type="text" class="form-control" id="editFormNo" required readonly>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="editDocumentNo" class="form-label">Document No</label>
@@ -199,8 +199,10 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="editProdID" class="form-label">Product ID</label>
-                                <input type="number" class="form-control" id="editProdID" required>
+                                <label for="editProduct" class="form-label">Product</label>
+                                <select class="form-control" id="editProduct" required>
+                                    <!--Options will be added in code-->
+                                </select>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="editSalesOrderNo" class="form-label">Sales Order No</label>
@@ -229,8 +231,10 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="editSupplierName" class="form-label">Supplier Name</label>
-                            <input type="text" class="form-control" id="editSupplierName" required>
+                            <label for="editSupplierName" class="form-label">Supplier</label>
+                            <select class="form-control" id="editSupplier" required>
+                                <!--Options will be populated in code-->
+                            </select>
                         </div>
                         <input type="hidden" id="editNcrFormNo" /> <!-- Hidden input to store the NCR Form No -->
                     </form>
