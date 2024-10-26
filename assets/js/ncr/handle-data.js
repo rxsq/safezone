@@ -194,7 +194,17 @@ document.getElementById('btnSaveChanges').onclick = function() {
     const updatedQtyDefective = document.getElementById('editQtyDefective').value;
     const updatedDefectDesc = document.getElementById('editDefectDesc').value;
     const updatedStatusID = document.getElementById('editStatusID').value;
-    const updatedSupplierName = document.getElementById('editSupplier').value;
+
+    //supplier name
+    // Get selected supplier ID
+    const selectedSupplierID = document.getElementById('editSupplier').value;
+
+    // Retrieve the suppliers from local storage
+    const suppliersData = JSON.parse(localStorage.getItem('suppliers'));
+
+    // Find the selected supplier's name
+    const selectedSupplier = suppliersData.find(supplier => supplier.supID == selectedSupplierID);
+    const updatedSupplierName = selectedSupplier ? selectedSupplier.supName : ''; // Ensure it defaults to empty string if not found
 
     const storedData = localStorage.getItem('ncrForms');
     if(storedData){
@@ -202,6 +212,9 @@ document.getElementById('btnSaveChanges').onclick = function() {
 
         //find index of ncr to update
         const index = ncrForms.findIndex(ncr => ncr.ncrFormNo == ncrFormNo);
+
+        console.log(ncrForms.findIndex(ncr => ncr.ncrFormNo == ncrFormNo));
+
         if(index != -1){ //needs to at least be selecting an existing record
             //update record
             ncrForms[index] = {
@@ -218,6 +231,8 @@ document.getElementById('btnSaveChanges').onclick = function() {
                 ncrStatusID: updatedStatusID,
                 ncrSupplierName: updatedSupplierName
             };
+            
+            console.log(ncrForms);
 
             //save updated data into localstorage
             localStorage.setItem('ncrForms', JSON.stringify(ncrForms));
