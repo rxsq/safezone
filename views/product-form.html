@@ -85,42 +85,39 @@
     </div>
 
     <div class="main-content">
-        <header class="header">
-            <div class="search-bar">
-                <input type="text" placeholder="Search">
-            </div>
-
-            <div class="filters">
-                <select class="dropdown" id="month-dropdown">
-                        <option value="jan">Jan</option>
-                        <option value="feb">Feb</option>
-                        <option value="mar">Mar</option>
-                        <option value="apr">Apr</option>
-                        <option value="may">May</option>
-                        <option value="jun">Jun</option>
-                        <option value="jul">Jul</option>
-                        <option value="aug">Aug</option>
-                        <option value="sep">Sep</option>
-                        <option value="oct">Oct</option>
-                        <option value="nov">Nov</option>
-                        <option value="dec">Dec</option>
-                </select>
-
-                <select class="dropdown" id="Category-dropdown">
-                        <option value="all">All Categories</option>
-                        <option value="sales">Sales</option>
-                        <option value="returns">Returns</option>
-                </select>
-            </div>
-        </header>
-
+        
             <section class="add-product">
+                <div class="header">
+                <div class="filters">
+                    <select class="dropdown" id="month-dropdown">
+                            <option value="jan">Jan</option>
+                            <option value="feb">Feb</option>
+                            <option value="mar">Mar</option>
+                            <option value="apr">Apr</option>
+                            <option value="may">May</option>
+                            <option value="jun">Jun</option>
+                            <option value="jul">Jul</option>
+                            <option value="aug">Aug</option>
+                            <option value="sep">Sep</option>
+                            <option value="oct">Oct</option>
+                            <option value="nov">Nov</option>
+                            <option value="dec">Dec</option>
+                    </select>
+    
+                    <select class="dropdown" id="Category-dropdown">
+                            <option value="all">All Categories</option>
+                            <option value="sales">Sales</option>
+                            <option value="returns">Returns</option>
+                    </select>
+                </div>
+            </div>
+
                 <h1>Add New Product</h1>
 
                 <div class="=section"></div>
                 <h2>General Information</h2>
                 <div class="form-group">
-                    <label for="name">Name Product</label>
+                    <label for="name">Product Name</label>
                     <input type="text" id="name" placeholder="Name of product">
                 </div>
                 <div class="form-group">
@@ -156,24 +153,45 @@
                 <div class="form-group">
                     <label for="Prodcategory ">Product Categories</label>
 
-                    <select id="categories" class="dropdown">
-                    <option value="electronics">Bag & Pouch</option>
+                    <select id="categories" class="dropdown" vlaue="70" type="text">
+                    <option value="bag">Bag & Pouch</option>
                     <option value="clothing">Smart Watch</option>
                     <option value="beauty">Watch</option>
                     <option value="home">Audio</option>
                     <option value="sports">Smartphone</option>
-                    <option value="toys">Shoes</option>
-                    <option value="toys">Shoes</option>
+                    <option value="toys">Accessories</option>
+                    <option value="toys">Toys</option>
+                    <option value="Food">Food</option>
             </select>
-                    <input type="text" id="stock" vlaue="70">
                 </div>
                 <div class="form-group">
                     <label for="Issue Date">Issue Date</label>
-                    <input type="date" id="Issue-Date" name="Issue-Date">
+                    <input type="date" id="Issue-Date" name="Issue-Date" required>
                 </div>
                 <div class="form-group">
                     <label for="Quantity-Received">Quantity Received</label>
-                    <input type="text" id="discount" id="ThanksGiving Discount">
+                    <select id="numbers" class="dropdown">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                      </select>
                 </div>
             </div>
 
