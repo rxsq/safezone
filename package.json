@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "express": "^4.21.1",
+    "safezone": "file:",
     "sqlite3": "^5.1.7"
   }
 }
