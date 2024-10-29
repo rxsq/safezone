@@ -7,7 +7,7 @@ function fetchNcrForms() {
             return response.json();
         })
         .then(data => {
-            console.log(data);
+            //console.log(data);
             populateRecentNcrTable(data);
             updateMetrics(data);
         })

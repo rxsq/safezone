@@ -33,7 +33,7 @@ app.get('/ncrForms', (req, res) => {
 
 // Dynamic route to render other HTML pages
 app.get('*', (req, res) => {
-    const requestedPath = req.path === '/' ? '/index' : req.path; // Default to index.html for root
+    const requestedPath = req.path === '/' ? '/login' : req.path; // Default to index.html for root
     const sanitizedPath = requestedPath.replace('.html', '');
     const filePath = path.join(__dirname, 'public', 'views', `${sanitizedPath}.html`);
 

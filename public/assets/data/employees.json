@@ -71,8 +71,8 @@
   },
   {
     "empID": 6,
-    "empFirstName": "Michael",
-    "empLastName": "Scott",
+    "empFirstName": "Administrator",
+    "empLastName": "",
     "empEmail": "michael.scott@example.com",
     "empDateHired": "2017-07-01 09:15:00",
     "empSalary": 75000,

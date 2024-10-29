@@ -23,19 +23,19 @@
                 <a href="index.html">
                     <!-- <i class='bx bxs-hot'></i>
                     <div class="logo-name">CrossFire Niagara</div> -->
-                    <img src="/assets/images/crossfire logo edited.png" alt="" />
+                    <img src="../assets/images/crossfire_logo_edited.png" alt="Logo for CrossFire Niagara">
                 </a>
             </div>
             <i class="bi bi-list" id="btn-close"></i>
         </div>
         <ul class="nav-list">
-            <div class="search-box">
+            <!--<div class="search-box">
                 <li>
                     <i class="bi bi-search"></i>
                     <input type="text" placeholder="Search">
-                    <!-- <span class="tooltip">Dashboard</span> -->
+                    <span class="tooltip">Dashboard</span>
                 </li>
-            </div>
+            </div>-->
             <li>
                 <a href="index.html">
                     <i class="bi bi-speedometer2"></i>
@@ -75,7 +75,7 @@
         <div class="profile-content">
             <div class="profile">
                 <div class="profile-details">
-                    <img src="/assets/images/Crossfire Logo.PNG" alt="" class="">
+                    <img src="/assets/images/crossfire_logo.PNG" alt="Logo for CrossFire Niagara">
                     <div class="name-job">
                         <div class="name">CrossFire Niagara</div>
                         <div class="job">Admin</div>
@@ -90,9 +90,7 @@
             <header>
                 <h1>Non-Conformance Report Dashboard</h1>
                 <div class="actions">
-                    <a href="non-conformance-report.html">
-                        <button class="new-ncr-btn">+ New NCR</button>
-                    </a>
+                    <button class="new-ncr-btn" onclick="location.href='non-conformance-report.html'">+ New NCR</button>
                     <button class="export-data-btn">Export Data</button>
                     <select class="date-range-selector">
                         <option value="7-days">Last 7 Days</option>
@@ -151,7 +149,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
-                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="deleteModalBody">
 
@@ -171,18 +169,18 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editModalLabel">Edit NCR Record</h5>
-                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>  -->
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
                 </div>
                 <div class="modal-body">
                     <form id="editForm" class="edit-form">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="editFormNo" class="form-label">Form No</label>
-                                <input type="text" class="form-control" id="editFormNo" required readonly>
+                                <input type="text" class="form-control" id="editFormNo" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="editDocumentNo" class="form-label">Document No</label>
-                                <input type="text" class="form-control" id="editDocumentNo" required>
+                                <input type="text" class="form-control" id="editDocumentNo" required readonly>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -201,7 +199,7 @@
                             <div class="col-md-6 mb-3">
                                 <label for="editProduct" class="form-label">Product</label>
                                 <select class="form-control" id="editProduct" required>
-                                    <!--Options will be added in code-->
+                                    <option value="" disabled selected>Select Product</option>
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -226,17 +224,18 @@
                         <div class="mb-3">
                             <label for="editStatusID" class="form-label">Status ID</label>
                             <select class="form-select" id="editStatusID" required>
+                                <option value="" disabled selected>Select Status</option>
                                 <option value="OPEN">Active</option>
                                 <option value="CLSD">Inactive</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="editSupplierName" class="form-label">Supplier</label>
+                            <label for="editSupplier" class="form-label">Supplier</label>
                             <select class="form-control" id="editSupplier" required>
-                                <!--Options will be populated in code-->
+                                <option value="" disabled selected>Select Supplier</option>
                             </select>
                         </div>
-                        <input type="hidden" id="editNcrFormNo" /> <!-- Hidden input to store the NCR Form No -->
+                        <input type="hidden" id="editNcrFormNo"> <!-- Hidden input to store the NCR Form No -->
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -253,7 +252,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="viewModalLabel">NCR Record Details</h5>
-                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div id="viewModalContent">

@@ -26,7 +26,7 @@ function updateProfileSection() {
             // Define profile content
             const profileContent = `
                 <div class="profile-details">
-                    <img src="../assets/images/Crossfire Logo.PNG" alt="" />
+                    <img src="../assets/images/crossfire_logo.PNG" alt="" />
                     <div class="name-job">
                         <div class="name">${userName}</div>
                         <div class="job">${userRole}</div>

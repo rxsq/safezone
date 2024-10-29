@@ -1,9 +1,10 @@
+// if sidebar is collapsed, it adds a new class to it called 'collapsed' which alters how it looks through css
+
 document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('btn-close');
     const homeContent = document.querySelector('.home-content');
 
-    // Check the sidebar state in localStorage when the page loads
     if (localStorage.getItem('sidebarCollapsed') === 'true') {
         sidebar.classList.add('collapsed');
         homeContent.classList.add('expanded');
@@ -12,12 +13,11 @@ document.addEventListener('DOMContentLoaded', function() {
         homeContent.classList.remove('expanded');
     }
 
-    // Toggle the sidebar and save its state in localStorage
+    // event listener for toggle button (hamburger icon)
     toggleBtn.addEventListener('click', function() {
         sidebar.classList.toggle('collapsed');
         homeContent.classList.toggle('expanded');
 
-        // Store the current state of the sidebar in localStorage
         const isCollapsed = sidebar.classList.contains('collapsed');
         localStorage.setItem('sidebarCollapsed', isCollapsed);
     });
