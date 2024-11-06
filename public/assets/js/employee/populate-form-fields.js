@@ -1,5 +1,3 @@
-// assets/js/populate-form-fields.js
-
 // Function to fetch positions and populate the select dropdown
 async function populatePositionSelect() {
     try {

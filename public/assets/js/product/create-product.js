@@ -42,7 +42,7 @@ async function createProduct() {
     const productCategory = document.getElementById('product-category').value.trim();
     const supplierId = document.getElementById('supplier-name').value;
 
-    const API_URL = '/api/products'; // Update this to your actual API endpoint
+    const API_URL = '/api/products'; 
 
     // Basic validation
     if (!productName || !productCategory || !supplierId) {
@@ -52,9 +52,9 @@ async function createProduct() {
     }
 
     const productData = {
-        prodName: productName,          // Make sure the key matches your API
-        prodCategory: productCategory,  // Make sure the key matches your API
-        supID: parseInt(supplierId, 10), // Ensure supID is a number
+        prodName: productName,   
+        prodCategory: productCategory, 
+        supID: parseInt(supplierId, 10),
     };
 
     try {
