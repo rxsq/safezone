@@ -21,11 +21,11 @@
         <div class="logo-content">
             <div class="logo">
                 <a href="index.html">
-                  <!-- <i class='bx bxs-hot'></i>
+                    <!-- <i class='bx bxs-hot'></i>
                         <div class="logo-name">CrossFire Niagara</div> -->
-                  <img src="/assets/images/crossfire_logo_edited.png" alt="CrossFire Niagara Logo">
+                    <img src="/assets/images/crossfire_logo_edited.png" alt="CrossFire Niagara Logo">
                 </a>
-              </div>
+            </div>
             <i class="bi bi-list" id="btn-close"></i>
         </div>
         <ul class="nav-list">
@@ -93,153 +93,262 @@
             </ol>
         </nav>
 
-            <form id="ncr-form">
-                <fieldset class="border p-2">
-                    <legend class="w-auto">Non-Conformance Report</legend>
-                    <div class="two-column">
-                        <div class="form-group">
-                            <label for="ncr-no">NCR No.</label>
-                            <input type="text" id="ncr-no" name="ncrNo">
-                        </div>
-                        <div class="form-group">
-                            <label for="document-no">Document No.</label>
-                            <input type="text" id="document-no" name="docNo">
-                        </div>
-                        <div class="form-group">
-                            <label for="ncr-date">Date</label>
-                            <input type="date" id="ncr-date" name="ncrDate">
-                        </div>
-                        <div class="form-group">
-                            <label for="status">Status</label>
-                            <select id="status" name="status">
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="in-progress">In Progress</option>
-                            </select>
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset class="border p-2">
-
-                <legend class="w-auto">Quality Representative</legend>
+        <form id="ncr-form">
+            <fieldset class="border p-2">
+                <legend class="w-auto">Non-Conformance Report</legend>
                 <div class="two-column">
                     <div class="form-group">
-                        <label for="supplier-name">Supplier Name</label>
-                        <select id="supplier-name" name="supplier-name">
-                            <option value="" disabled selected>Select a Supplier</option>
+                        <label for="ncr-no">NCR No.</label>
+                        <input type="text" id="ncr-no" name="ncrNo">
+                    </div>
+                    <div class="form-group">
+                        <label for="document-no">Document No.</label>
+                        <input type="text" id="document-no" name="docNo">
+                    </div>
+                    <div class="form-group">
+                        <label for="ncr-date">Date</label>
+                        <input type="date" id="ncr-date" name="ncrDate" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="in-progress">In Progress</option>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Identify Process Applicable</label>
-                        <div class="checkbox-group">
-                            <label><input type="checkbox" name="process-applicable" value="supplier" id="recInsp"> Supplier or
-                                Rec-Insp</label>
-                            <label><input type="checkbox" name="process-applicable" value="wip" id="wip"> WIP (Production
-                                Order)</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="four-column">
-                    <div class="form-group">
-                        <label for="po-prod-no">Product</label>
-                        <select id="po-prod-no" name="po-prod-no">
-                            <option value="" disabled selected>Select a Product</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="sales-order-no">Sales Order No.</label>
-                        <input type="text" id="sales-order-no" name="sales-order-no">
-                    </div>
-                    <div class="form-group">
-                        <label for="quantity-received">Quantity Received</label>
-                        <input type="text" id="quantity-received" name="quantity-received">
-                    </div>
-                    <div class="form-group">
-                        <label for="quantity-defective">Quantity Defective</label>
-                        <input type="text" id="quantity-defective" name="quantity-defective">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="description-item">Description of Item (including SAP No.)</label>
-                    <textarea id="description-item" name="description-item" rows="3" class="full-width"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="description-defect">Description of Defect</label>
-                    <textarea id="description-defect" name="description-defect" rows="3" class="full-width"></textarea>
-                </div>
-
-                <div class="two-column">
-                    <div class="form-group">
-                        <label>Upload Documents</label>
-                        <div class="two-column">
-                            <label><input id="file" type="file" name="file"></label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Item Marked Nonconforming</label>
-                        <div class="two-column">
-                            <label><input type="radio" name="item-nonconforming" value="yes" required> Yes</label>
-                            <label><input type="radio" name="item-nonconforming" value="no"> No</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="quality-rep-name">Quality Representative's Name</label>
-                        <input type="text" id="quality-rep-name" name="quality-rep-name">
-                    </div>
-                    <div class="form-group">
-                        <label for="quality-rep-date">Date</label>
-                        <input type="date" id="quality-rep-date" name="quality-rep-date">
                     </div>
                 </div>
             </fieldset>
 
-        <div class="form-group submit-btn-container">
-            <button type="submit" class="submit-btn" id="submit-btn">Submit And Close</button>
-        </div>
+            <fieldset class="border p-2">
+                <legend class="w-auto" id="collapser">Quality Representative</legend>
+                <div id="collapsable">
+                    <div class="two-column">
+                        <div class="form-group">
+                            <label for="supplier-name">Supplier Name</label>
+                            <select id="supplier-name" name="supplier-name">
+                                <option value="" disabled selected>Select a Supplier</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Identify Process Applicable</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="process-applicable" value="supplier" id="recInsp">
+                                    Supplier or
+                                    Rec-Insp</label>
+                                <label><input type="checkbox" name="process-applicable" value="wip" id="wip"> WIP
+                                    (Production
+                                    Order)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="four-column">
+                        <div class="form-group">
+                            <label for="po-prod-no">Product</label>
+                            <select id="po-prod-no" name="po-prod-no">
+                                <option value="" disabled selected>Select a Product</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sales-order-no">Sales Order No.</label>
+                            <input type="text" id="sales-order-no" name="sales-order-no">
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity-received">Quantity Received</label>
+                            <input type="text" id="quantity-received" name="quantity-received">
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity-defective">Quantity Defective</label>
+                            <input type="text" id="quantity-defective" name="quantity-defective">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description-item">Description of Item (including SAP No.)</label>
+                        <textarea id="description-item" name="description-item" rows="3" class="full-width"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="description-defect">Description of Defect</label>
+                        <textarea id="description-defect" name="description-defect" rows="3"
+                            class="full-width"></textarea>
+                    </div>
+
+                    <div class="two-column">
+                        <div class="form-group">
+                            <label>Upload Documents</label>
+                            <div class="two-column">
+                                <label><input id="file" type="file" name="file"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Item Marked Nonconforming</label>
+                            <div class="two-column">
+                                <label><input type="radio" name="item-nonconforming" value="yes" required> Yes</label>
+                                <label><input type="radio" name="item-nonconforming" value="no"> No</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="quality-rep-name">Quality Representative's Name</label>
+                            <input type="text" id="quality-rep-name" name="quality-rep-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="quality-rep-date">Date</label>
+                            <input type="date" id="quality-rep-date" name="quality-rep-date" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group submit-btn-container">
+                        <button type="submit" class="submit-btn" id="submit-btn">Submit</button>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="border p-2">
+                <legend class="w-auto" id="collapser">Engineering</legend>
+                <div id="collapsable">
+                    <section class="bordered">
+                        <div class="two-column">
+                            <div class="form-group">
+                                <label>Review by Chief Engineering</label>
+                                <p>Indicate disposition by "checking" one of the following</p>
+                                <div class="four-column">
+                                    <label><input type="checkbox" name="review-by-engineer" value="use-as-is">Use As
+                                        Is</label>
+                                    <label><input type="checkbox" name="review-by-engineer"
+                                            value="repair">Repair</label>
+                                    <label><input type="checkbox" name="review-by-engineer"
+                                            value="rework">Rework</label>
+                                    <label><input type="checkbox" name="review-by-engineer" value="scrap">Scrap</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Does Customer require notification of NCR</label>
+                                <p>If "Yes" then raise message to customer detail issues</p>
+                                <div class="two-column">
+                                    <label><input type="radio" name="require-notification" value="yes" required>
+                                        Yes</label>
+                                    <label><input type="radio" name="require-notification" value="no"> No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </section>
+                    <section class="no-border">
+                        <div class="form-group">
+                            <label for="disposition">Disposition</label>
+                            <textarea id="disposition" name="disposition" rows="3" class="full-width"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Does the drawing require updating</label>
+                            <p>Sequence of work steps required when "repair" or "rework" indicated</p>
+                            <div class="four-column">
+                                <label><input type="radio" name="require-updating" value="yes" required> Yes</label>
+                                <label><input type="radio" name="require-updating" value="no"> No</label>
+                            </div>
+                        </div>
+                        <div class="four-column">
+                            <div class="form-group">
+                                <label for="original-rev-number">Original Revision Number</label>
+                                <input type="text" id="original-rev-number" name="original-rev-number">
+                            </div>
+                            <div class="form-group">
+                                <label for="updated-rev-number">Updated Revision Number</label>
+                                <input type="text" id="updated-rev-number" name="updated-rev-number">
+                            </div>
+                            <div class="form-group">
+                                <label for="engineer-name">Name of Engineer</label>
+                                <input type="text" id="engineer-name" name="engineer-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="revision-date">Revision Date</label>
+                                <input type="date" id="revision-date" name="revision-date" readonly>
+                            </div>
+                        </div>
+                        <div class="two-column">
+                            <div class="form-group">
+                                <label for="engineering">Engineering</label>
+                                <input type="text" id="engineering" name="engineering">
+                            </div>
+                            <div class="form-group">
+                                <label for="engineer-date">Date</label>
+                                <input type="date" id="engineer-date" name="engineeer-date" readonly>
+                            </div>
+                        </div>
+                    </section>
+
+
+                    <div class="form-group submit-btn-container">
+                        <button type="submit" class="submit-btn" id="submit-btn">Submit</button>
+                    </div>
+                </div>
+            </fieldset>
+
         </form>
     </div>
 
     <!-- Error Modal -->
     <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="errorModalLabel">Erorr</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">Erorr</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="errorModalBody">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
-            <div class="modal-body" id="errorModalBody">
-                
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
         </div>
     </div>
 
     <!-- Success Modal -->
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="successModalLabel">Success</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Success</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="successModalBody">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="btnDismiss">Close</button>
+                </div>
             </div>
-            <div class="modal-body" id="successModalBody">
-            
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnDismiss">Close</button>
-            </div>
-        </div>
         </div>
     </div>
     <script src="../assets/js/ncr/create-ncr.js"></script>
     <script defer src="../assets/js/ncr/populate-form-fields.js"></script>
     <script defer src="../assets/js/main/sidebar.js"></script>
     <script src="../assets/js/main/user-role-handling.js"></script>
+    <script>
+        document.getElementById('quality-rep-date').value = new Date().toISOString().substring(0, 10);
+        document.getElementById('ncr-date').value = new Date().toISOString().substring(0, 10);
+        document.getElementById('revision-date').value = new Date().toISOString().substring(0, 10);
+        document.getElementById('engineer-date').value = new Date().toISOString().substring(0, 10);
+    </script>
+    <script>
+        window.addEventListener('load', () => {
+            const collapser = document.getElementById('collapser');
+            const collapsable = document.getElementById('collapsable');
+
+            function collapse(event) {
+                if (event) {
+                    event.stopPropagation();
+                }
+
+                collapsable.hidden = !collapsable.hidden;
+            }
+
+            collapser.addEventListener('click', collapse);
+        });
+    </script>
 </body>
 
 </html>
