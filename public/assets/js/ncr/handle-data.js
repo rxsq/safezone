@@ -47,11 +47,11 @@ function populateRecentNcrTable(data) {
             ncrStatus = "Inactive";
         }
 
+        // <td>${ncr.ncrDefectDesc}</td>
         row.innerHTML = `
             <td>${ncr.ncrFormNo}</td>
             <td>${ncr.ncrDocumentNo}</td>
             <td>${ncr.ncrSupplierName}</td>
-            <td>${ncr.ncrDefectDesc}</td>
             <td>${ncrStatus}</td>
             <td class="action-buttons-td">
                 <button class="view-btn" onclick="viewNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')">
@@ -61,7 +61,7 @@ function populateRecentNcrTable(data) {
                     <i class="bi bi-pencil"></i>
                 </button>
                 <button class="delete-btn" onclick="deleteNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')">
-                    <i class="bi bi-trash"></i>
+                    <i class="bi bi-archive"></i>
                 </button>
             </td>
         `;
