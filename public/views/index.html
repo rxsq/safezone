@@ -21,55 +21,41 @@
         <div class="logo-content">
             <div class="logo">
                 <a href="index.html">
-                    <!-- <i class='bx bxs-hot'></i>
-                    <div class="logo-name">CrossFire Niagara</div> -->
                     <img src="../assets/images/crossfire_logo_edited.png" alt="Logo for CrossFire Niagara">
                 </a>
             </div>
             <i class="bi bi-list" id="btn-close"></i>
         </div>
         <ul class="nav-list">
-            <!--<div class="search-box">
-                <li>
-                    <i class="bi bi-search"></i>
-                    <input type="text" placeholder="Search">
-                    <span class="tooltip">Dashboard</span>
-                </li>
-            </div>-->
             <li>
                 <a href="index.html">
                     <i class="bi bi-speedometer2"></i>
                     <span class="links-name">Dashboard</span>
                 </a>
-                <!-- <span class="tooltip">Dashboard</span> -->
             </li>
             <li>
                 <a href="non-conformance-report.html">
                     <i class="bi bi-file-earmark-richtext"></i>
                     <span class="links-name">Non-Conformance Report</span>
                 </a>
-                <!-- <span class="tooltip">Dashboard</span> -->
             </li>
             <li>
                 <a href="product.html">
                     <i class="bi bi-box-seam"></i>
                     <span class="links-name">Products</span>
                 </a>
-                <!-- <span class="tooltip">Dashboard</span> -->
             </li>
             <li>
                 <a href="Employee.html">
                     <i class="bi bi-people"></i>
                     <span class="links-name">Employees</span>
                 </a>
-                <!-- <span class="tooltip">Dashboard</span> -->
             </li>
             <li>
                 <a href="supplier.html">
                     <i class="bi bi-truck"></i>
                     <span class="links-name">Suppliers</span>
                 </a>
-                <!-- <span class="tooltip">Dashboard</span> -->
             </li>
         </ul>
         <div class="profile-content">
@@ -103,28 +89,71 @@
             <section class="key-metrics">
                 <div class="metric-card">
                     <h2>Total</h2>
-                    <p id="metricTotal">0</p>
+                    <a href="#">
+                        <p id="metricTotal">0</p>
+                    </a>
                 </div>
                 <div class="metric-card">
-                    <h2>Active</h2>
-                    <p id="metricActive">0</p>
+                    <h2>Open</h2>
+                    <a href="#">
+                        <p id="metricActive">0</p>
+                    </a>
                 </div>
-                <div class="metric-card overdue">
-                    <h2>Inactive</h2>
-                    <p id="metricInactive">0</p>
+                <div class="metric-card">
+                    <h2>Closed</h2>
+                    <a href="#">
+                        <p id="metricInactive">0</p>
+                    </a>
                 </div>
             </section>
 
             <section class="ncr-trends">
                 <h2>Most Recent NCR's</h2>
+                <form id="ncrFilterForm">
+                    <div class="two-column">
+                        <!-- <div class="form-group">
+                            <label for="filterDocumentNo" class="form-label">Document Title</label>
+                            <input type="text" class="form-control" id="filterDocumentTitle">
+                        </div> -->
+                        <div class="form-group">
+                            <label for="filterSupplier" class="form-label">Supplier</label>
+                            <select id="supplier-name" name="supplier-name">
+                                <option value="" disabled selected>Select a Supplier</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filterProduct" class="form-label">Product</label>
+                            <select id="po-prod-no" name="po-prod-no" data-bs-toggle="tooltip" title="Required">
+                                <option value="" disabled selected required>Select a Product</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filterStatus" class="form-label">Status</label>
+                            <select id="status" name="status">
+                                <option value="active">Open</option>
+                                <option value="inactive">Closed</option>
+                                <option value="in-progress">In Progress</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filterIssueDate" class="form-label">Issue Date</label>
+                            <input type="date" class="form-control" id="filterIssueDate">
+                        </div>
+                    </div>
+                    <div class="filter-buttons">
+                        <button type="button" class="filter-btn" id="">Apply Filters</button>
+                        <button type="reset" class="reset-btn" id="">Reset</button>
+                    </div>
+                </form>
                 <table class="table table-striped table-hover" id="ncrRecentTable">
                     <thead>
                         <tr>
-                            <th>NCR No.</th>
-                            <th>Document Title</th>
-                            <th>Supplier</th>
-                            <th>Defect Description</th>
-                            <th>Status</th>
+                            <th><a href="#" id="">NCR No.</a></th>
+                            <!-- <th><a href="#" id="">Document Title</a></th> -->
+                            <th><a href="#" id="">Supplier</a></th>
+                            <!-- <th>Defect Description</th> -->
+                            <th><a href="#" id="">Date</a></th>
+                            <th><a href="#" id="">Status</a></th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -161,11 +190,11 @@
 
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg"> 
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editModalLabel">Edit NCR Record</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="editForm" class="edit-form">
@@ -275,6 +304,8 @@
     <script src="../assets/js/main/sidebar.js"></script>
     <script src="../assets/js/ncr/handle-data.js"></script>
     <script src="../assets/js/main/user-role-handling.js"></script>
+    <script src="../assets/js/main/tooltip.js"></script>
+    <script defer src="../assets/js/ncr/populate-form-fields.js"></script>
 </body>
 
 </html>

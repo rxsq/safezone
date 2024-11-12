@@ -11,6 +11,7 @@ body {
   overflow: hidden;
   position: relative;
   width: 100%;
+  font-size: 1.1em;
 }
 
 /***** SIDEBAR *****/
@@ -271,6 +272,11 @@ body {
   vertical-align: middle; 
 }
 
+.table.table-striped.table-hover a {
+  color: black;
+  text-decoration: none;
+}
+
 .breadcrumb {
   margin: 10px 0;
   text-decoration: none;
@@ -415,6 +421,15 @@ textarea {
   padding: 8px 16px;
 }
 
+.filter-buttons {
+  margin-top: 10px;
+  padding-bottom: 20px;
+}
+
+.reset-btn {
+  background-color: grey;
+}
+
 /***** Supplier *****/
 .new-suppliers-btn,
 .new-employee-btn {
@@ -505,6 +520,11 @@ button:hover {
   margin-bottom: 10px;
 }
 
+.metric-card a {
+  color: black;
+  text-decoration: none;
+}
+
 .metric-card p {
   font-size: 2em;
   font-weight: bold;
@@ -516,9 +536,6 @@ button:hover {
   font-size: 0.9em;
 }
 
-.metric-card.overdue {
-  background-color: #ffe6e6;
-}
 
 .ncr-trends {
   background-color: #fff;

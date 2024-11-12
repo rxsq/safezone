@@ -1,3 +1,11 @@
+//bootstrap tooltip 
+function tooltip() {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+        new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+}
+
 function fetchNcrForms() {
     fetch('/api/ncrForms')
         .then(response => {
@@ -10,12 +18,14 @@ function fetchNcrForms() {
             //console.log(data);
             populateRecentNcrTable(data);
             updateMetrics(data);
+            tooltip();
+
         })
         .catch(error => console.error('Error fetching NCR forms:', error));
-    
+
 }
 
-function updateMetrics(data){
+function updateMetrics(data) {
     const total = data.length;
     const active = data.filter(ncr => ncr.ncrStatusID == "OPEN").length;
     const inactive = data.filter(ncr => ncr.ncrStatusID == "CLSD").length;
@@ -32,35 +42,36 @@ function updateMetrics(data){
 // Function to populate recent NCR table with data
 function populateRecentNcrTable(data) {
     const tableBody = document.getElementById('tbodyRecentNCR');
-    tableBody.innerHTML = ''; 
+    tableBody.innerHTML = '';
 
     data.forEach(ncr => {
         const row = document.createElement('tr');
 
         const status = ncr.ncrStatusID;
         let ncrStatus;
-        
-        if(status==="OPEN"){
-            ncrStatus = "Active";
+
+        if (status === "OPEN") {
+            ncrStatus = "Open";
         }
-        else{
-            ncrStatus = "Inactive";
+        else {
+            ncrStatus = "Closed";
         }
 
+        // <td>${ncr.ncrDocumentNo}</td>
         // <td>${ncr.ncrDefectDesc}</td>
         row.innerHTML = `
             <td>${ncr.ncrFormNo}</td>
-            <td>${ncr.ncrDocumentNo}</td>
             <td>${ncr.ncrSupplierName}</td>
+            <td>${ncr.ncrIssueDate.substring(0, 10)}</td>
             <td>${ncrStatus}</td>
             <td class="action-buttons-td">
-                <button class="view-btn" onclick="viewNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')">
+                <button class="view-btn" data-bs-toggle="tooltip" title="View NCR" onclick="viewNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')">
                     <i class="bi bi-eye"></i>
                 </button>
-                <button class="edit-btn" onclick="editNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')">
+                <button class="edit-btn" onclick="editNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Edit NCR">
                     <i class="bi bi-pencil"></i>
                 </button>
-                <button class="delete-btn" onclick="deleteNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')">
+                <button class="delete-btn" onclick="deleteNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
                     <i class="bi bi-archive"></i>
                 </button>
             </td>
@@ -192,13 +203,13 @@ function populateProductDropDownLists(products, selectedSupplierID) {
     });
 }
 
-function deleteNCR(ncrFormNo, ncrString){
+function deleteNCR(ncrFormNo, ncrString) {
     const ncr = JSON.parse(decodeURIComponent(ncrString));
     document.getElementById('deleteModalBody').textContent = `Are you sure you want to delete NCR No. ${ncr.ncrFormNo}?`;
-    document.getElementById('btnDeleteYes').onclick = () => removeNCR(ncr.ncrFormNo); 
-    document.getElementById('btnDeleteNo').onclick = function(){
+    document.getElementById('btnDeleteYes').onclick = () => removeNCR(ncr.ncrFormNo);
+    document.getElementById('btnDeleteNo').onclick = function () {
         const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
-        modal.hide();        
+        modal.hide();
     }
     const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
     deleteModal.show();
@@ -208,19 +219,19 @@ function removeNCR(ncrFormNo) {
     fetch(`/api/ncrForms/${ncrFormNo}`, {
         method: 'DELETE',
     })
-    .then(response => {
-        if (response.ok) {
-            fetchNcrForms();
-            const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
-            deleteModal.hide();
-        } else {
-            console.error('Failed to delete NCR record');
-        }
-    })
-    .catch(error => console.error('Error deleting NCR record:', error));
+        .then(response => {
+            if (response.ok) {
+                fetchNcrForms();
+                const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+                deleteModal.hide();
+            } else {
+                console.error('Failed to delete NCR record');
+            }
+        })
+        .catch(error => console.error('Error deleting NCR record:', error));
 }
 
-document.getElementById('btnSaveChanges').onclick = function() {
+document.getElementById('btnSaveChanges').onclick = function () {
     const ncrFormNo = document.getElementById('editFormNo').value;
     const updatedDocumentNo = document.getElementById('editDocumentNo').value;
     const updatedDescription = document.getElementById('editDescription').value;
@@ -231,7 +242,7 @@ document.getElementById('btnSaveChanges').onclick = function() {
     const updatedQtyDefective = document.getElementById('editQtyDefective').value;
     const updatedDefectDesc = document.getElementById('editDefectDesc').value;
     const updatedStatusID = document.getElementById('editStatusID').value;
-    
+
     // Convert selected supplier and product IDs to numbers
     const selectedSupplierID = parseInt(document.getElementById('editSupplier').value, 10);
     const selectedProductID = parseInt(document.getElementById('editProduct').value, 10); // Get product ID
