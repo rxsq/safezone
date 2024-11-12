@@ -34,13 +34,20 @@ const defectDesc = document.getElementById('description-defect');
 const qualityRepName = document.getElementById('quality-rep-name');
 const qualityRepDate = document.getElementById('quality-rep-date');
 
-const submitBtn = document.getElementById('submit-btn');
+const submitQualityBtn = document.getElementById('submit-quality-btn');
 
 // Event listener for submit button click
-submitBtn.addEventListener('click', e => {
-    e.preventDefault();
-    validateInputs();
+submitQualityBtn.addEventListener('click', e => {
+    //e.preventDefault();
+    //validateQualityInputs();
 });
+
+const submitEngineeringBtn = document.getElementById('submit-engineering-btn');
+
+submitEngineeringBtn.addEventListener('click', e => {
+    e.preventDefault();
+    validateEngineeringInputs();
+})
 
 const successClick = document.getElementById('btnDismiss');
 successClick.addEventListener('click', e => {
@@ -56,8 +63,8 @@ let error_list = [];
 
  var successModal = new bootstrap.Modal(document.getElementById('successModal'));
 
-//Function to validate inputs
-function validateInputs()  {
+//Function to validate quality inputs
+function validateQualityInputs()  {
     //Clear error list
     error_list = [];
 
@@ -84,60 +91,6 @@ function validateInputs()  {
 
     //NCR number patten
     const ncrPattern = /^20\d{2}-\d{3}$/;
-
-    //Required field validation
-    if(!ncrNoValue){
-        error_list.push("NCR Number is required.")
-        isValid = false;
-    }
-    if(!docNoValue){
-        error_list.push("Document Number is required.")
-        isValid = false;
-    }
-    if(!ncrDateValue){
-        error_list.push("NCR Date is required.")
-        isValid = false;
-    }
-    if(!statusValue){
-        error_list.push("Status is required.")
-        isValid = false;
-    }
-    if(!suppNameValue){
-        error_list.push("Supplier Name is required.")
-        isValid = false;
-    }
-    if(!prodNoValue){
-        error_list.push("Product Number is required.")
-        isValid = false;
-    }
-    if(!salesNoValue){
-        error_list.push("Product Number is required.")
-        isValid = false;
-    }
-    if(!receiveQuantityValue){
-        error_list.push("Received Quantity is required.")
-        isValid = false;
-    }
-    if (!defectiveQuantityValue) {
-        error_list.push("Defective Quantity is required.");
-        isValid = false;
-    }
-    if (!descriptionValue) {
-        error_list.push("Item Description is required.");
-        isValid = false;
-    }
-    if (!defectDescValue) {
-        error_list.push("Defect Description is required.");
-        isValid = false;
-    }
-    if (!qualityRepNameValue) {
-        error_list.push("Quality Representative Name is required.");
-        isValid = false;
-    }
-    if (!qualityRepDateValue) {
-        error_list.push("Quality Representative Date is required.");
-        isValid = false;
-    }
     
     //Check NCR pattern
     if(!ncrPattern.test(ncrNoValue)){
@@ -194,6 +147,10 @@ function validateInputs()  {
         successModal.show();
     }
 };
+
+function validateEngineeringInputs(){
+    //Add logic to validate engineering inputs
+}
 
 // Function to send NCR data to the API
 async function createNewNCR(validData) {

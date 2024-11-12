@@ -44,7 +44,14 @@ function populateRecentNcrTable(data) {
     const tableBody = document.getElementById('tbodyRecentNCR');
     tableBody.innerHTML = '';
 
-    data.forEach(ncr => {
+    for(let i = 0; i<= data.length; i++){
+
+        if(i === 5){
+            break;
+        }
+
+        let ncr = data[i];
+
         const row = document.createElement('tr');
 
         const status = ncr.ncrStatusID;
@@ -74,10 +81,12 @@ function populateRecentNcrTable(data) {
                 <button class="delete-btn" onclick="deleteNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
                     <i class="bi bi-archive"></i>
                 </button>
+                <button class="bi bi-printer" onclick=printNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print NCR">
+                </button>
             </td>
         `;
         tableBody.appendChild(row);
-    });
+    }
 }
 
 function viewNCR(ncrFormNo, ncrString) {
