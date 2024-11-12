@@ -1,3 +1,41 @@
+const filterBtn = document.getElementById('filter-btn');
+const resetBtn = document.getElementById('reset-filter-btn');
+
+const supplierSelect = document.getElementById('supplier-name');
+const productSelect = document.getElementById('po-prod-no');
+const statusSelect = document.getElementById('status');
+const issueDatePicker = document.getElementById('filterIssueDate');
+
+//Event listener for filter button
+filterBtn.addEventListener('click', function(){
+    
+});
+
+//Event listener for reset button
+resetBtn.addEventListener('click', function(){
+    supplierSelect.value = "-1";
+    
+    resetProductSelect();
+
+    statusSelect.value = "active";
+    issueDatePicker.value = "";
+});
+
+function resetProductSelect(){
+    while (productSelect.options.length) {
+        productSelect.remove(0);
+    }
+
+    const defaultOption = document.createElement('option');
+    defaultOption.value = "-1";  
+    defaultOption.textContent = "Select a Product";  
+    defaultOption.selected = true; 
+    //defaultOption.disabled = true;   
+
+    productSelect.appendChild(defaultOption);
+
+}
+
 //bootstrap tooltip 
 function tooltip() {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -44,9 +82,11 @@ function populateRecentNcrTable(data) {
     const tableBody = document.getElementById('tbodyRecentNCR');
     tableBody.innerHTML = '';
 
-    for(let i = 0; i<= data.length; i++){
+    let openRecords = 0;
 
-        if(i === 5){
+    for(let i = 0; i< data.length; i++){
+
+        if(openRecords === 5){
             break;
         }
 
@@ -59,9 +99,11 @@ function populateRecentNcrTable(data) {
 
         if (status === "OPEN") {
             ncrStatus = "Open";
+            openRecords++;
         }
         else {
             ncrStatus = "Closed";
+            continue;
         }
 
         // <td>${ncr.ncrDocumentNo}</td>
@@ -81,7 +123,7 @@ function populateRecentNcrTable(data) {
                 <button class="delete-btn" onclick="deleteNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
                     <i class="bi bi-archive"></i>
                 </button>
-                <button class="bi bi-printer" onclick=printNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print NCR">
+                <button class="bi bi-file-earmark-pdf" onclick=printNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
                 </button>
             </td>
         `;

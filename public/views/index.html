@@ -118,13 +118,13 @@
                         <div class="form-group">
                             <label for="filterSupplier" class="form-label">Supplier</label>
                             <select id="supplier-name" name="supplier-name">
-                                <option value="" disabled selected>Select a Supplier</option>
+                                <option value="-1" disabled selected>Select a Supplier</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="filterProduct" class="form-label">Product</label>
-                            <select id="po-prod-no" name="po-prod-no" data-bs-toggle="tooltip" title="Required">
-                                <option value="" disabled selected required>Select a Product</option>
+                            <select id="po-prod-no" name="po-prod-no">
+                                <option value="-1" disabled selected>Select a Product</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -141,8 +141,8 @@
                         </div>
                     </div>
                     <div class="filter-buttons">
-                        <button type="button" class="filter-btn" id="">Apply Filters</button>
-                        <button type="reset" class="reset-btn" id="">Reset</button>
+                        <button type="button" class="filter-btn" id="filter-btn">Apply Filters</button>
+                        <button type="reset" class="reset-btn" id="reset-filter-btn">Reset</button>
                     </div>
                 </form>
                 <table class="table table-striped table-hover" id="ncrRecentTable">
