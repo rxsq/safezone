@@ -1,0 +1,39 @@
+[
+    {
+      "qualFormID": 1,
+      "qualIssueDesc": "Defective coating on the surface.",
+      "qualItemID": 1,
+      "qualImageFileName": "image1.jpg",
+      "qualSalesOrderNo": 1001,
+      "qualQtyReceived": 500,
+      "qualQtyDefective": 50,
+      "qualItemNonConforming": 1,
+      "qualRepID": 2,
+      "qualDate": "2024-11-01T09:00:00"
+    },
+    {
+      "qualFormID": 2,
+      "qualIssueDesc": "Damaged resistors during shipment.",
+      "qualItemID": 2,
+      "qualImageFileName": "image2.jpg",
+      "qualSalesOrderNo": 1002,
+      "qualQtyReceived": 300,
+      "qualQtyDefective": 30,
+      "qualItemNonConforming": 1,
+      "qualRepID": 2,
+      "qualDate": "2024-11-02T10:15:00"
+    },
+    {
+      "qualFormID": 3,
+      "qualIssueDesc": "Faulty mechanical bearings.",
+      "qualItemID": 3,
+      "qualImageFileName": "image3.jpg",
+      "qualSalesOrderNo": 1003,
+      "qualQtyReceived": 200,
+      "qualQtyDefective": 10,
+      "qualItemNonConforming": 1,
+      "qualRepID": 2,
+      "qualDate": "2024-11-03T11:30:00"
+    }
+  ]
+  

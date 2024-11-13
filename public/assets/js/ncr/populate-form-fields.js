@@ -1,4 +1,4 @@
-// When HTML content is loaded, fire event
+// DOMContentLoaded EventListener
 document.addEventListener('DOMContentLoaded', function(){ 
     // Retrieve and populate suppliers
     fetch('../assets/data/suppliers.json')
@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function(){
         .catch(error => console.error('Failed to load products:', error));
 });
 
+// Function to populate DropDownLists based on supplier data
 function populateSupplierDropDownLists(suppliers) {
     const supplierDropDown = document.getElementById('supplier-name');
 
@@ -47,6 +48,7 @@ function populateSupplierDropDownLists(suppliers) {
     });
 }
 
+// Function to populate DropDownLists based on product data
 function populateProductDropDownLists(products, selectedSupplierID) {
     const productDropDown = document.getElementById('po-prod-no');
 

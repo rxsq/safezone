@@ -2,8 +2,6 @@ const supplierSelect = document.getElementById('supplier-name');
 const productSelect = document.getElementById('po-prod-no');
 const statusSelect = document.getElementById('status');
 
-
-
 function fetchNcrForms() {
     fetch('/api/ncrForms')
         .then(response => {
@@ -170,5 +168,7 @@ function renderSupplierChart(data) {
     });
 }
 
+document.addEventListener('DOMContentLoaded', function(){
+    fetchNcrForms();
+});
 
-fetchNcrForms();

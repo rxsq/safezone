@@ -1,13 +1,16 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const ncrFormsRoutes = require('./routes/ncrForms'); // Assuming you have ncrForms.js
+const ncrFormsRoutes = require('./routes/ncrForms'); 
 const productsRoutes = require('./routes/products');
 const suppliersRoutes = require('./routes/suppliers');
 const employeesRoutes = require('./routes/employees');
 const positionsRoutes = require('./routes/positions');
+const qualityFormsRoutes = require('./routes/qualityForms'); 
+const engineerFormsRoutes = require('./routes/engineerForms'); 
+const purchasingFormsRoutes = require('./routes/purchasingForms'); 
+const statusRoutes = require('./routes/status'); 
 
-// Add more routes as needed
 const app = express();
 
 // Set port
@@ -16,15 +19,19 @@ const PORT = process.env.PORT || 3000;
 // Serve static files from public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Use JSON middleware to parse JSON bodies
+// JSON middleware to parse JSON bodies
 app.use(express.json());
 
-// Use your routes
 app.use('/api/ncrForms', ncrFormsRoutes); // Route for NCR Forms
-app.use('/api/products', productsRoutes);
-app.use('/api/suppliers', suppliersRoutes);
-app.use('/api/employees', employeesRoutes);
-app.use('/api/positions', positionsRoutes);
+app.use('/api/products', productsRoutes); // Route for Products
+app.use('/api/suppliers', suppliersRoutes); // Route for Suppliers
+app.use('/api/employees', employeesRoutes); // Route for Employees
+app.use('/api/positions', positionsRoutes); // Route for Positions
+app.use('/api/qualityForms', qualityFormsRoutes); // Route for Quality Forms
+app.use('/api/engineerForms', engineerFormsRoutes); // Route for Engineer Forms
+app.use('/api/purchasingForms', purchasingFormsRoutes); // Route for Purchasing Forms
+app.use('/api/status', statusRoutes); // Route for Status
+
 
 // Serve the HTML page for NCR Forms
 app.get('/ncrForms', (req, res) => {
@@ -33,7 +40,7 @@ app.get('/ncrForms', (req, res) => {
 
 // Dynamic route to render other HTML pages
 app.get('*', (req, res) => {
-    const requestedPath = req.path === '/' ? '/login' : req.path; // Default to index.html for root
+    const requestedPath = req.path === '/' ? '/index' : req.path; 
     const sanitizedPath = requestedPath.replace('.html', '');
     const filePath = path.join(__dirname, 'public', 'views', `${sanitizedPath}.html`);
 
