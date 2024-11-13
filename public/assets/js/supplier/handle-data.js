@@ -30,14 +30,14 @@ function populateSupplierTable(data) {
             <td>${supplier.supContactEmail}</td>
             <td>${supplier.supContactPhone}</td>
             <td class="action-buttons-td">
-                <button class="view-btn" onclick="viewSupplier('${supplier.supID}')">
-                    <i class="bi bi-eye"></i>
+                <button class="view-btn" onclick="viewSupplier('${supplier.supID}')"
+                    data-bs-toggle="tooltip" title="View Supplier"> <i class="bi bi-eye"></i>
                 </button>
-                <button class="edit-btn" onclick="editSupplier('${supplier.supID}')">
-                    <i class="bi bi-pencil"></i>
+                <button class="edit-btn" onclick="editSupplier('${supplier.supID}')"
+                      data-bs-toggle="tooltip" title="Edit Supplier"> <i class="bi bi-pencil"></i>
                 </button>
-                <button class="delete-btn" onclick="deleteSupplier('${supplier.supID}', '${supplier.supName}')">
-                    <i class="bi bi-trash"></i>
+                <button class="delete-btn" onclick="deleteSupplier('${supplier.supID}', '${supplier.supName}')"
+                     data-bs-toggle="tooltip" title="Delete Supplier"> <i class="bi bi-trash"></i>
                 </button>
             </td>
         `;
