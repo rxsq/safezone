@@ -1,5 +1,5 @@
-// const filterBtn = document.getElementById('filter-btn');
-// const resetBtn = document.getElementById('reset-filter-btn');
+const filterBtn = document.getElementById('filter-btn');
+const resetBtn = document.getElementById('reset-filter-btn');
 
 const supplierSelect = document.getElementById('supplier-name');
 const productSelect = document.getElementById('po-prod-no');
@@ -7,34 +7,34 @@ const statusSelect = document.getElementById('status');
 const issueDatePicker = document.getElementById('filterIssueDate');
 
 //Event listener for filter button
-// filterBtn.addEventListener('click', function(){
+filterBtn.addEventListener('click', function(){
     
-// });
+});
 
 //Event listener for reset button
-// resetBtn.addEventListener('click', function(){
-//     supplierSelect.value = "-1";
+resetBtn.addEventListener('click', function(){
+    supplierSelect.value = "-1";
     
-//     resetProductSelect();
+    resetProductSelect();
 
-//     statusSelect.value = "active";
-//     issueDatePicker.value = "";
-// });
+    statusSelect.value = "active";
+    issueDatePicker.value = "";
+});
 
-// function resetProductSelect(){
-//     while (productSelect.options.length) {
-//         productSelect.remove(0);
-//     }
+function resetProductSelect(){
+    while (productSelect.options.length) {
+        productSelect.remove(0);
+    }
 
-//     const defaultOption = document.createElement('option');
-//     defaultOption.value = "-1";  
-//     defaultOption.textContent = "Select a Product";  
-//     defaultOption.selected = true; 
-//     //defaultOption.disabled = true;   
+    const defaultOption = document.createElement('option');
+    defaultOption.value = "-1";  
+    defaultOption.textContent = "Select a Product";  
+    defaultOption.selected = true; 
+    //defaultOption.disabled = true;   
 
-//     productSelect.appendChild(defaultOption);
+    productSelect.appendChild(defaultOption);
 
-// }
+}
 
 //bootstrap tooltip 
 function tooltip() {
@@ -57,7 +57,6 @@ function fetchNcrForms() {
             populateRecentNcrTable(data);
             updateMetrics(data);
             renderBarChart(data); // Render chart with the fetched data
-            renderSupplierChart(data);
             tooltip();
 
         })
@@ -74,164 +73,14 @@ function updateMetrics(data) {
     document.getElementById('metricActive').innerText = active;
     document.getElementById('metricInactive').innerText = inactive;
 
-    //handle overdue
-    //const overdue = 
-    //document.querySelector('.key-metrics .metric-card.overdue p').innerText = overdue;
 };
-
-function groupByIssueDate(data) {
-    const dateCounts = {};
-
-    data.forEach(ncr => {
-        const issueDate = ncr.ncrIssueDate.substring(0, 10); // Format: YYYY-MM-DD
-        dateCounts[issueDate] = (dateCounts[issueDate] || 0) + 1;
-    });
-
-    return dateCounts;
-}
-
-function groupByYearMonth(data) {
-    const dateCounts = {};
-
-    data.forEach(ncr => {
-        // Extract "YYYY-MM" from "YYYY-MM-DD" format
-        const issueYearMonth = ncr.ncrIssueDate.substring(0, 7); // e.g., "2024-11"
-        dateCounts[issueYearMonth] = (dateCounts[issueYearMonth] || 0) + 1;
-    });
-
-    return dateCounts;
-}
-
-function renderBarChart(data) {
-    const ctx = document.getElementById('issueDateChart').getContext('2d');
-
-    // Get the grouped data by year-month
-    const dateCounts = groupByYearMonth(data);
-    const labels = Object.keys(dateCounts);
-    const values = Object.values(dateCounts);
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: "NCR's per Year-Month",
-                data: values,
-                backgroundColor: '#173451',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
-            }],
-        },
-        options: {
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Year-Month',
-                    },
-                },
-                y: {
-                    beginAtZero: true, // Ensure Y-axis starts at 0
-                    title: {
-                        display: true,
-                        text: 'Number of NCR Forms',
-                    },
-                    ticks: {
-                        stepSize: 1, // Count NCR forms in whole numbers (0, 1, 2, etc.)
-                    },
-                },
-            },
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                },
-            },
-        },
-    });
-}
-
-function groupBySupplier(data) {
-    const supplierCounts = {};
-
-    // Iterate over each NCR record to count by supplier name
-    data.forEach(ncr => {
-        const supplier = ncr.ncrSupplierName || 'Unknown'; // Default to 'Unknown' if supplier name is missing
-        supplierCounts[supplier] = (supplierCounts[supplier] || 0) + 1;
-    });
-
-    return supplierCounts; // Returns an object like { "Supplier Name 1": count, "Supplier Name 2": count, ... }
-}
-
-function renderSupplierChart(data) {
-    const ctx = document.getElementById('supplierChart').getContext('2d');
-
-    // Group NCRs by supplier name using groupBySupplier function
-    const supplierCounts = groupBySupplier(data);
-    const labels = Object.keys(supplierCounts); // Supplier names
-    const values = Object.values(supplierCounts); // NCR counts per supplier
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: "NCR's per Supplier",
-                data: values,
-                backgroundColor: '#5897c9',
-                borderColor: 'rgba(255, 171, 0, 1)',
-                borderWidth: 1,
-            }],
-        },
-        options: {
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Supplier Name',
-                    },
-                    ticks: {
-                        autoSkip: false, // Display all supplier names on the x-axis
-                    }
-                },
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Number of NCR Forms',
-                    },
-                    ticks: {
-                        stepSize: 1, // Use whole numbers for NCR count
-                    },
-                },
-            },
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                },
-            },
-        },
-    });
-}
-
-
 
 // Function to populate recent NCR table with data
 function populateRecentNcrTable(data) {
     const tableBody = document.getElementById('tbodyRecentNCR');
     tableBody.innerHTML = '';
 
-    let openRecords = 0;
-
-    for(let i = 0; i< data.length; i++){
-
-        if(openRecords === 5){
-            break;
-        }
-
+    for (let i = 0; i < data.length; i++) {
         let ncr = data[i];
 
         const row = document.createElement('tr');
@@ -241,15 +90,10 @@ function populateRecentNcrTable(data) {
 
         if (status === "OPEN") {
             ncrStatus = "Open";
-            openRecords++;
-        }
-        else {
+        } else {
             ncrStatus = "Closed";
-            continue;
         }
 
-        // <td>${ncr.ncrDocumentNo}</td>
-        // <td>${ncr.ncrDefectDesc}</td>
         row.innerHTML = `
             <td>${ncr.ncrFormNo}</td>
             <td>${ncr.ncrSupplierName}</td>
@@ -265,13 +109,14 @@ function populateRecentNcrTable(data) {
                 <button class="delete-btn" onclick="deleteNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
                     <i class="bi bi-archive"></i>
                 </button>
-                <button class="bi bi-file-earmark-pdf" onclick=printNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
+                <button class="bi bi-file-earmark-pdf" onclick="printNCR('${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
                 </button>
             </td>
         `;
         tableBody.appendChild(row);
     }
 }
+
 
 function viewNCR(ncrFormNo, ncrString) {
     const ncr = JSON.parse(decodeURIComponent(ncrString));

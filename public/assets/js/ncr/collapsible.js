@@ -6,14 +6,7 @@ document.querySelectorAll('.collapsible').forEach((legend, index) => {
     section.style.display = index === 0 ? 'block' : 'none';
 
     legend.addEventListener('click', () => {
-        // Close all sections first
-        document.querySelectorAll('.collapsible').forEach((otherLegend) => {
-            const otherSectionId = otherLegend.id.replace('legend-', 'section-');
-            const otherSection = document.getElementById(otherSectionId);
-            otherSection.style.display = 'none';
-        });
-
-        // Open the clicked section
-        section.style.display = 'block';
+        // Toggle the clicked section without affecting others
+        section.style.display = section.style.display === 'block' ? 'none' : 'block';
     });
 });

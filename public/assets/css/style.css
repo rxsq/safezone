@@ -324,6 +324,10 @@ p {
   margin-bottom: 15px;
 }
 
+.form-group button {
+  margin-top: 30px;
+}
+
 fieldset {
   border: 1px solid rgba(128, 128, 128, 0.4);
   border-radius: 12px;
@@ -428,6 +432,12 @@ textarea {
 
 .reset-btn {
   background-color: grey;
+}
+
+.view-more-btn-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 25px;  
 }
 
 /***** Supplier *****/
@@ -548,6 +558,20 @@ button:hover {
   color: #173451;
   font-size: 1.25em;
   margin-bottom: 20px;
+}
+
+.chart {
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+canvas {
+  width: 100% !important;
+  height: auto !important;
 }
 
 /***** Pagination *****/  

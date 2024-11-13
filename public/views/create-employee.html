@@ -21,11 +21,11 @@
         <div class="logo-content">
             <div class="logo">
                 <a href="index.html">
-                  <!-- <i class='bx bxs-hot'></i>
+                    <!-- <i class='bx bxs-hot'></i>
                         <div class="logo-name">CrossFire Niagara</div> -->
-                  <img src="/assets/images/crossfire_logo_edited.png" alt="" />
+                    <img src="/assets/images/crossfire_logo_edited.png" alt="" />
                 </a>
-              </div>
+            </div>
             <i class="bi bi-list" id="btn-close"></i>
         </div>
         <ul class="nav-list">
@@ -37,8 +37,20 @@
             </li>
             <li>
                 <a href="non-conformance-report.html">
-                    <i class="bi bi-file-earmark-richtext"></i>
-                    <span class="links-name">Non-Conformance Report</span>
+                    <i class="bi bi-file-earmark-plus"></i>
+                    <span class="links-name">Create NCR</span>
+                </a>
+            </li>
+            <li>
+                <a href="ncr-log.html">
+                    <i class="bi bi-card-list"></i>
+                    <span class="links-name">NCR Log</span>
+                </a>
+            </li>
+            <li>
+                <a href="ncr-data.html">
+                    <i class="bi bi-bar-chart"></i>
+                    <span class="links-name">NCR Data</span>
                 </a>
             </li>
             <li>
@@ -112,21 +124,21 @@
                     </div>
                 </div>
                 <div class="four-column">
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="salary">Salary</label>
                         <input type="text" id="empSalary" name="salary">
-                    </div>
-                    <div class="form-group">
+                    </div> -->
+                    <!-- <div class="form-group">
                         <label for="date-hired">Date Hired</label>
                         <input type="date" id="empDateHired" name="dateHired">
-                    </div>
-                    <div class="form-group">
+                    </div> -->
+                    <!-- <div class="form-group">
                         <label for="active">Active Status</label>
                         <select id="empActive" name="active" required>
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
                         </select>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="form-group">
                     <label for="username">Username</label>
@@ -158,36 +170,37 @@
     <!-- Error Modal -->
     <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Erorr</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Erorr</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="errorModalBody">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
-            <div class="modal-body" id="errorModalBody">
-                
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
         </div>
     </div>
-  
+
     <!-- Success Modal -->
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel"></h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="successModalBody">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="btnDismiss">Close</button>
+                </div>
             </div>
-            <div class="modal-body" id="successModalBody">
-            
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnDismiss">Close</button>
-            </div>
-        </div>
         </div>
     </div>
     <script src="../assets/js/main/user-role-handling.js"></script>

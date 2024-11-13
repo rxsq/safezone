@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "chart.js": "^4.4.6",
     "express": "^4.21.1",
     "safezone": "file:",
     "sqlite3": "^5.1.7"

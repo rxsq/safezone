@@ -37,6 +37,7 @@ function populateEmployeeTable(data) {
         const row = document.createElement('tr');
         const empPosition = getPositionDescription(employee.posID); // Fetch position description
 
+        console.log(empPosition);
         row.innerHTML = `
             <td>${employee.empID}</td>
             <td>${employee.empFirstName} ${employee.empLastName}</td>
