@@ -46,14 +46,14 @@ function populateEmployeeTable(data) {
             <td>${employee.empPhone}</td>
             <td>${empPosition}</td>
             <td class="action-buttons-td">
-                <button class="view-btn" onclick="viewEmployee('${employee.empID}')">
-                    <i class="bi bi-eye"></i>
+                <button class="view-btn" onclick="viewEmployee('${employee.empID}')"
+                     data-bs-toggle="tooltip" title="View Employee"> <i class="bi bi-eye"></i>
                 </button>
-                <button class="edit-btn" onclick="editEmployee('${employee.empID}')">
-                    <i class="bi bi-pencil"></i>
+                <button class="edit-btn" onclick="editEmployee('${employee.empID}')"
+                     data-bs-toggle="tooltip" title="Edit Employee"> <i class="bi bi-pencil"></i>
                 </button>
-                <button class="delete-btn" onclick="deleteEmployee('${employee.empID}', '${employee.empFirstName} ${employee.empLastName}')">
-                    <i class="bi bi-trash"></i>
+                <button class="delete-btn" onclick="deleteEmployee('${employee.empID}', '${employee.empFirstName} ${employee.empLastName}')"
+                     data-bs-toggle="tooltip" title="Delete Employee"> <i class="bi bi-trash"></i>
                 </button>
             </td>
         `;

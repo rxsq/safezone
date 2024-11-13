@@ -60,16 +60,17 @@ function populateProductTable(data) {
             <td>${product.prodCategory}</td>
             <td id="supplier-${product.prodID}">Loading...</td>
             <td class="text-center">
-                <button class="view-btn" onclick="viewProduct('${product.prodID}')">
-                    <i class="bi bi-eye"></i>
+                <button class="view-btn" onclick="viewProduct('${product.prodID}')"
+                   data-bs-toggle="tooltip" title="View Product"> <i class="bi bi-eye"></i>
                 </button>
-                <button class="edit-btn" onclick="editProduct('${product.prodID}')">
-                    <i class="bi bi-pencil"></i>
+                <button class="edit-btn" onclick="editProduct('${product.prodID}')"
+                    data-bs-toggle="tooltip" title="Edit Product"> <i class="bi bi-pencil"></i>
                 </button>
-                <button class="delete-btn" onclick="deleteProduct('${product.prodID}', '${product.prodName}')">
-                    <i class="bi bi-trash"></i>
+                <button class="delete-btn" onclick="deleteProduct('${product.prodID}', '${product.prodName}')"
+                   data-bs-toggle="tooltip" title="Delete Product"> <i class="bi bi-trash"></i>
                 </button>
             </td>
+            
         `;
         
         tableBody.appendChild(row);
@@ -78,6 +79,9 @@ function populateProductTable(data) {
             document.getElementById(`supplier-${product.prodID}`).innerText = supplierName;
         });
     });
+
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 }
 
 function viewProduct(productID) {

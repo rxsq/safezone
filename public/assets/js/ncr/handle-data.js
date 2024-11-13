@@ -131,7 +131,7 @@ function renderBarChart(data) {
     const values = Object.values(dateCounts);
 
     new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
             labels: labels,
             datasets: [{
@@ -154,7 +154,7 @@ function renderBarChart(data) {
                     beginAtZero: true, // Ensure Y-axis starts at 0
                     title: {
                         display: true,
-                        text: 'Number of NCR Forms',
+                        text: "Number of NCR",
                     },
                     ticks: {
                         stepSize: 1, // Count NCR forms in whole numbers (0, 1, 2, etc.)
@@ -200,7 +200,7 @@ function renderSupplierChart(data) {
             datasets: [{
                 label: "NCR's per Supplier",
                 data: values,
-                backgroundColor: '#5897c9',
+                backgroundColor: '#173451',
                 borderColor: 'rgba(255, 171, 0, 1)',
                 borderWidth: 1,
             }],
@@ -220,7 +220,7 @@ function renderSupplierChart(data) {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Number of NCR Forms',
+                        text: "Number of NCR",
                     },
                     ticks: {
                         stepSize: 1, // Use whole numbers for NCR count
