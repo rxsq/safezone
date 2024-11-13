@@ -378,6 +378,13 @@ textarea,
   width: 100%;
 }
 
+#position {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 8px;
+  width: 25%;
+}
+
 input[type="checkbox"],
 input[type="radio"],
 input[type="file"] {

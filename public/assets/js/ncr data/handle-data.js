@@ -64,7 +64,7 @@ function renderBarChart(data) {
     const values = Object.values(dateCounts);
 
     new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
             labels: labels,
             datasets: [{
@@ -132,7 +132,7 @@ function renderSupplierChart(data) {
             datasets: [{
                 label: "NCR's per Supplier",
                 data: values,
-                backgroundColor: '#5897c9',
+                backgroundColor: '#173451',
                 borderColor: 'rgba(255, 171, 0, 1)',
                 borderWidth: 1,
             }],
