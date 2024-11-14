@@ -98,25 +98,20 @@
                 <legend class="w-auto">Non-Conformance Report</legend>
                 <div class="two-column">
                     <div class="form-group">
-                        <label for="ncr-no" class="required">NCR Number</label>
-                        <input type="text" id="ncr-no" name="ncrNo" data-bs-toggle="tooltip" title="Required">
+                        <label for="ncr-no">NCR Number</label>
+                        <input type="text" id="ncr-no" name="ncrNo" value="{ncrNo}" readonly>
                     </div>
                     <div class="form-group">
                         <label for="document-no">Document Number</label>
                         <input type="text" id="document-no" name="docNo" value="OPS-00011" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="ncr-date" class="required">Issue Date</label>
-                        <input type="date" id="ncr-date" name="ncrDate" data-bs-toggle="tooltip" title="Required"
-                            readonly>
+                        <label for="ncr-date">Issue Date</label>
+                        <input type="date" id="ncr-date" name="ncrDate" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="status" class="required">Status</label>
-                        <select id="status" name="status" data-bs-toggle="tooltip" title="Required">
-                            <option value="active">Open</option>
-                            <option value="inactive">Closed</option>
-                            <option value="in-progress">In Progress</option>
-                        </select>
+                        <label for="stage">Status</label>
+                        <input type="text" id="stage" name="stage" value="{stage}" readonly>
                     </div>
                 </div>
             </fieldset>
@@ -196,14 +191,15 @@
                             <label class="required" data-bs-toggle="tooltip" title="Required">Item Marked
                                 Nonconforming</label>
                             <div class="two-column">
-                                <label><input type="radio" name="item-nonconforming" value="yes"> Yes</label>
-                                <label><input type="radio" name="item-nonconforming" value="no"> No</label>
+                                <label><input type="radio" name="item-nonconforming" value="1"> Yes</label>
+                                <label><input type="radio" name="item-nonconforming" value="0"> No</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="quality-rep-name" class="required">Quality Representative's Name</label>
-                            <input type="text" id="quality-rep-name" name="quality-rep-name" data-bs-toggle="tooltip"
-                                title="Required">
+                            <input type="text" id="quality-rep-name" name="quality-rep-name" value="{qualityRepName}" data-bs-toggle="tooltip"
+                                title="Required"
+                                readonly> <!-- Readonly added for auto generation: Andrew-->
                         </div>
                         <div class="form-group">
                             <label for="quality-rep-date">Date</label>
@@ -227,22 +223,22 @@
                                     Engineering</label>
                                 <p>Indicate disposition by "checking" one of the following</p>
                                 <div class="four-column">
-                                    <label><input type="checkbox" name="review-by-engineer" value="use-as-is">Use As
+                                    <label><input type="radio" name="review-by-engineer" value="Use As Is">Use As
                                         Is</label>
-                                    <label><input type="checkbox" name="review-by-engineer"
-                                            value="repair">Repair</label>
-                                    <label><input type="checkbox" name="review-by-engineer"
-                                            value="rework">Rework</label>
-                                    <label><input type="checkbox" name="review-by-engineer" value="scrap">Scrap</label>
+                                    <label><input type="radio" name="review-by-engineer"
+                                            value="Repair">Repair</label>
+                                    <label><input type="radio" name="review-by-engineer"
+                                            value="Rework">Rework</label>
+                                    <label><input type="radio" name="review-by-engineer" value="Scrap">Scrap</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Does Customer require notification of NCR</label>
                                 <p>If "Yes" then raise message to customer detail issues</p>
                                 <div class="two-column">
-                                    <label><input type="radio" name="require-notification" value="yes" required>
+                                    <label><input type="radio" name="require-notification" value="1" required>
                                         Yes</label>
-                                    <label><input type="radio" name="require-notification" value="no"> No</label>
+                                    <label><input type="radio" name="require-notification" value="0"> No</label>
                                 </div>
                             </div>
                         </div>
@@ -258,8 +254,8 @@
                             <label>Does the drawing require updating</label>
                             <p>Sequence of work steps required when "repair" or "rework" indicated</p>
                             <div class="four-column">
-                                <label><input type="radio" name="require-updating" value="yes" required> Yes</label>
-                                <label><input type="radio" name="require-updating" value="no"> No</label>
+                                <label><input type="radio" name="require-updating" value="1" required> Yes</label>
+                                <label><input type="radio" name="require-updating" value="0"> No</label>
                             </div>
                         </div>
                         <div class="four-column">
@@ -346,6 +342,8 @@
     <script src="../assets/js/ncr/data-auto-configurator.js"></script>
     <script src="../assets/js/ncr/collapsible-sections.js"></script>
     <script src="../assets/js/main/tooltip.js"></script>
+    <script src="../assets/js/ncr/create-scripts/create-quality-form.js"></script>
+    <script src="../assets/js/ncr/create-scripts/create-engineering-form.js"></script>
 </body>
 
 </html>

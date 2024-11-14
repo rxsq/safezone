@@ -63,14 +63,10 @@ router.post('/', (req, res) => {
         // Create new employee object with empID
         const newEmployee = {
             empID: nextEmpID,
-            empFirstName: newData.empFirstName,
-            empLastName: newData.empLastName,
+            empFirst: newData.empFirst,
+            empLast: newData.empLast,
             empEmail: newData.empEmail,
-            empDateHired: newData.empDateHired,
-            empSalary: Number(newData.empSalary),
             empPhone: newData.empPhone,
-            empAddress: newData.empAddress,
-            empActive: newData.empActive,
             empUsername: newData.empUsername,
             empPassword: newData.empPassword,
             posID: Number(newData.posID) // Ensure posID is a number
@@ -105,14 +101,10 @@ router.put('/:empID', (req, res) => {
         // Ensure updated data types are correct before updating
         existingData[employeeIndex] = {
             empID, // Keep the empID as is
-            empFirstName: updatedData.empFirstName || existingData[employeeIndex].empFirstName,
-            empLastName: updatedData.empLastName || existingData[employeeIndex].empLastName,
+            empFirst: updatedData.empFirst || existingData[employeeIndex].empFirst,
+            empLast: updatedData.empLast || existingData[employeeIndex].empLast,
             empEmail: updatedData.empEmail || existingData[employeeIndex].empEmail,
-            empDateHired: updatedData.empDateHired || existingData[employeeIndex].empDateHired,
-            empSalary: Number(updatedData.empSalary) || existingData[employeeIndex].empSalary,
             empPhone: updatedData.empPhone || existingData[employeeIndex].empPhone,
-            empAddress: updatedData.empAddress || existingData[employeeIndex].empAddress,
-            empActive: updatedData.empActive || existingData[employeeIndex].empActive,
             empUsername: updatedData.empUsername || existingData[employeeIndex].empUsername,
             empPassword: updatedData.empPassword || existingData[employeeIndex].empPassword,
             posID: Number(updatedData.posID) || existingData[employeeIndex].posID,

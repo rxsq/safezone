@@ -1,7 +1,7 @@
 [
     {
       "engFormID": 1,
-      "engReview": "Engineering team confirmed issues with component size.",
+      "engReview": "Repair",
       "engCustNotification": 1,
       "engDispositionDesc": "Component redesign required.",
       "engDrawingUpdate": 0,
@@ -12,7 +12,7 @@
     },
     {
       "engFormID": 2,
-      "engReview": "Engineering team conducted test, found defects.",
+      "engReview": "Use As Is",
       "engCustNotification": 1,
       "engDispositionDesc": "Redesign of part needed.",
       "engDrawingUpdate": 1,
