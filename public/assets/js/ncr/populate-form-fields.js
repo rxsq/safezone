@@ -1,4 +1,3 @@
-// DOMContentLoaded EventListener
 document.addEventListener('DOMContentLoaded', function(){ 
     // Retrieve and populate suppliers
     fetch('../assets/data/suppliers.json')
@@ -9,12 +8,6 @@ document.addEventListener('DOMContentLoaded', function(){
         .catch(error => console.error('Failed to load suppliers:', error));
 
     // Retrieve and store products globally for dropdown population
-    fetch('../assets/data/products.json')
-        .then(response => response.json())
-        .then(data => {
-            window.products = data; // store products data in a global variable
-        })
-        .catch(error => console.error('Failed to load products:', error));
 });
 
 // Function to populate DropDownLists based on supplier data
@@ -36,8 +29,8 @@ function populateSupplierDropDownLists(suppliers) {
     // Populate the dropdown with supplier names
     suppliers.forEach(supplier => {
         const option = document.createElement('option');
-        option.value = supplier.supID;  // Ensure `supID` exists in the data
-        option.textContent = supplier.supName;  // Ensure `supName` exists in the data
+        option.value = supplier.supID;  
+        option.textContent = supplier.supName;  
         supplierDropDown.appendChild(option);
     });
 
@@ -50,6 +43,8 @@ function populateSupplierDropDownLists(suppliers) {
 
 // Function to populate DropDownLists based on product data
 function populateProductDropDownLists(products, selectedSupplierID) {
+    console.log(products, selectedSupplierID);
+
     const productDropDown = document.getElementById('po-prod-no');
 
     // Clear existing options in the product dropdown
@@ -65,4 +60,22 @@ function populateProductDropDownLists(products, selectedSupplierID) {
         option.textContent = product.prodName;
         productDropDown.appendChild(option);
     });
+}
+
+// Manually setting the supplier ID and triggering the change event
+function setSupplierAndTriggerChange(supplierID) {
+
+    const supplierDropDown = document.getElementById('supplier-name');
+    
+    // Add the event listener before triggering the event
+    supplierDropDown.addEventListener('change', function() {
+        populateProductDropDownLists(window.products, supplierID);
+    });
+
+    // Set the value programmatically
+    supplierDropDown.value = supplierID;
+
+    // Manually trigger the change event
+    const changeEvent = new Event('change');
+    supplierDropDown.dispatchEvent(changeEvent);  // Trigger the change event to update the products dropdown
 }

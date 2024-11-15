@@ -36,7 +36,7 @@
                 </a>
             </li>
             <li>
-                <a href="non-conformance-report.html" data-bs-toggle="tooltip" title="Create NCR">
+                <a href="non-conformance-report.html" data-bs-toggle="tooltip" title="Create NCR" id="createNCRLink">
                     <i class="bi bi-file-earmark-plus"></i>
                     <span class="links-name">Create NCR</span>
                 </a>
@@ -128,7 +128,7 @@
                         </div>
                         <div class="form-group">
                             <a href="create-supplier.html">
-                                <button class="new-suppliers-btn" data-bs-toggle="tooltip" title="Add New Supplier"><i
+                                <button class="new-suppliers-btn" data-bs-toggle="tooltip" title="Add New Supplier" id="new-suppliers-btn"><i
                                         class="bi bi-plus-circle"></i></button>
                             </a>
                         </div>
@@ -212,7 +212,6 @@
                     </div>
                 </div>
             </fieldset>
-
             <fieldset class="border p-2">
                 <legend class="w-auto collapsible" id="legend-engineering">Engineering</legend>
                 <div id="section-engineering">
@@ -236,7 +235,7 @@
                                 <label>Does Customer require notification of NCR</label>
                                 <p>If "Yes" then raise message to customer detail issues</p>
                                 <div class="two-column">
-                                    <label><input type="radio" name="require-notification" value="1" required>
+                                    <label><input type="radio" name="require-notification" value="1">
                                         Yes</label>
                                     <label><input type="radio" name="require-notification" value="0"> No</label>
                                 </div>
@@ -254,7 +253,7 @@
                             <label>Does the drawing require updating</label>
                             <p>Sequence of work steps required when "repair" or "rework" indicated</p>
                             <div class="four-column">
-                                <label><input type="radio" name="require-updating" value="1" required> Yes</label>
+                                <label><input type="radio" name="require-updating" value="1" > Yes</label>
                                 <label><input type="radio" name="require-updating" value="0"> No</label>
                             </div>
                         </div>
@@ -268,17 +267,13 @@
                                 <input type="text" id="updated-rev-number" name="updated-rev-number">
                             </div>
                             <div class="form-group">
-                                <label for="engineer-name">Name of Engineer</label>
-                                <input type="text" id="engineer-name" name="engineer-name">
-                            </div>
-                            <div class="form-group">
                                 <label for="revision-date">Revision Date</label>
-                                <input type="date" id="revision-date" name="revision-date" readonly>
+                                <input type="date" id="revision-date" name="revision-date">
                             </div>
                         </div>
                         <div class="two-column">
                             <div class="form-group">
-                                <label for="engineering" class="required">Engineering</label>
+                                <label for="engineering" class="required">Engineer</label>
                                 <input type="text" id="engineering" name="engineering" data-bs-toggle="tooltip"
                                     title="Required">
                             </div>
@@ -336,14 +331,16 @@
             </div>
         </div>
     </div>
-    <script defer src="../assets/js/ncr/populate-form-fields.js"></script>
     <script defer src="../assets/js/main/sidebar.js"></script>
-    <script src="../assets/js/main/user-role-handling.js"></script>
+    <script defer src="../assets/js/ncr/populate-form-fields.js"></script>
     <script src="../assets/js/ncr/data-auto-configurator.js"></script>
+    <script src="../assets/js/ncr/edit-ncr.js"></script>
+    <script src="../assets/js/main/user-role-handling.js"></script>
     <script src="../assets/js/ncr/collapsible-sections.js"></script>
     <script src="../assets/js/main/tooltip.js"></script>
     <script src="../assets/js/ncr/create-scripts/create-quality-form.js"></script>
     <script src="../assets/js/ncr/create-scripts/create-engineering-form.js"></script>
+    <script src="../assets/js/ncr/mode-handler.js"></script>
 </body>
 
 </html>

@@ -1,3 +1,4 @@
+if(sessionStorage.getItem("mode") == "create"){
 // Once user completes a quality form, it will create a new ncr
 // Gets current year
 const currentYear = new Date().getFullYear();
@@ -115,69 +116,19 @@ async function createNCR(){
 
         const result = await response.json();
         
-        alert('Success creating NCR');
+        alert('Success creating NCR and Quality Assuance Form.');
     }
     catch(error){
-        console.error('Error creating new NCR repor:', error);
+        console.error('Error creating new NCR report:', error);
         alert('Failed to create NCR. Please try again.');
     }
 
-}
+    alert(inEditMode);
 
-// Function which gets the next NCR form id to be used in new form
-async function getNCRFormID(){
-    try{
-        const response = await fetch('api/ncrForms');
-
-        if(!response.ok){
-            throw new Error('Network response was not ok.');
-        }
-
-        const data = await response.json();
-        return data.length + 1;
-    }
-    catch(error){
-        console.error('Error regarding quality form ID generation', error);
-        throw error;
-    }
-}
-
-// Gets code and validates it against business rule
-async function getNCRCode(){
-    try{
-        const ncrCode = await generateCode();
-
-        if(ncrCode >= 1000){
-            throw new Error('Error: NCR code breaks requirements.');
-        }
-        return ncrCode.toString().padStart(3, '0');
-    }
-    catch(error){
-        console.error('Error with generating NCR code:', error);
-        throw error;
-    }
-}
-
-// Function which generates 3 digit NCR code. ie 001, 002, 003
-async function generateCode(){
-    try{
-        const response = await fetch('api/ncrForms');
-
-        if(!response.ok){
-            throw new Error('Network response was not ok.');
-        }
-
-        const data = await response.json();
-        console.log(data);
-        return data.length + 1;
-    }
-    catch(error){
-        console.error('Error fetching NCR forms to create new NCR number:', error);
-        throw error;
-    }
 }
 
 // EventListener code for submit button
 submitBtn.addEventListener('click', function(){
     createQualityForm();
 });
+}

@@ -5,10 +5,10 @@
     "qualFormID": 1,
     "engFormID": null,
     "purFormID": null,
-    "prodID": 1,
+    "prodID": "1",
     "ncrStatusID": 1,
     "ncrStage": "ENG",
-    "ncrIssueDate": "2024-11-01T12:00:00"
+    "ncrIssueDate": "2024-11-01"
   },
   {
     "ncrFormID": 2,
@@ -19,7 +19,7 @@
     "prodID": 2,
     "ncrStatusID": 1,
     "ncrStage": "PUR",
-    "ncrIssueDate": "2024-11-02T14:00:00"
+    "ncrIssueDate": "2024-05-02"
   },
   {
     "ncrFormID": 3,
@@ -30,17 +30,6 @@
     "prodID": 3,
     "ncrStatusID": 2,
     "ncrStage": "ARC",
-    "ncrIssueDate": "2024-11-03T16:00:00"
-  },
-  {
-    "ncrFormID": 4,
-    "ncrFormNo": "2024004",
-    "qualFormID": 4,
-    "engFormID": null,
-    "purFormID": null,
-    "prodID": "12",
-    "ncrStatusID": 1,
-    "ncrStage": "ENG",
-    "ncrIssueDate": "2024-11-14"
+    "ncrIssueDate": "2024-11-03"
   }
 ]

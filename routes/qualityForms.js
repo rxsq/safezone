@@ -27,6 +27,25 @@ router.get('/', (req, res) => {
     }
 });
 
+// Get quality form by ID
+router.get('/:qualFormID', (req, res) => {
+    const qualFormID = parseInt(req.params.qualFormID);
+
+    try{
+        const existingData = readJsonFile(filename);
+        const form = existingData.find(item => item.qualFormID === qualFormID);
+
+        if(!form){
+            return res.status(404).json({status: 'error', message: 'Quality form not found'});
+        }
+
+        res.json(form);
+    }
+    catch(error){{
+        res.status(500).json({status: 'error', message: 'Failed to read JSON file'});
+    }}
+});
+
 // POST a new Quality form
 router.post('/', (req, res) => {
     const newQualityForm = req.body;
@@ -46,27 +65,36 @@ router.post('/', (req, res) => {
     });
 });
 
-// PUT (Update) a Quality form by qualFormID
 router.put('/:qualFormID', (req, res) => {
-    const qualFormID = req.params.qualFormID;
-    const updatedData = req.body;
+    const value = Number(req.params.qualFormID); // Get the qualFormID from the URL as a number
+    const updatedData = req.body; // Get the updated data from the request body
 
     try {
+        // Read the existing data from the JSON file
         const existingData = readJsonFile(filename);
-        const index = existingData.findIndex(item => item.qualFormID === parseInt(qualFormID));
 
+        // Find the index of the item with the matching qualFormID
+        const index = existingData.findIndex(item => item.qualFormID === value);
+
+        // If the qualFormID is not found, return a 404 error
         if (index === -1) {
             return res.status(404).json({ status: 'error', message: 'Quality form not found' });
         }
 
+        // Update the existing data at the found index with the updated data
         existingData[index] = { ...existingData[index], ...updatedData };
+
+        // Write the updated data back to the JSON file
         writeJsonFile(filename, existingData);
+
+        // Return success response
         res.json({ status: 'success', message: 'Quality form updated successfully' });
     } catch (error) {
-        res.status(500).json({ status: 'error', message: 'Failed to write JSON file' });
+        console.error(error);
+        // Return error response if something goes wrong with the file operation
+        res.status(500).json({ status: 'error', message: 'Failed to update JSON file' });
     }
 });
-
 // DELETE a Quality form by qualFormID
 router.delete('/:qualFormID', (req, res) => {
     const qualFormID = req.params.qualFormID;

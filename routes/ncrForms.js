@@ -27,6 +27,26 @@ router.get('/', (req, res) => {
     }
 });
 
+// GET a specific NCR form by ncrFormID
+router.get('/:ncrFormID', (req, res) => {
+    const ncrFormID = parseInt(req.params.ncrFormID, 10); // Get ncrFormID from the route parameters
+
+    try {
+        const existingData = readJsonFile(filename);
+        const ncrForm = existingData.find(item => item.ncrFormID === ncrFormID);
+
+        if (!ncrForm) {
+            // If the NCR form does not exist, return 404
+            return res.status(404).json({ status: 'error', message: 'NCR form not found' });
+        }
+
+        res.json(ncrForm); // Return the specific NCR form as JSON
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: 'Failed to read JSON file' });
+    }
+});
+
+// POST to create a new NCR form
 router.post('/', (req, res) => {
     const newNCRForm = req.body;
 

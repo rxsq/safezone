@@ -27,6 +27,24 @@ router.get('/', (req, res) => {
     }
 });
 
+// GET an Engineering form by engFormID
+router.get('/:engFormID', (req, res) => {
+    const engFormID = req.params.engFormID;
+
+    try {
+        const existingData = readJsonFile(filename);
+        const form = existingData.find(item => item.engFormID === parseInt(engFormID));
+
+        if (!form) {
+            return res.status(404).json({ status: 'error', message: 'Engineering form not found' });
+        }
+
+        res.json(form); // Return the specific engineering form
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: 'Failed to read JSON file' });
+    }
+});
+
 // POST a new Engineering form
 router.post('/', (req, res) => {
     const newEngineerForm = req.body;

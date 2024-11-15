@@ -78,7 +78,10 @@ async function populateRecentNcrTable(data){
             <td>${ncr.ncrIssueDate.substring(0, 10)}</td>
             <td>${ncrStatus}</td>
             <td class="action-buttons-td">
-                <button class="edit-btn" onclick="editNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View/Edit NCR">
+                <button class="edit-btn" onclick="viewNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View NCR">
+                    <i class="bi bi-eye"></i>
+                </button>
+                <button class="edit-btn" onclick="editNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Edit NCR">
                     <i class="bi bi-pencil"></i>
                 </button>
                 <button class="delete-btn" onclick="archiveNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
@@ -238,9 +241,17 @@ function renderSupplierChart(data) {
     });
 }
 
-// Editing & Viewing NCR's
-function editNCR(ncrFormID){
+// Viewing NCR's
+function viewNCR(ncrFormID){
+    const mode = 'view';
+    window.location.href = `non-conformance-report.html?ncrFormID=${ncrFormID}&mode=${mode}`;
+}
 
+// Editing NCR's
+function editNCR(ncrFormID){
+    const mode = 'edit'
+    window.location.href = `non-conformance-report.html?ncrFormID=${ncrFormID}&mode=${mode}`;
+    populateNCRInputs(ncrFormID);
 }
 
 // Printing NCR to PDF
@@ -256,4 +267,15 @@ function archiveNCR(ncrFormID){
 //DOMContentLoaded Event Listener
 document.addEventListener('DOMContentLoaded', function(){
     fetchNcrForms();
-})
+
+    const newNCRButton = document.getElementById('new-ncr-btn');
+
+    sessionStorage.setItem("mode", "");
+
+    newNCRButton.addEventListener('click', function() {
+        window.location.href = 'non-conformance-report.html?' + new URLSearchParams({ mode: 'create' }).toString();
+    });
+});
+
+
+

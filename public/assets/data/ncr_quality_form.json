@@ -6,12 +6,12 @@
     "qualItemDesc": "Paint Coating",
     "qualIssueDesc": "Defective coating on the surface.",
     "qualItemID": 1,
-    "qualImageFileName": "image1.jpg",
+    "qualImageFileName": null,
     "qualSalesOrderNo": 1001,
     "qualQtyReceived": 500,
     "qualQtyDefective": 50,
     "qualItemNonConforming": 1,
-    "qualRepID": 2,
+    "qualRepID": 6,
     "qualDate": "2024-11-01"
   },
   {
@@ -33,7 +33,7 @@
     "qualFormID": 3,
     "qualFormSupplierProcess": null,
     "qualFormProductionProcess": "WIP",
-    "qualItemDesc": "Paint Coating",
+    "qualItemDesc": "Mechanical bearings",
     "qualIssueDesc": "Faulty mechanical bearings.",
     "qualItemID": 3,
     "qualImageFileName": "image3.jpg",

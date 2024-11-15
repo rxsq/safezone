@@ -22,3 +22,8 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('sidebarCollapsed', isCollapsed);
     });
 });
+
+document.getElementById('createNCRLink').addEventListener('click', function(event) {
+    event.preventDefault();
+    window.location.href = 'non-conformance-report.html?' + new URLSearchParams({ mode: 'create' }).toString();
+});
