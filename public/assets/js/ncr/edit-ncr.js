@@ -1,38 +1,4 @@
-let qualityForm;
-let engineeringForm;
-let ncrID;
-
-async function populateNCRInputs(ncrFormID) {
-    // Fetch and populate NCR info
-    fetch(`/api/ncrForms/${ncrFormID}`)
-        .then(response => response.json())
-        .then(async ncrForm => {
-            document.getElementById('ncr-no').value = formatNCRNumber(ncrForm.ncrFormNo);
-            document.getElementById('ncr-date').value = ncrForm.ncrIssueDate;
-            sessionStorage.setItem("currentNCRStage", ncrForm.ncrStage);
-            formatAndPopulateStage();
-            qualityForm = ncrForm.qualFormID;
-            engineeringForm = ncrForm.engFormID;
-            ncrID = ncrForm.ncrFormID;
-            setSupplierAndTriggerChange(await getSupplierID(ncrForm.prodID))
-            //document.getElementById('po-prod-no').value = ncrForm.prodID;
-            
-            // Fetch quality form only if we have a valid qualFormID
-            if (qualityForm) {
-                fetchQualityForm(qualityForm);
-            }
-            
-            // Fetch engineering form if required
-            if (engineeringForm) {
-                console.log('Fetching Engineering form...');
-                fetchEngineeringForm(engineeringForm);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching NCR form:', error);
-            alert('Failed to load NCR form.');
-        });
-}
+let qualityForm, engineeringForm, ncrID;
 
 // Function to fetch and populate quality form data
 function fetchQualityForm(qualFormID) {
@@ -122,6 +88,38 @@ async function getSupplierID(prodID) {
         });
 }
 
+async function populateNCRInputs(ncrFormID) {
+    // Fetch and populate NCR info
+    fetch(`/api/ncrForms/${ncrFormID}`)
+        .then(response => response.json())
+        .then(async ncrForm => {
+            document.getElementById('ncr-no').value = formatNCRNumber(ncrForm.ncrFormNo);
+            document.getElementById('ncr-date').value = ncrForm.ncrIssueDate;
+            sessionStorage.setItem("currentNCRStage", ncrForm.ncrStage);
+            formatAndPopulateStage();
+            qualityForm = ncrForm.qualFormID;
+            engineeringForm = ncrForm.engFormID;
+            ncrID = ncrForm.ncrFormID;
+            setSupplierAndTriggerChange(await getSupplierID(ncrForm.prodID))
+            //document.getElementById('po-prod-no').value = ncrForm.prodID;
+            
+            // Fetch quality form only if we have a valid qualFormID
+            if (qualityForm) {
+                fetchQualityForm(qualityForm);
+            }
+            
+            // Fetch engineering form if required
+            if (engineeringForm) {
+                console.log('Fetching Engineering form...');
+                fetchEngineeringForm(engineeringForm);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching NCR form:', error);
+            alert('Failed to load NCR form.');
+        });
+}
+
 // Function to get and populate quality representative name
 async function getAndPopulateEmp(empID) {
     return fetch(`/api/employees/${empID}`)
@@ -193,7 +191,7 @@ function getProductionProcess(){
     } else return null;
 }
 
-submitQuaBtn.addEventListener('click', function(event) {
+submitQuaBtn.addEventListener('click', async function(event) {
     event.preventDefault(); 
     
     const currentQualFormID = qualityForm; 
@@ -242,6 +240,10 @@ submitQuaBtn.addEventListener('click', function(event) {
         console.error('Error updating quality assurance form:', error);
         alert('An error occurred while updating the quality form');
     });
+
+    const ncrFormNo = document.getElementById('ncr-no').value.replace(/\D/g, '');  // Clean NCR form ID
+
+    await notifyDepartmentManager(ncrFormNo, "Engineering");
 });
 
 // Function which checks validity of NCR record
@@ -322,7 +324,7 @@ submitEngBtn.addEventListener('click', async function(event) {
             throw new Error('Failed to update engineering form');
         }
 
-        alert('Successfully updated engineering form data.');
+        alert('Successfully updated engineering form data. Purchasing department has been notified');
 
         // After updating the engineering form, check the NCR form and update it if necessary
         const ncrResponse = await fetch(`/api/ncrForms/${ncrFormID}`);
@@ -352,10 +354,10 @@ async function getEngineeringFormID(){
     }
 }
 
-// Refactored createEngineeringForm() function for automatic creation:
 async function createEngineerForm() {
     const status = await checkNCRValidity();
 
+    // Fetch the existing engineer forms to determine the next ID
     const response = await fetch('/api/engineerForms');
     const engineerForms = await response.json();
     let engFormID = engineerForms.length + 1;
@@ -363,7 +365,7 @@ async function createEngineerForm() {
     if (status === "VALID") {
         const engineeringFormData = {
             engFormID: engFormID,
-            engReview: document.querySelector('input[name="review-by-engineer"]:checked').value, 
+            engReview: document.querySelector('input[name="review-by-engineer"]:checked').value,
             engCustNotification: Number(document.querySelector('input[name="require-notification"]:checked').value), // Ensures number
             engDispositionDesc: document.getElementById('disposition').value,
             engDrawingUpdate: Number(document.querySelector('input[name="require-updating"]:checked').value), // Ensures number
@@ -375,12 +377,13 @@ async function createEngineerForm() {
         };
 
         try {
+            // Send a POST request to create the engineering form
             const response = await fetch('/api/engineerForms', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(engineeringFormData)
+                body: JSON.stringify(engineeringFormData),
             });
 
             if (!response.ok) {
@@ -388,56 +391,76 @@ async function createEngineerForm() {
                 throw new Error('Failed to create Engineering Form');
             }
 
-            // const result = await response.json();
-            // if (result && result.engFormID) {
-            //     engineeringForm = result.engFormID; // Assign the newly created form's ID
-            //     console.log('Successfully created Engineering Form with ID:', engineeringForm);
-            //     alert('Success creating Engineering Form!');
-            // } else {
-            //     console.error('Response does not contain engFormID:', result);
-            //     throw new Error('Response did not return valid engFormID');
-            // }
-            
-            const ncrFormNo = document.getElementById('ncr-no').value.replace(/\D/g, '');  // Clean NCR form ID
+            const ncrFormNo = document.getElementById('ncr-no').value.replace(/\D/g, ''); // Clean NCR form ID
 
-            sessionStorage.setItem("currentNCRStage", "PUR"); // update stage to purchasing
+            sessionStorage.setItem("currentNCRStage", "PUR"); // Update stage to purchasing
 
             const updatedNCRData = {
-                ncrFormID: ncrID,
-                ncrFormNo: ncrFormNo,
-                qualFormID: qualityForm,
-                engFormID: engineeringForm, 
-                purFormID: null, //NULL sine no pur form has been yet created
+                ncrFormID: ncrID, // Ensure ncrID is defined earlier in your code
+                ncrFormNo: ncrFormNo, // Use the cleaned NCR form number
+                qualFormID: qualityForm, // Ensure qualityForm is defined
+                engFormID: engFormID, // Use the current engineering form ID
+                purFormID: null, // NULL since no purchase form has been created yet
                 prodID: document.getElementById('po-prod-no').value,
                 ncrStatusID: 1, // 1: Open, 2: Closed
                 ncrStage: sessionStorage.getItem("currentNCRStage"), 
                 ncrIssueDate: document.getElementById('quality-rep-date').value
-            }
+            };
 
-            fetch(`/api/ncrForms/${ncrFormNo}`, {
+            // Update the NCR form
+            await fetch(`/api/ncrForms/${ncrFormNo}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(updatedNCRData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('NCR form updated successfully:', data);
-                alert('NCR form updated successfully!');
-            })
-            .catch(error => {
-                console.error('Error updating NCR form:', error);
-                alert('Failed to update NCR form');
+                body: JSON.stringify(updatedNCRData),
             });
 
-            
+            console.log('NCR form updated successfully');
+            alert('NCR form updated successfully!');
+
+            // Notify the department manager
+            await notifyDepartmentManager(ncrFormNo, "Purchasing");
         } catch (error) {
             console.error('Error creating engineering form:', error);
             alert('Failed to create engineering form. Please try again.');
         }
     } else {
-        //handleInvalidNCRStatus(status);  // Handle cases for invalid NCR status
+        console.warn("Invalid NCR status:", status);
+        // handleInvalidNCRStatus(status); // Uncomment and implement if needed
+    }
+}
+
+async function notifyDepartmentManager(ncrFormNo, department) {
+    const recipient = "andrewdionne09@gmail.com"; // Replace with the recipient's email
+    const subject = `Form Update Required: Form ${ncrFormNo}`;
+    const message = `
+NCR Form ${ncrFormNo} is now ready for updating in the ${department} department. 
+
+Please review and proceed with the necessary actions at your earliest convenience.
+`;
+
+    try {
+        const response = await fetch('/api/email/send-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                recipient,
+                subject,
+                message
+            }),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            console.log('Email sent successfully:', result);
+        } else {
+            console.error('Error sending email:', result.error);
+        }
+    } catch (error) {
+        console.error('An unexpected error occurred:', error);
     }
 }
 

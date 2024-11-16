@@ -37,8 +37,8 @@ async function createEngineeringForm(){
 
             const result = await response.json();
 
-            alert('Success creating Engineer Form!');
-        }
+            const ncrFormNo = document.getElementById('ncr-no').value.replace(/\D/g, '');  // Clean NCR form ID
+            alert('Success creating Engineer Form. Purchasing department has been notified');        }
         catch(error){
             console.error('Error creating engineering form:', error);
             alert('Failed to create engineer form. Please try again');

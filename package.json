@@ -11,7 +11,9 @@
   "description": "",
   "dependencies": {
     "chart.js": "^4.4.6",
+    "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "nodemailer": "^6.9.16",
     "safezone": "file:",
     "sqlite3": "^5.1.7"
   }

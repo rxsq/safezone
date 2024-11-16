@@ -116,7 +116,7 @@ async function createNCR(){
 
         const result = await response.json();
         
-        alert('Success creating NCR and Quality Assuance Form.');
+        alert('Success creating NCR and Quality Assuance Form. Engineering department has been notified');
     }
     catch(error){
         console.error('Error creating new NCR report:', error);

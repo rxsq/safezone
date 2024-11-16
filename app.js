@@ -10,6 +10,7 @@ const qualityFormsRoutes = require('./routes/qualityForms');
 const engineerFormsRoutes = require('./routes/engineerForms'); 
 const purchasingFormsRoutes = require('./routes/purchasingForms'); 
 const statusRoutes = require('./routes/status'); 
+const emailRoutes = require('./routes/emailRoutes');
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use('/api/qualityForms', qualityFormsRoutes); // Route for Quality Forms
 app.use('/api/engineerForms', engineerFormsRoutes); // Route for Engineer Forms
 app.use('/api/purchasingForms', purchasingFormsRoutes); // Route for Purchasing Forms
 app.use('/api/status', statusRoutes); // Route for Status
+app.use('/api/email', emailRoutes);
 
 
 // Serve the HTML page for NCR Forms
