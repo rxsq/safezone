@@ -52,6 +52,7 @@ async function generateCode(){
 }
 
 document.addEventListener('DOMContentLoaded', async function(){
+
         // Setting dates
         document.getElementById('quality-rep-date').value = new Date().toISOString().substring(0, 10); 
         document.getElementById('ncr-date').value = new Date().toISOString().substring(0, 10);
@@ -82,4 +83,5 @@ document.addEventListener('DOMContentLoaded', async function(){
             document.getElementById('engineer-date').value = new Date().toISOString().substring(0, 10);
         }
 });
+
 

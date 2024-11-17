@@ -38,7 +38,11 @@ async function createEngineeringForm(){
             const result = await response.json();
 
             const ncrFormNo = document.getElementById('ncr-no').value.replace(/\D/g, '');  // Clean NCR form ID
-            alert('Success creating Engineer Form. Purchasing department has been notified');        }
+            alert('Success creating Engineer Form. Purchasing department has been notified');        
+        
+            await notifyDepartmentManager(ncrFormNo, "Purchasing");
+
+        }
         catch(error){
             console.error('Error creating engineering form:', error);
             alert('Failed to create engineer form. Please try again');
@@ -75,11 +79,6 @@ async function getEngineeringFormID(){
     }
 }
 
-// Function which updates NCR
-async function updateNCR(data){
-
-}
-
 // Function which checks validity of NCR record
 async function checkNCRValidity(){
     let ncrNo = document.getElementById('ncr-no').value.replace(/\D/g, '');
@@ -114,4 +113,38 @@ async function checkNCRValidity(){
 submitBtn.addEventListener('click', function(){
     createEngineeringForm();
 });
+
+async function notifyDepartmentManager(ncrFormNo, department) {
+    const recipient = "andrewdionne09@gmail.com"; 
+    const subject = `Form Update Required: Form ${ncrFormNo}`;
+    const message = `
+NCR Form ${ncrFormNo} is now ready for updating in the ${department} department. 
+
+Please review and proceed with the necessary actions at your earliest convenience.
+`;
+
+    try {
+        const response = await fetch('/api/email/send-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                recipient,
+                subject,
+                message
+            }),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            console.log('Email sent successfully:', result);
+        } else {
+            console.error('Error sending email:', result.error);
+        }
+    } catch (error) {
+        console.error('An unexpected error occurred:', error);
+    }
+}
+
 }

@@ -44,6 +44,8 @@ async function populateRecentNcrTable(data){
     const tableBody = document.getElementById('tbodyRecentNCR');
     tableBody.innerHTML = '';
 
+    data.sort((a,b) => new Date(b.ncrIssueDate) - new Date(a.ncrIssueDate));
+
     let openRecords = 0; 
 
     // Loop which iterates over all items in data array
@@ -84,7 +86,7 @@ async function populateRecentNcrTable(data){
                 <button class="edit-btn" onclick="editNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Edit NCR">
                     <i class="bi bi-pencil"></i>
                 </button>
-                <button class="delete-btn" onclick="archiveNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
+                <button class="delete-btn" onclick="archiveNCR('${ncr.ncrFormID}', '${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
                     <i class="bi bi-archive"></i>
                 </button>
                 <button class="bi bi-file-earmark-pdf" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
@@ -176,23 +178,38 @@ function renderBarChart(data) {
 }
 
 //Groups NCR's by supplier
-function groupBySupplier(data) {
+async function groupBySupplier(data) {
     const supplierCounts = {};
 
     // Iterate over each NCR record to count by supplier name
-    data.forEach(ncr => {
-        const supplier = ncr.ncrSupplierName || 'Unknown'; // Default to 'Unknown' if supplier name is missing
-        supplierCounts[supplier] = (supplierCounts[supplier] || 0) + 1;
-    });
+    for (let ncr of data) {
+        const prodID = ncr.prodID;
+        
+        // Fetch the product based on prodID
+        const productResponse = await fetch(`/api/products/${prodID}`);
+        const productData = await productResponse.json();
+
+        const supID = productData.supID;
+
+        // Fetch the supplier based on supID
+        const supplierResponse = await fetch(`/api/suppliers/${supID}`);
+        const supplierData = await supplierResponse.json();
+
+        const supplierName = supplierData.supName || 'Unknown'; // Get the supplier name or default to 'Unknown'
+
+        // Count NCRs per supplier
+        supplierCounts[supplierName] = (supplierCounts[supplierName] || 0) + 1;
+    }
 
     return supplierCounts; // Returns an object like { "Supplier Name 1": count, "Supplier Name 2": count, ... }
 }
 // Supplier chart
-function renderSupplierChart(data) {
+async function renderSupplierChart(data) {
     const ctx = document.getElementById('supplierChart').getContext('2d');
 
     // Group NCRs by supplier name using groupBySupplier function
-    const supplierCounts = groupBySupplier(data);
+    const supplierCounts = await groupBySupplier(data); // Await the asynchronous grouping function
+
     const labels = Object.keys(supplierCounts); // Supplier names
     const values = Object.values(supplierCounts); // NCR counts per supplier
 
@@ -244,6 +261,7 @@ function renderSupplierChart(data) {
 // Viewing NCR's
 function viewNCR(ncrFormID){
     const mode = 'view';
+    sessionStorage.setItem("mode", "view");
     window.location.href = `non-conformance-report.html?ncrFormID=${ncrFormID}&mode=${mode}`;
 }
 
@@ -260,9 +278,67 @@ function printNCR(ncrFormID){
 }
 
 // Archive NCR 
-function archiveNCR(ncrFormID){
+function archiveNCR(ncrFormID, ncrFormNo) {
+    fetch(`/api/ncrForms/${ncrFormID}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch NCR form');
+            return response.json();
+        })
+        .then(data => {
+            const { engFormID, purFormID, ncrStage } = data;
 
+            if (ncrStage === 'ARC') {
+                alert('This NCR form is already archived.');
+                return;
+            }
+
+            // Check for incomplete fields
+            const incompleteFields = [];
+            if (!engFormID) incompleteFields.push('Engineering Form');
+            //if (!purFormID) incompleteFields.push('Purchasing Form');
+
+            let confirmationMessage = `Are you sure you want to archive this NCR form?`;
+            if (incompleteFields.length > 0) {
+                confirmationMessage += `\nThe following form(s) are not completed: ${incompleteFields.join(', ')}.`;
+            }
+
+            // Ask for confirmation
+            if (!confirm(confirmationMessage)) {
+                return;
+            }
+
+            // Proceed to archive the form
+            fetch(`/api/ncrForms/${ncrFormNo}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    ncrStage: 'ARC',
+                    ncrStatusID: 2, 
+                }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('NCR form archived successfully!');
+                        window.location.reload(); // Refresh the page
+                    } else {
+                        return response.json().then(error => {
+                            throw new Error(error.message || 'Failed to archive NCR form');
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error archiving NCR form:', error);
+                    alert(`Error: ${error.message}`);
+                });
+        })
+        .catch(error => {
+            console.error('Error fetching NCR form:', error);
+            alert(`Error: ${error.message}`);
+        });
 }
+
 
 //DOMContentLoaded Event Listener
 document.addEventListener('DOMContentLoaded', function(){

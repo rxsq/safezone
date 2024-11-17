@@ -88,6 +88,7 @@ router.put('/:ncrFormNo', (req, res) => {
     }
 });
 
+
 // DELETE an NCR form by ncrFormNo
 router.delete('/:ncrFormNo', (req, res) => {
     const ncrFormNo = req.params.ncrFormNo; // Get ncrFormNo from the route parameters

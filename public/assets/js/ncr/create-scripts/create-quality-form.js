@@ -117,6 +117,8 @@ async function createNCR(){
         const result = await response.json();
         
         alert('Success creating NCR and Quality Assuance Form. Engineering department has been notified');
+    
+        await notifyDepartmentManager(ncrFormNo, "Engineering");
     }
     catch(error){
         console.error('Error creating new NCR report:', error);
@@ -131,4 +133,38 @@ async function createNCR(){
 submitBtn.addEventListener('click', function(){
     createQualityForm();
 });
+
+async function notifyDepartmentManager(ncrFormNo, department) {
+    const recipient = "andrewdionne09@gmail.com"; 
+    const subject = `Form Update Required: Form ${ncrFormNo}`;
+    const message = `
+NCR Form ${ncrFormNo} is now ready for updating in the ${department} department. 
+
+Please review and proceed with the necessary actions at your earliest convenience.
+`;
+
+    try {
+        const response = await fetch('/api/email/send-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                recipient,
+                subject,
+                message
+            }),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            console.log('Email sent successfully:', result);
+        } else {
+            console.error('Error sending email:', result.error);
+        }
+    } catch (error) {
+        console.error('An unexpected error occurred:', error);
+    }
+}
+
 }

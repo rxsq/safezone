@@ -86,7 +86,7 @@ async function populateRecentNcrTable(data){
     // Loop which iterates over all items in data array
     for(let i = 0; i < data.length; i ++){
         // If 5 open records are showing, then break out of loop
-        if(openRecords === 5) break;
+        //if(openRecords === 5) break;
 
         let ncr = data[i];
 

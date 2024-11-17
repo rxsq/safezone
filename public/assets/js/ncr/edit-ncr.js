@@ -6,7 +6,7 @@ function fetchQualityForm(qualFormID) {
         .then(response => response.json())
         .then(async qualityFormData => {
             if (qualityFormData.qualFormSupplierProcess !== null) {
-                document.getElementById('recInsp').checked = true;
+                document.getElementById('rfecInsp').checked = true;
             }
             if (qualityFormData.qualFormProductionProcess !== null) {
                 document.getElementById('wip').checked = true;
@@ -93,7 +93,7 @@ async function populateNCRInputs(ncrFormID) {
     fetch(`/api/ncrForms/${ncrFormID}`)
         .then(response => response.json())
         .then(async ncrForm => {
-            document.getElementById('ncr-no').value = formatNCRNumber(ncrForm.ncrFormNo);
+            document.getElementById('ncr-no').value = ncrForm.ncrFormNo;
             document.getElementById('ncr-date').value = ncrForm.ncrIssueDate;
             sessionStorage.setItem("currentNCRStage", ncrForm.ncrStage);
             formatAndPopulateStage();
@@ -426,13 +426,12 @@ async function createEngineerForm() {
             alert('Failed to create engineering form. Please try again.');
         }
     } else {
-        console.warn("Invalid NCR status:", status);
-        // handleInvalidNCRStatus(status); // Uncomment and implement if needed
+        console.log("Invalid NCR status:", status);
     }
 }
 
 async function notifyDepartmentManager(ncrFormNo, department) {
-    const recipient = "andrewdionne09@gmail.com"; // Replace with the recipient's email
+    const recipient = "andrewdionne09@gmail.com"; 
     const subject = `Form Update Required: Form ${ncrFormNo}`;
     const message = `
 NCR Form ${ncrFormNo} is now ready for updating in the ${department} department. 

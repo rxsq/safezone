@@ -40,10 +40,9 @@ function populateEmployeeTable(data) {
         console.log(empPosition);
         row.innerHTML = `
             <td>${employee.empID}</td>
-            <td>${employee.empFirstName} ${employee.empLastName}</td>
+            <td>${employee.empFirst} ${employee.empLast}</td>
             <td>${employee.empEmail}</td>
-            <td>${employee.empAddress}</td>
-            <td>${employee.empPhone}</td>
+            <td>${employee.empPhone.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')}</td>
             <td>${empPosition}</td>
             <td class="action-buttons-td">
                 <button class="view-btn" onclick="viewEmployee('${employee.empID}')"
@@ -52,7 +51,7 @@ function populateEmployeeTable(data) {
                 <button class="edit-btn" onclick="editEmployee('${employee.empID}')"
                      data-bs-toggle="tooltip" title="Edit Employee"> <i class="bi bi-pencil"></i>
                 </button>
-                <button class="delete-btn" onclick="deleteEmployee('${employee.empID}', '${employee.empFirstName} ${employee.empLastName}')"
+                <button class="delete-btn" onclick="deleteEmployee('${employee.empID}', '${employee.empFirst} ${employee.empLast}')"
                      data-bs-toggle="tooltip" title="Delete Employee"> <i class="bi bi-trash"></i>
                 </button>
             </td>
@@ -77,14 +76,10 @@ function viewEmployee(empID) {
         .then(employee => {
             // Populate modal fields with employee data
             document.getElementById('viewEmpID').innerText = employee.empID;
-            document.getElementById('viewEmpFirstName').innerText = employee.empFirstName;
-            document.getElementById('viewEmpLastName').innerText = employee.empLastName;
+            document.getElementById('viewEmpFirstName').innerText = employee.empFirst;
+            document.getElementById('viewEmpLastName').innerText = employee.empLast;
             document.getElementById('viewEmpEmail').innerText = employee.empEmail;
-            document.getElementById('viewEmpPhone').innerText = employee.empPhone;
-            document.getElementById('viewEmpAddress').innerText = employee.empAddress;
-            document.getElementById('viewEmpDateHired').innerText = new Date(employee.empDateHired).toLocaleDateString();
-            document.getElementById('viewEmpSalary').innerText = employee.empSalary;
-            document.getElementById('viewEmpActive').innerText = employee.empActive === "ACTV" ? "Active" : "Inactive";
+            document.getElementById('viewEmpPhone').innerText = employee.empPhone.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
             document.getElementById('viewEmpUsername').innerText = employee.empUsername;
 
             const viewModal = new bootstrap.Modal(document.getElementById('viewEmployeeModal'));
@@ -100,14 +95,10 @@ function editEmployee(empID) {
         .then(employee => {
             // Populate form fields with employee data
             document.getElementById('editEmpID').value = employee.empID;
-            document.getElementById('editEmpFirstName').value = employee.empFirstName;
-            document.getElementById('editEmpLastName').value = employee.empLastName;
+            document.getElementById('editEmpFirstName').value = employee.empFirst;
+            document.getElementById('editEmpLastName').value = employee.empLast;
             document.getElementById('editEmpEmail').value = employee.empEmail;
-            document.getElementById('editEmpSalary').value = employee.empSalary;
             document.getElementById('editEmpPhone').value = employee.empPhone;
-            document.getElementById('editEmpAddress').value = employee.empAddress;
-            document.getElementById('editEmpDateHired').value = employee.empDateHired.substring(0, 10);
-            document.getElementById('editEmpActive').value = employee.empActive;
             document.getElementById('editEmpPosition').value = employee.posID;
             document.getElementById('editEmpUsername').value = employee.empUsername;
             document.getElementById('editEmpPassword').value = employee.empPassword;
@@ -123,14 +114,10 @@ document.getElementById('btnSaveEmployeeChanges').onclick = function () {
     const empID = document.getElementById('editEmpID').value;
     const updatedEmployeeData = {
         empID,
-        empFirstName: document.getElementById('editEmpFirstName').value,
-        empLastName: document.getElementById('editEmpLastName').value,
+        empFirst: document.getElementById('editEmpFirstName').value,
+        empLast: document.getElementById('editEmpLastName').value,
         empEmail: document.getElementById('editEmpEmail').value,
         empPhone: document.getElementById('editEmpPhone').value,
-        empAddress: document.getElementById('editEmpAddress').value,
-        empSalary: document.getElementById('editEmpSalary').value,
-        empDateHired: document.getElementById('editEmpDateHired').value,
-        empActive: document.getElementById('editEmpActive').value,
         empUsername: document.getElementById('editEmpUsername').value,
         empPassword: document.getElementById('editEmpPassword').value,
         posID: parseInt(document.getElementById('editEmpPosition').value),

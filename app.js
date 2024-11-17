@@ -36,13 +36,13 @@ app.use('/api/email', emailRoutes);
 
 
 // Serve the HTML page for NCR Forms
-app.get('/ncrForms', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/views/index.html'));
-});
+// app.get('/ncrForms', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'public/views/index.html'));
+// });
 
 // Dynamic route to render other HTML pages
 app.get('*', (req, res) => {
-    const requestedPath = req.path === '/' ? '/index' : req.path; 
+    const requestedPath = req.path === '/' ? '/login' : req.path; 
     const sanitizedPath = requestedPath.replace('.html', '');
     const filePath = path.join(__dirname, 'public', 'views', `${sanitizedPath}.html`);
 

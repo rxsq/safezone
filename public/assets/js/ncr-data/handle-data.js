@@ -103,23 +103,39 @@ function renderBarChart(data) {
     });
 }
 
-function groupBySupplier(data) {
+//Groups NCR's by supplier
+async function groupBySupplier(data) {
     const supplierCounts = {};
 
     // Iterate over each NCR record to count by supplier name
-    data.forEach(ncr => {
-        const supplier = ncr.ncrSupplierName || 'Unknown'; // Default to 'Unknown' if supplier name is missing
-        supplierCounts[supplier] = (supplierCounts[supplier] || 0) + 1;
-    });
+    for (let ncr of data) {
+        const prodID = ncr.prodID;
+        
+        // Fetch the product based on prodID
+        const productResponse = await fetch(`/api/products/${prodID}`);
+        const productData = await productResponse.json();
+
+        const supID = productData.supID;
+
+        // Fetch the supplier based on supID
+        const supplierResponse = await fetch(`/api/suppliers/${supID}`);
+        const supplierData = await supplierResponse.json();
+
+        const supplierName = supplierData.supName || 'Unknown'; // Get the supplier name or default to 'Unknown'
+
+        // Count NCRs per supplier
+        supplierCounts[supplierName] = (supplierCounts[supplierName] || 0) + 1;
+    }
 
     return supplierCounts; // Returns an object like { "Supplier Name 1": count, "Supplier Name 2": count, ... }
 }
-
-function renderSupplierChart(data) {
+// Supplier chart
+async function renderSupplierChart(data) {
     const ctx = document.getElementById('supplierChart').getContext('2d');
 
     // Group NCRs by supplier name using groupBySupplier function
-    const supplierCounts = groupBySupplier(data);
+    const supplierCounts = await groupBySupplier(data); // Await the asynchronous grouping function
+
     const labels = Object.keys(supplierCounts); // Supplier names
     const values = Object.values(supplierCounts); // NCR counts per supplier
 
@@ -150,7 +166,7 @@ function renderSupplierChart(data) {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Number of NCR Forms',
+                        text: "Number of NCR",
                     },
                     ticks: {
                         stepSize: 1, // Use whole numbers for NCR count
