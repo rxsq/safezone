@@ -7,19 +7,19 @@ const statusSelect = document.getElementById('status');
 const issueDatePicker = document.getElementById('filterIssueDate');
 
 // Event listener for filter button
-filterBtn.addEventListener('click', function(){
+// filterBtn.addEventListener('click', function(){
     
-});
+// });
 
-//Event listener for reset button
-resetBtn.addEventListener('click', function(){
-    supplierSelect.value = "-1";
+// //Event listener for reset button
+// resetBtn.addEventListener('click', function(){
+//     supplierSelect.value = "-1";
     
-    resetProductSelect();
+//     resetProductSelect();
 
-    statusSelect.value = "active";
-    issueDatePicker.value = "";
-});
+//     statusSelect.value = "active";
+//     issueDatePicker.value = "";
+// });
 
 function resetProductSelect(){
     while (productSelect.options.length) {
@@ -90,7 +90,7 @@ async function populateRecentNcrTable(data){
 
         let ncr = data[i];
 
-        const row = document.createElement('tr'); // Create new row element to be used in the table
+        const row = document.createElement('tr'); 
 
         let ncrStatus;
         // If status is open, incriment openRecords
@@ -131,17 +131,150 @@ async function populateRecentNcrTable(data){
 
 // Editing & Viewing NCR's
 function editNCR(ncrFormID){
-
+    const mode = 'edit'
+    window.location.href = `edit-ncr.html?ncrFormID=${ncrFormID}`;
+    populateNCRInputs(ncrFormID);
 }
 
 // Printing NCR to PDF
-function printNCR(ncrFormID){
+function printNCR(ncrFormID) {
+    const isConfirmed = confirm('Are you sure you want to generate and print the NCR report?');
+    if (!isConfirmed) return;
 
+    console.log(`Fetching NCR form with ID: ${ncrFormID}`);
+
+    fetch(`/api/ncrForms/${ncrFormID}`)
+        .then(response => {
+            console.log('Received response for NCR form:', response);
+            if (!response.ok) throw new Error('Failed to fetch NCR form');
+            return response.json();
+        })
+        .then(ncrData => {
+            console.log('NCR data received:', ncrData);
+            if (!ncrData || typeof ncrData !== 'object') throw new Error('Invalid NCR data received');
+
+            // Fetch related data
+            const productFetch = fetch(`/api/products/${ncrData.prodID}`).then(res => res.json()); // Fetch product details
+            const qualityFetch = fetch(`/api/qualityForms/${ncrData.qualFormID}`).then(res => res.json()); // Fetch quality form data
+            const engineeringFetch = ncrData.engFormID ? fetch(`/api/engineerForms/${ncrData.engFormID}`).then(res => res.json()) : Promise.resolve(null); // Fetch engineering data if available
+            const purchasingFetch = ncrData.purFormID ? fetch(`/api/purchasingForms/${ncrData.purFormID}`).then(res => res.json()) : Promise.resolve(null);  // Fetch purchasing data if available
+
+            return Promise.all([ncrData, productFetch, qualityFetch, engineeringFetch, purchasingFetch]);
+        })
+        .then(([ncrData, productData, qualityData, engineeringData, purchasingData]) => {
+            console.log('All data fetched:', { ncrData, productData, qualityData, engineeringData, purchasingData });
+
+            // Use `supID` from `productData` to fetch supplier data
+            return Promise.all([
+                Promise.resolve(ncrData),
+                Promise.resolve(productData),
+                fetch(`/api/suppliers/${productData.supID}`).then(res => res.json()), // Fetch supplier data
+                Promise.resolve(qualityData),
+                Promise.resolve(engineeringData),
+                Promise.resolve(purchasingData),
+            ]);
+        })
+        .then(([ncrData, productData, supplierData, qualityData, engineeringData, purchasingData]) => {
+            console.log('Supplier data fetched:', supplierData);
+            
+            const pdfData = {
+                ncrData,
+                productData,
+                supplierData,
+                qualityData,
+                engineeringData,
+                purchasingData,
+            };
+
+            console.log('Sending data to generate PDF:', pdfData);
+
+            return fetch('/api/ncrPdfRoute/generate-ncr-report', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(pdfData),
+            });
+        })
+        .then(response => {
+            console.log('Received response for PDF generation:', response);
+            if (!response.ok) throw new Error('Failed to generate PDF');
+            return response.blob();
+        })
+        .then(blob => {
+            console.log('Received PDF blob');
+            const url = window.URL.createObjectURL(blob);
+            const downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = 'NCR_Report.pdf';
+            downloadLink.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error generating the NCR report. Please try again.');
+        });
 }
 
-// Archive NCR 
-function archiveNCR(ncrFormID){
 
+// Archive NCR 
+function archiveNCR(ncrFormID, ncrFormNo) {
+    fetch(`/api/ncrForms/${ncrFormID}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch NCR form');
+            return response.json();
+        })
+        .then(data => {
+            const { engFormID, purFormID, ncrStage } = data;
+
+            if (ncrStage === 'ARC') {
+                alert('This NCR form is already archived.');
+                return;
+            }
+
+            // Check for incomplete fields
+            const incompleteFields = [];
+            if (!engFormID) incompleteFields.push('Engineering Form');
+            //if (!purFormID) incompleteFields.push('Purchasing Form');
+
+            let confirmationMessage = `Are you sure you want to archive this NCR form?`;
+            if (incompleteFields.length > 0) {
+                confirmationMessage += `\nThe following form(s) are not completed: ${incompleteFields.join(', ')}.`;
+            }
+
+            // Ask for confirmation
+            if (!confirm(confirmationMessage)) {
+                return;
+            }
+
+            // Proceed to archive the form
+            fetch(`/api/ncrForms/${ncrFormNo}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    ncrStage: 'ARC',
+                    ncrStatusID: 2, 
+                }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('NCR form archived successfully!');
+                        window.location.reload(); // Refresh the page
+                    } else {
+                        return response.json().then(error => {
+                            throw new Error(error.message || 'Failed to archive NCR form');
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error archiving NCR form:', error);
+                    alert(`Error: ${error.message}`);
+                });
+        })
+        .catch(error => {
+            console.error('Error fetching NCR form:', error);
+            alert(`Error: ${error.message}`);
+        });
 }
 
 function populateSupplierDropDownLists(suppliers) {

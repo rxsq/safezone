@@ -127,7 +127,7 @@ async function groupBySupplier(data) {
         supplierCounts[supplierName] = (supplierCounts[supplierName] || 0) + 1;
     }
 
-    return supplierCounts; // Returns an object like { "Supplier Name 1": count, "Supplier Name 2": count, ... }
+    return supplierCounts; 
 }
 // Supplier chart
 async function renderSupplierChart(data) {

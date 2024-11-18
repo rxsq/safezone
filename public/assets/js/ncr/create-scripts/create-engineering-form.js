@@ -1,17 +1,11 @@
-if(sessionStorage.getItem("mode") == "create"){
-// Define submit button
-const submitBtn = document.getElementById('submit-engineering-btn');
-
-// Function which creates engineering form
-async function createEngineeringForm(){
-
+// Function to create or update engineering form
+async function createEngineeringForm() {
     const status = await checkNCRValidity();
 
-    if(status == "VALID"){
-
-        //Collect inputs
+    if (status === "VALID" || status === "UPDATE") {
+        // Collect inputs
         const engineeringFormData = { 
-            engFormID: await getEngineeringFormID(),
+            engFormID: await getEngineeringFormID(status),  
             engReview: document.querySelector('input[name="review-by-engineer"]:checked').value, 
             engCustNotification: document.querySelector('input[name="require-notification"]:checked').value,
             engDispositionDesc: document.getElementById('disposition').value,
@@ -22,98 +16,126 @@ async function createEngineeringForm(){
             engID: sessionStorage.getItem("empID"),
             engDate: document.getElementById('engineer-date').value
         };
-        try{
-            const response = await fetch('/api/engineerForms', {
-                method: 'POST',
+
+        const requiredFields = ['review-by-engineer', 'disposition'];
+        let formIsValid = true;
+
+        requiredFields.forEach(field => {
+            const input = document.querySelector(`[name="${field}"]`) || document.getElementById(field);
+            if (!input || (!input.value.trim() && !input.checked)) {
+                formIsValid = false;
+                input?.classList.add('error');
+            } else {
+                input?.classList.remove('error');
+            }
+        });
+
+        // If form is invalid, stop form submission
+        if (!formIsValid) {
+            alert('Please fill out all required fields correctly.');
+            return; // Prevent form submission
+        }
+
+        try {
+            const response = await fetch(`/api/engineerForms/${engineeringFormData.engFormID}`, {
+                method: status === "UPDATE" ? 'PUT' : 'POST', // Use PUT if updating
                 headers: {
-                    'Content-Type': 'applications/json'
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(engineeringFormData)     
+                body: JSON.stringify(engineeringFormData)
             });
 
-            if(!response.ok){
+            if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
 
             const result = await response.json();
+            alert(status === "UPDATE" ? 'Engineering form updated successfully' : 'Engineering form created successfully');
 
             const ncrFormNo = document.getElementById('ncr-no').value.replace(/\D/g, '');  // Clean NCR form ID
-            alert('Success creating Engineer Form. Purchasing department has been notified');        
-        
             await notifyDepartmentManager(ncrFormNo, "Purchasing");
 
+        } catch (error) {
+            console.error('Error creating or updating engineering form:', error);
+            alert('Failed to create or update engineering form. Please try again');
         }
-        catch(error){
-            console.error('Error creating engineering form:', error);
-            alert('Failed to create engineer form. Please try again');
-        }
-    }
-    else if(status == "ERROR"){
+    } else if (status === "ERROR") {
         alert('Unknown error, Please try again and if the issue persists check with administrator');
-    }
-    // If quality rep form is not completed
-    else if(status == "INCOMPLETE"){
-        alert('Cannot create engineering form. Form is incomplete meaning there is no quality rep entry.\nCheck quality representive entry and try again');
-    }
-    // If NCR number is not valid for whatever reason
-    else if(status == "INVALID"){
-        alert('Cannot create engineering form. NCR number is not valid.')
+    } else if (status === "INCOMPLETE") {
+        alert('Cannot create or update engineering form. Form is incomplete meaning there is no quality rep entry.\nCheck quality representative entry and try again');
+    } else if (status === "INVALID") {
+        alert('Cannot create or update engineering form. NCR number is not valid.');
     }
 }
 
-// Function which generates engineering form ID
-async function getEngineeringFormID(){
-    try{
-        const response = await fetch('api/engineerForms');
+// Function to generate or get the existing engineering form ID
+async function getEngineeringFormID(status) {
+    if (status === "UPDATE") {
+        // Return the existing form ID from the database or from user input if updating
+        const ncrNo = document.getElementById('ncr-no').value.replace(/\D/g, '');
+        try {
+            const response = await fetch(`/api/engineerForms/${ncrNo}`); // Fetch existing form based on NCR number
 
-        if(!response.ok){
-            throw new Error('Network response was not ok.');
+            if (!response.ok) {
+                throw new Error('Form not found for update.');
+            }
+
+            const data = await response.json();
+            return data.engFormID; // Return the existing form ID for updating
+        } catch (error) {
+            console.error('Error fetching engineering form for update:', error);
+            throw error;
         }
+    } else {
+        // Generate new form ID
+        try {
+            const response = await fetch('/api/engineerForms');
 
-        const data = await response.json();
-        return data.length + 1;
-    }
-    catch(error){
-        console.error('Error regarding quality form ID generation', error);
-        throw error;
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+
+            const data = await response.json();
+            return data.length + 1; // New form ID based on the existing count
+        } catch (error) {
+            console.error('Error generating new engineering form ID', error);
+            throw error;
+        }
     }
 }
 
-// Function which checks validity of NCR record
-async function checkNCRValidity(){
+// Function to handle NCR validity and form status
+async function checkNCRValidity() {
     let ncrNo = document.getElementById('ncr-no').value.replace(/\D/g, '');
     
-    if(isNaN(ncrNo)){
+    if (isNaN(ncrNo)) {
         return "INVALID";
     }
     
-    // Check with forms 
-    try{
+    try {
         const response = await fetch('/api/ncrForms');
         const ncrData = await response.json();
 
         const ncrForm = ncrData.find(item => item.ncrFormNo === ncrNo);
 
-        if(!ncrForm){
+        if (!ncrForm) {
             return "INVALID";
         }
-        else if(ncrForm.qualFormID === null){
-            return "INCOMPLETE";
-        }
 
-        return "VALID";
-    }
-    catch(error){
+        // Check if the quality form is missing
+        if (ncrForm.qualFormID === null) {
+            return "INCOMPLETE"; // If the quality form is missing
+        }
+        
+        return "VALID"; 
+    } catch (error) {
         console.error("Error fetching NCR data:", error);
         return "ERROR";
     }
 }
 
-// EventListener code for submit button
-submitBtn.addEventListener('click', function(){
-    createEngineeringForm();
-});
 
+// Notify Department Manager Function
 async function notifyDepartmentManager(ncrFormNo, department) {
     const recipient = "andrewdionne09@gmail.com"; 
     const subject = `Form Update Required: Form ${ncrFormNo}`;
@@ -147,4 +169,28 @@ Please review and proceed with the necessary actions at your earliest convenienc
     }
 }
 
+// EventListener code for submit button
+document.getElementById('submit-engineering-btn').addEventListener('click', function() {
+    createEngineeringForm();
+});
+
+// Input validation and error handling for required fields
+function handleInputValidation() {
+    // Add input validation for specific required fields (review-by-engineer and disposition)
+    const fieldsToValidate = ['review-by-engineer', 'disposition'];
+    fieldsToValidate.forEach(field => {
+        const input = document.querySelector(`[name="${field}"]`) || document.getElementById(field);
+        if (input) {
+            input.addEventListener('input', function() {
+                if (this.value.trim() || (this.checked && field === 'review-by-engineer')) {
+                    this.classList.remove('invalid-field');
+                } else {
+                    this.classList.add('invalid-field');
+                }
+            });
+        }
+    });
 }
+
+// Call the handleInputValidation function for specific required fields
+handleInputValidation();

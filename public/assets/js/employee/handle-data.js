@@ -13,19 +13,17 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// Function to fetch employees from the server
+// Function to fetch employees 
 function fetchEmployees() {
-    fetch('/api/employees')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            populateEmployeeTable(data);
-        })
-        .catch(error => console.error('Error fetching employees:', error));
+    Promise.all([
+        fetch('/api/employees').then(res => res.json()),
+        fetch('/api/positions').then(res => res.json())
+    ])
+    .then(([employees, positions]) => {
+        positionCache = positions; 
+        populateEmployeeTable(employees);
+    })
+    .catch(error => console.error('Error fetching employees or positions:', error));
 }
 
 // Function to populate the employee table
@@ -34,10 +32,9 @@ function populateEmployeeTable(data) {
     tableBody.innerHTML = ""; // Clear existing rows
 
     data.forEach(employee => {
-        const row = document.createElement('tr');
-        const empPosition = getPositionDescription(employee.posID); // Fetch position description
+        const empPosition = positionCache.find(pos => pos.posID == employee.posID)?.posDescription || "Unknown";
 
-        console.log(empPosition);
+        const row = document.createElement('tr');
         row.innerHTML = `
             <td>${employee.empID}</td>
             <td>${employee.empFirst} ${employee.empLast}</td>
@@ -60,17 +57,10 @@ function populateEmployeeTable(data) {
     });
 }
 
-// Helper function to get position description from position data
-function getPositionDescription(posID) {
-    const storedPositionData = localStorage.getItem('positions');
-    const positionData = storedPositionData ? JSON.parse(storedPositionData) : [];
-    const position = positionData.find(position => position.posID === posID);
-    return position ? position.posDescription : "Unknown";
-}
+let positionCache = null;
 
 // Function to view selected employee
 function viewEmployee(empID) {
-
     fetch(`/api/employees/${empID}`)
         .then(response => response.json())
         .then(employee => {

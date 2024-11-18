@@ -7,11 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     reDisableInaccessibleInputs();
 });
 
-// Set session storage for mode if it exists in URL parameters
-if (mode) {
-    sessionStorage.setItem("mode", mode);  // Store the mode in session storage
-}
-
 function handleUserAccess() {
     if (mode === 'view') {
         viewModeAccess();

@@ -11,6 +11,8 @@ const engineerFormsRoutes = require('./routes/engineerForms');
 const purchasingFormsRoutes = require('./routes/purchasingForms'); 
 const statusRoutes = require('./routes/status'); 
 const emailRoutes = require('./routes/emailRoutes');
+const pdfRoutes = require('./routes/ncrPdfRoute.js');
+
 
 const app = express();
 
@@ -31,8 +33,9 @@ app.use('/api/positions', positionsRoutes); // Route for Positions
 app.use('/api/qualityForms', qualityFormsRoutes); // Route for Quality Forms
 app.use('/api/engineerForms', engineerFormsRoutes); // Route for Engineer Forms
 app.use('/api/purchasingForms', purchasingFormsRoutes); // Route for Purchasing Forms
-app.use('/api/status', statusRoutes); // Route for Status
+app.use('/api/status', statusRoutes); // Route for Stanpm tus
 app.use('/api/email', emailRoutes);
+app.use('/api/ncrPdfRoute', pdfRoutes);
 
 
 // Serve the HTML page for NCR Forms

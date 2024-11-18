@@ -1,52 +1,126 @@
-if(sessionStorage.getItem("mode") == "create"){
 // Once user completes a quality form, it will create a new ncr
 // Gets current year
-const currentYear = new Date().getFullYear();
 let qualFormID;
 const submitBtn = document.getElementById('submit-quality-btn');
 sessionStorage.setItem('currentNCRStage', "QUA")
 
 // Function which creates quality form
-async function createQualityForm(){
-    //Collect inputs and use get functions
+async function createQualityForm() {
+    // Collect data from form fields
     const qualityFormData = {
-            qualFormID: await getQualityFormID(),
-            qualFormSupplierProcess: getSupplierProcess(),
-            qualFormProductionProces: getProductionProcess(),
-            qualItemDesc: document.getElementById('description-item').value,
-            qualIssueDesc: document.getElementById('description-defect').value,
-            qualItemID: document.getElementById('po-prod-no').value, //.value is stored prodID
-            qualImageFileName: null, // Handle later
-            qualSalesOrderNo: document.getElementById('sales-order-no').value,
-            qualQtyReceived: document.getElementById('quantity-received').value,
-            qualQtyDefective: document.getElementById('quantity-defective').value,
-            qualItemNonConforming: document.querySelector('input[name="item-nonconforming"]:checked').value,
-            qualRepID: sessionStorage.getItem('empID'),
-            qualDate:document.getElementById('quality-rep-date').value
-        };
-        try{
-            const response = await fetch('/api/qualityForms', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(qualityFormData)
-            });
+        qualFormID: await getQualityFormID(),
+        qualFormSupplierProcess: getSupplierProcess(),
+        qualFormProductionProcess: getProductionProcess(),
+        qualItemDesc: document.getElementById('description-item')?.value?.trim() || '', 
+        qualIssueDesc: document.getElementById('description-defect')?.value?.trim() || '',
+        qualItemID: parseInt(document.getElementById('po-prod-no')?.value?.trim(), 10) || null, 
+        qualImageFileName: null, 
+        qualSalesOrderNo: parseInt(document.getElementById('sales-order-no')?.value?.trim(), 10) || null,
+        qualQtyReceived: parseFloat(document.getElementById('quantity-received')?.value?.trim()) || null, 
+        qualQtyDefective: parseFloat(document.getElementById('quantity-defective')?.value?.trim()) || null, 
+        qualItemNonConforming: parseInt(document.querySelector('input[name="item-nonconforming"]:checked')?.value, 10) || 0, 
+        qualRepID: parseInt(sessionStorage.getItem('empID'), 10) || null, 
+        qualDate: document.getElementById('quality-rep-date')?.value?.trim() || ''
+    };
 
-            if(!response.ok){
-                throw new Error('Network response was not ok');
+    const requiredFields = [
+        'supplier-name', 
+        'po-prod-no', 
+        'sales-order-no', 
+        'quantity-received', 
+        'quantity-defective', 
+        'description-item', 
+        'description-defect', 
+        'item-nonconforming', 
+        'quality-rep-name', 
+        'engineering', 
+        'engineer-date'
+    ];
+
+    let formIsValid = true;
+
+    // Check for empty required fields and add invalid class
+    requiredFields.forEach(field => {
+        const input = document.getElementById(field);
+        console.log(`Checking field ${field}:`, input); 
+
+        if (field === 'item-nonconforming') {
+            const nonConformingValue = document.querySelector('input[name="item-nonconforming"]:checked');
+            if (!nonConformingValue) {
+                formIsValid = false;
+                document.getElementById(field)?.classList.add('invalid-field');
+                console.log(`${field} is invalid (no option selected)`);
+            } else {
+                document.getElementById(field)?.classList.remove('invalid-field');
+                console.log(`${field} is valid`);
             }
-
-            const result = await response.json();
-
-            // Call to create new NCR record after completion of quality form
-            qualFormID = await getQualityFormID() - 1; // Sets local variable to most recent quality form ID
-            await createNCR();
-        } catch(error){
-            console.error('Error creating quality form:', error);
-            alert('Failed to create quality form. Please try again'); // Modify this to use something nicer than an alert lol
+        } else if (!input || !input.value?.trim()) {
+            formIsValid = false;
+            input?.classList.add('invalid-field');
+            console.log(`${field} is invalid (empty or whitespace)`);
+        } else {
+            input?.classList.remove('invalid-field');
+            console.log(`${field} is valid`);
         }
+    });
+
+    // Validate if Sales Order, Quantity Received, and Quantity Defective are valid numbers
+    const salesOrderNo = parseFloat(qualityFormData.qualSalesOrderNo);
+    const qtyReceived = parseFloat(qualityFormData.qualQtyReceived);
+    const qtyDefective = parseFloat(qualityFormData.qualQtyDefective);
+
+    if (isNaN(salesOrderNo) || isNaN(qtyReceived) || isNaN(qtyDefective)) {
+        formIsValid = false;
+        alert('Please enter valid numbers for Sales Order Number, Quantity Received, and Quantity Defective.');
+        
+        if (isNaN(salesOrderNo)) {
+            document.getElementById('sales-order-no').classList.add('invalid-field');
+        }
+        if (isNaN(qtyReceived)) {
+            document.getElementById('quantity-received').classList.add('invalid-field');
+        }
+        if (isNaN(qtyDefective)) {
+            document.getElementById('quantity-defective').classList.add('invalid-field');
+        }
+    }
+
+    if (qtyReceived < qtyDefective) {
+        formIsValid = false;
+        alert('Quantity Received cannot be less than Quantity Defective.');
+        document.getElementById('quantity-received').classList.add('invalid-field');
+        document.getElementById('quantity-defective').classList.add('invalid-field');
+    }
+
+    console.log('Form valid status:', formIsValid);
+
+    if (!formIsValid) {
+        alert('Please fill out all required fields correctly.');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/qualityForms', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(qualityFormData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const result = await response.json();
+        let qualFormID = await getQualityFormID() - 1; 
+        await createNCR();
+
+    } catch (error) {
+        console.error('Error creating quality form:', error);
+        alert('Failed to create quality form. Please try again');
+    }
 }
+
 
 // Function which generates quality form ID
 async function getQualityFormID(){
@@ -125,14 +199,173 @@ async function createNCR(){
         alert('Failed to create NCR. Please try again.');
     }
 
-    alert(inEditMode);
-
 }
 
 // EventListener code for submit button
-submitBtn.addEventListener('click', function(){
-    createQualityForm();
+document.getElementById("supplier-name").addEventListener("input", function() {
+    if (this.value && this.value !== "") {
+        this.classList.remove("error");
+    }
 });
+
+document.getElementById("po-prod-no").addEventListener("input", function() {
+    if (this.value && this.value !== "") {
+        this.classList.remove("error");
+    }
+});
+
+document.getElementById("sales-order-no").addEventListener("input", function() {
+    if (!isNaN(this.value) && this.value.trim() !== "") {
+        this.classList.remove("error");
+    }
+});
+
+document.getElementById("quantity-received").addEventListener("input", function() {
+    if (this.value && !isNaN(this.value)) {
+        this.classList.remove("error");
+    }
+});
+
+document.getElementById("quantity-defective").addEventListener("input", function() {
+    if (this.value && !isNaN(this.value)) {
+        this.classList.remove("error");
+    }
+});
+
+document.getElementById("description-item").addEventListener("input", function() {
+    if (this.value && this.value.trim() !== "") {
+        this.classList.remove("error");
+    }
+});
+
+document.getElementById("description-defect").addEventListener("input", function() {
+    if (this.value && this.value.trim() !== "") {
+        this.classList.remove("error");
+    }
+});
+
+// Event listener for radio buttons to remove error when selected
+document.querySelectorAll('input[name="item-nonconforming"]').forEach(radio => {
+    radio.addEventListener("change", function() {
+        const formGroup = this.closest('.form-group');
+        if (document.querySelector('input[name="item-nonconforming"]:checked')) {
+            formGroup.classList.remove("error");
+        }
+    });
+});
+
+document.querySelectorAll('input[name="process-applicable"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        // Check if any checkbox is checked
+        const checkboxGroup = document.querySelectorAll('input[name="process-applicable"]:checked');
+        const processApplicableGroup = document.getElementById('process-applicable');  
+        
+        if (checkboxGroup.length > 0) {
+            processApplicableGroup.classList.remove('error'); 
+        } else {
+            processApplicableGroup.classList.add('error');
+        }
+    });
+});
+
+// EventListener code for submit button
+document.addEventListener('DOMContentLoaded', function() {
+    // EventListener for submit button
+    document.getElementById("ncr-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        removeErrorClasses();
+
+        let hasError = false;
+
+        // Validate Supplier
+        const supplierName = document.getElementById("supplier-name");
+        if (!supplierName.value || supplierName.value === "") {
+            supplierName.classList.add("error");
+            hasError = true;
+        }
+
+        // Validate Product
+        const poProdNo = document.getElementById("po-prod-no");
+        if (!poProdNo.value || poProdNo.value === "") {
+            poProdNo.classList.add("error");
+            hasError = true;
+        }
+
+        // Validate Sales Order Number
+        const salesOrderNo = document.getElementById("sales-order-no");
+        if (isNaN(salesOrderNo.value) || salesOrderNo.value.trim() === "") {
+            salesOrderNo.classList.add("error");
+            hasError = true;
+        }
+
+        // Validate Quantity Received
+        const quantityReceived = document.getElementById("quantity-received");
+        if (!quantityReceived.value || isNaN(quantityReceived.value)) {
+            quantityReceived.classList.add("error");
+            hasError = true;
+        }
+
+        // Validate Quantity Defective
+        const quantityDefective = document.getElementById("quantity-defective");
+        if (!quantityDefective.value || isNaN(quantityDefective.value)) {
+            quantityDefective.classList.add("error");
+            hasError = true;
+        }
+
+        // Validate Description of Item
+        const descriptionItem = document.getElementById("description-item");
+        if (!descriptionItem.value || descriptionItem.value.trim() === "") {
+            descriptionItem.classList.add("error");
+            hasError = true;
+        }
+
+        // Validate Description of Defect
+        const descriptionDefect = document.getElementById("description-defect");
+        if (!descriptionDefect.value || descriptionDefect.value.trim() === "") {
+            descriptionDefect.classList.add("error");
+            hasError = true;
+        }
+
+        // Validate Item Marked Nonconforming (Radio Button)
+        const itemNonconforming = document.querySelector('input[name="item-nonconforming"]:checked');
+        if (!itemNonconforming) {
+            const radioButtons = document.querySelectorAll('input[name="item-nonconforming"]');
+            radioButtons.forEach(button => {
+                button.closest('.form-group').classList.add("error");
+            });
+            hasError = true;
+        }
+
+        // Validate Checkbox Group for Process Applicable
+        const checkboxGroup = document.querySelectorAll('input[name="process-applicable"]:checked');
+        const processApplicableGroup = document.getElementById('process-applicable');
+        if (checkboxGroup.length === 0) {
+            processApplicableGroup.classList.add("error");
+            hasError = true;
+        } else {
+            processApplicableGroup.classList.remove("error");
+        }
+
+        // If there are any validation errors, prevent form submission
+        if (hasError) {
+            document.getElementById("errorModalBody").innerText = "Please fill in all required fields correctly.";
+            new bootstrap.Modal(document.getElementById('errorModal')).show();
+        } else {
+            // If no errors, proceed with form submission
+            createQualityForm();
+        }
+    });
+});
+
+
+// Function to remove error classes 
+function removeErrorClasses() {
+    const errorElements = document.querySelectorAll(".error");
+    errorElements.forEach(element => {
+        element.classList.remove("error");
+    });
+}
 
 async function notifyDepartmentManager(ncrFormNo, department) {
     const recipient = "andrewdionne09@gmail.com"; 
@@ -165,6 +398,4 @@ Please review and proceed with the necessary actions at your earliest convenienc
     } catch (error) {
         console.error('An unexpected error occurred:', error);
     }
-}
-
 }
