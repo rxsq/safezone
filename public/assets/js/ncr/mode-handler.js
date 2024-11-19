@@ -1,6 +1,6 @@
 const userRole = sessionStorage.getItem("userRole");
 const urlParams = new URLSearchParams(window.location.search);
-const mode = urlParams.get("mode")
+const mode = sessionStorage.getItem("mode")
 
 document.addEventListener('DOMContentLoaded', () => {
     handleUserAccess();

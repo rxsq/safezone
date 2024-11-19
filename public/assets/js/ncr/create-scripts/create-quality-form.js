@@ -32,9 +32,7 @@ async function createQualityForm() {
         'description-item', 
         'description-defect', 
         'item-nonconforming', 
-        'quality-rep-name', 
-        'engineering', 
-        'engineer-date'
+        'quality-rep-name'
     ];
 
     let formIsValid = true;
@@ -112,7 +110,7 @@ async function createQualityForm() {
         }
 
         const result = await response.json();
-        let qualFormID = await getQualityFormID() - 1; 
+        qualFormID = await getQualityFormID() - 1; 
         await createNCR();
 
     } catch (error) {
@@ -164,12 +162,12 @@ async function createNCR(){
     sessionStorage.setItem("currentNCRStage", "ENG"); 
 
     const ncrData = {
-        ncrFormID: ncrFormID,
-        ncrFormNo: ncrFormNo,
-        qualFormID: qualFormID,
+        ncrFormID: Number(ncrFormID),
+        ncrFormNo: Number(ncrFormNo),
+        qualFormID: Number(qualFormID),
         engFormID: null, //NULL since no eng form has been yet created
         purFormID: null, //NULL sine no pur form has been yet created
-        prodID: document.getElementById('po-prod-no').value,
+        prodID: Number(document.getElementById('po-prod-no').value),
         ncrStatusID: 1, // 1: Open, 2: Closed
         ncrStage: sessionStorage.getItem("currentNCRStage"),
         ncrIssueDate: document.getElementById('quality-rep-date').value

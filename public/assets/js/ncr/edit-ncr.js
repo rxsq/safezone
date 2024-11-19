@@ -32,35 +32,28 @@ function fetchQualityForm(qualFormID) {
         });
 }
 
-function fetchEngineeringForm(engFormID){
+// Function to fetch engineering form data
+function fetchEngineeringForm(engFormID) {
     fetch(`/api/engineerForms/${engFormID}`)
         .then(response => response.json())
         .then(async engFormData => {
             switch(engFormData.engReview){
-                case "Use As Is": document.querySelector('input[name="review-by-engineer"][value="Use As Is"]').checked = true;
-                    break;
-                case "Repair": document.querySelector('input[name="review-by-engineer"][value="Repair"]').checked = true;
-                    break;
-                case "Rework": document.querySelector('input[name="review-by-engineer"][value="Rework"]').checked = true;
-                    break;
-                case "Scrap": document.querySelector('input[name="review-by-engineer"][value="Scrap"]').checked = true;
-                    break;
+                case "Use As Is": document.querySelector('input[name="review-by-engineer"][value="Use As Is"]').checked = true; break;
+                case "Repair": document.querySelector('input[name="review-by-engineer"][value="Repair"]').checked = true; break;
+                case "Rework": document.querySelector('input[name="review-by-engineer"][value="Rework"]').checked = true; break;
+                case "Scrap": document.querySelector('input[name="review-by-engineer"][value="Scrap"]').checked = true; break;
             }
 
             switch(engFormData.engCustNotification){
-                case 1: document.querySelector('input[name="require-notification"][value="1"]').checked = true;
-                    break;
-                case 0: document.querySelector('input[name="require-notification"][value="0"]').checked = true;
-                    break;
+                case 1: document.querySelector('input[name="require-notification"][value="1"]').checked = true; break;
+                case 0: document.querySelector('input[name="require-notification"][value="0"]').checked = true; break;
             }
 
             document.getElementById('disposition').value = engFormData.engDispositionDesc;
-            
+
             switch(engFormData.engDrawingUpdate){
-                case 1: document.querySelector('input[name="require-updating"][value="1"]').checked = true;
-                    break;
-                case 0: document.querySelector('input[name="require-updating"][value="0"]').checked = true;
-                    break;
+                case 1: document.querySelector('input[name="require-updating"][value="1"]').checked = true; break;
+                case 0: document.querySelector('input[name="require-updating"][value="0"]').checked = true; break;
             }
 
             document.getElementById('original-rev-number').value = engFormData.engRevisionNo;
@@ -68,28 +61,23 @@ function fetchEngineeringForm(engFormID){
             document.getElementById('engineering').value = await getAndPopulateEmp(engFormData.engID);
             document.getElementById('revision-date').value = engFormData.engUpdatedRevisionDate;
             document.getElementById('engineer-date').value = engFormData.engDate;
-
         })
         .catch(error => {
-            console.error('Error fetching engineer form:', error);
-            alert('Failed to load engineer form.');
+            console.error('Error fetching engineering form:', error);
+            alert('Failed to load engineering form.');
         });
 }
 
-// Function to get supplier with product ID
+// Function to fetch supplier ID based on product ID
 async function getSupplierID(prodID) {
     return fetch(`/api/products/${prodID}`)
         .then(response => response.json())
-        .then(product => {
-            return product.supID; 
-        })
-        .catch(error => {
-            console.error('Error fetching product:', error);
-        });
+        .then(product => product.supID)
+        .catch(error => console.error('Error fetching product:', error));
 }
 
+// Function to populate NCR inputs
 async function populateNCRInputs(ncrFormID) {
-    // Fetch and populate NCR info
     fetch(`/api/ncrForms/${ncrFormID}`)
         .then(response => response.json())
         .then(async ncrForm => {
@@ -100,17 +88,14 @@ async function populateNCRInputs(ncrFormID) {
             qualityForm = ncrForm.qualFormID;
             engineeringForm = ncrForm.engFormID;
             ncrID = ncrForm.ncrFormID;
-            setSupplierAndTriggerChange(await getSupplierID(ncrForm.prodID))
-            //document.getElementById('po-prod-no').value = ncrForm.prodID;
+            setSupplierAndTriggerChange(await getSupplierID(ncrForm.prodID));
+            document.getElementById('po-prod-no').value = ncrForm.prodID;
             
-            // Fetch quality form only if we have a valid qualFormID
             if (qualityForm) {
                 fetchQualityForm(qualityForm);
             }
             
-            // Fetch engineering form if required
             if (engineeringForm) {
-                console.log('Fetching Engineering form...');
                 fetchEngineeringForm(engineeringForm);
             }
         })
@@ -120,27 +105,17 @@ async function populateNCRInputs(ncrFormID) {
         });
 }
 
-// Function to get and populate quality representative name
+// Function to get and populate employee name based on empID
 async function getAndPopulateEmp(empID) {
     return fetch(`/api/employees/${empID}`)
         .then(response => response.json())
-        .then(employee => {
-            return employee.empFirst + " " + employee.empLast;
-        })
+        .then(employee => `${employee.empFirst} ${employee.empLast}`)
         .catch(error => {
             console.error('Error fetching employee', error);
         });
 }
 
-// Function to format NCR Number as YYYY-### 
-function formatNCRNumber(ncrFormNo) {
-    const year = ncrFormNo.slice(0, 4);
-    const code = ncrFormNo.slice(4);
-    const formattedCode = code.padStart(3, '0');
-    return `${year}-${formattedCode}`;
-}
-
-// Function to format and populate stage
+// Function to format and populate stage based on session data
 function formatAndPopulateStage() {
     switch (sessionStorage.getItem('currentNCRStage')) {
         case "QUA":
@@ -155,27 +130,20 @@ function formatAndPopulateStage() {
     }
 }
 
+// Initial setup on page load
 document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const ncrFormID = urlParams.get('ncrFormID');  
     if (ncrFormID) {
         populateNCRInputs(ncrFormID);
     }
-    fetch('../assets/data/products.json')
-    .then(response => response.json())
-    .then(data => {
-        window.products = data; 
-    })
-    .catch(error => console.error('Failed to load products:', error));
 
-    if((!document.getElementById('engineering').value) && ((sessionStorage.getItem("userRole") == "Administrator") || (sessionStorage.getItem("userRole") == "Engineering"))){
-        document.getElementById('engineering').value = sessionStorage.getItem('userName');
-        document.getElementById('engineer-date').value = new Date().toISOString().substring(0, 10);
-    }
+    // Make create buttons say "Update"
+    const createQualBtn = document.getElementById('submit-quality-btn');
+    const createEngBtn = document.getElementById('submit-engineering-btn');
+    createQualBtn.innerText = "Update Quality Form";
+    createEngBtn.innerText = "Update Engineering Form";
 });
-
-const submitQuaBtn = document.getElementById('submit-quality-btn');
-const submitEngBtn = document.getElementById('submit-engineering-btn');
 
 // Function which handles supplier process
 function getSupplierProcess(){
@@ -191,23 +159,17 @@ function getProductionProcess(){
     } else return null;
 }
 
+const submitQuaBtn = document.getElementById('submit-quality-btn');
+// Submit button for quality form update
 submitQuaBtn.addEventListener('click', async function(event) {
-    event.preventDefault(); 
-    
-    const currentQualFormID = qualityForm; 
-    if (!currentQualFormID) {
-        alert('No quality form to update.');
-        return;
-    }
-
+    event.preventDefault();
     const updatedQualityData = {
-        qualFormID: currentQualFormID,  
+        qualFormID: qualityForm,  
         qualFormSupplierProcess: getSupplierProcess(),
         qualFormProductionProcess: getProductionProcess(),
         qualItemDesc: document.getElementById('description-item').value,
         qualIssueDesc: document.getElementById('description-defect').value,
         qualItemID: Number(document.getElementById('po-prod-no').value), 
-        qualImageFileName: null,  // Handle later
         qualSalesOrderNo: Number(document.getElementById('sales-order-no').value),
         qualQtyReceived: Number(document.getElementById('quantity-received').value), 
         qualQtyDefective: Number(document.getElementById('quantity-defective').value), 
@@ -226,14 +188,10 @@ submitQuaBtn.addEventListener('click', async function(event) {
         body: JSON.stringify(updatedQualityData),
     })
     .then(response => {
-        console.log("Response status:", response.status); 
         if (response.ok) {
             alert('Successful update on quality data');
         } else {
-            response.json().then(data => {
-                console.log('Error response data:', data);
-                alert(`Failure updating quality data: ${data.message || 'Unknown error'}`);
-            });
+            response.json().then(data => alert(`Failure updating quality data: ${data.message || 'Unknown error'}`));
         }
     })
     .catch(error => {
@@ -241,211 +199,91 @@ submitQuaBtn.addEventListener('click', async function(event) {
         alert('An error occurred while updating the quality form');
     });
 
-    const ncrFormNo = document.getElementById('ncr-no').value.replace(/\D/g, '');  // Clean NCR form ID
-
-    await notifyDepartmentManager(ncrFormNo, "Engineering");
+    const ncrFormNo = document.getElementById('ncr-no').value.replace(/\D/g, '');
 });
 
-// Function which checks validity of NCR record
-async function checkNCRValidity() {
-    let ncrNo = document.getElementById('ncr-no').value.replace(/\D/g, '');
-    console.log(ncrNo);
-    
-    if (isNaN(ncrNo)) {
-        return "INVALID";
-    }
-    
-    try {
-        const response = await fetch('/api/ncrForms');
-        const ncrData = await response.json();
-
-        const ncrForm = ncrData.find(item => item.ncrFormNo == ncrNo);
-
-        console.log(ncrForm);
-
-        if (!ncrForm) {
-            return "INVALID";
-        } else if (ncrForm.qualFormID === null) {
-            return "INCOMPLETE"; // If the quality form is missing, mark as INCOMPLETE
-        } else if (ncrForm.engFormID === null) {
-            return "INCOMPLETE"; // If the engineering form is missing, mark as INCOMPLETE
-        }
-
-        return "VALID"; // If both quality and engineering forms are present, return VALID
-    } catch (error) {
-        console.error("Error fetching NCR data:", error);
-        return "ERROR";
-    }
-}
-
-
-
+const submitEngBtn = document.getElementById('submit-engineering-btn');
 submitEngBtn.addEventListener('click', async function(event) {
     event.preventDefault();
 
-    let currentEngFormID = engineeringForm; // Get the current engineering form ID
+    console.log("engineering form" + engineeringForm);
 
-    // If no engineering form ID exists, create a new one
-    if (!currentEngFormID || currentEngFormID === null || currentEngFormID === '') {
-        await createEngineerForm(currentEngFormID);  // Create a new form if ID is not valid
-        currentEngFormID = engineeringForm; // After creation, assign the new form ID
-    }
+    // Check if there is an existing engineering form to update or create a new one
+    let currentEngFormID = engineeringForm;
 
-    if (!currentEngFormID || currentEngFormID === null || currentEngFormID === '') {
-        alert("Failed to create or retrieve Engineering Form ID.");
-        return; // Stop if still no valid form ID
-    }
-
-    // Prepare the data to update the engineering form
-    const updatedEngineeringData = { 
-        engFormID: currentEngFormID,
+    const formData = { 
         engReview: document.querySelector('input[name="review-by-engineer"]:checked').value, 
-        engCustNotification: Number(document.querySelector('input[name="require-notification"]:checked').value),
-        engDispositionDesc: document.getElementById('disposition').value,
-        engDrawingUpdate: Number(document.querySelector('input[name="require-updating"]:checked').value),
-        engRevisionNo: Number(document.getElementById('original-rev-number').value),
-        engUpdatedRevisionNo: Number(document.getElementById('updated-rev-number').value),
+        engCustNotification: Number(document.querySelector('input[name="require-notification"]:checked').value), 
+        engDispositionDesc: document.getElementById('disposition').value, 
+        engDrawingUpdate: Number(document.querySelector('input[name="require-updating"]:checked').value), 
+        engRevisionNo: document.getElementById('original-rev-number').value, 
+        engUpdatedRevisionNo: document.getElementById('updated-rev-number').value,
+        engID: Number(sessionStorage.getItem('empID')),
         engUpdatedRevisionDate: document.getElementById('revision-date').value,
-        engID: Number(sessionStorage.getItem("empID")),
-        engDate: document.getElementById('engineer-date').value
+        engDate: document.getElementById('engineer-date').value 
     };
 
-    console.log("Updated engineering data being sent:", updatedEngineeringData);
-
     try {
-        // First, update the engineering form (PUT request)
-        let response = await fetch(`/api/engineerForms/${updatedEngineeringData.engFormID}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(updatedEngineeringData),
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to update engineering form');
-        }
-
-        alert('Successfully updated engineering form data. Purchasing department has been notified');
-
-        // After updating the engineering form, check the NCR form and update it if necessary
-        const ncrResponse = await fetch(`/api/ncrForms/${ncrFormID}`);
-        const ncrForm = await ncrResponse.json();
-
-        
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Error occurred while updating engineering or NCR form.');
-    }
-});
-
-async function getEngineeringFormID(status) {
-    if (status === "UPDATE") {
-        console.log(status);
-        // Return the existing form ID from the database or from user input if updating
-        const ncrNo = document.getElementById('ncr-no').value.replace(/\D/g, '');
-        try {
-            const response = await fetch(`/api/engineerForms/${ncrNo}`); // Fetch existing form based on NCR number
-
-            if (!response.ok) {
-                throw new Error('Form not found for update.');
-            }
-
-            const data = await response.json();
-            return data.engFormID; // Return the existing form ID for updating
-        } catch (error) {
-            console.error('Error fetching engineering form for update:', error);
-            throw error;
-        }
-    } else {
-        // Generate new form ID
-        try {
-            const response = await fetch('/api/engineerForms');
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok.');
-            }
-
-            const data = await response.json();
-            return data.length + 1; // New form ID based on the existing count
-        } catch (error) {
-            console.error('Error generating new engineering form ID', error);
-            throw error;
-        }
-    }
-}
-
-
-async function createEngineerForm() {
-    const status = await checkNCRValidity();
-
-    if (status === "VALID" || status === "UPDATE") {
-        // Collect inputs
-        const engineeringFormData = { 
-            engFormID: await getEngineeringFormID(status),  
-            engReview: document.querySelector('input[name="review-by-engineer"]:checked').value, 
-            engCustNotification: document.querySelector('input[name="require-notification"]:checked').value,
-            engDispositionDesc: document.getElementById('disposition').value,
-            engDrawingUpdate: document.querySelector('input[name="require-updating"]:checked').value,
-            engRevisionNo: document.getElementById('original-rev-number').value,
-            engUpdatedRevisionNo: document.getElementById('updated-rev-number').value,
-            engUpdatedRevisionDate: document.getElementById('revision-date').value,
-            engID: sessionStorage.getItem("empID"),
-            engDate: document.getElementById('engineer-date').value
-        };
-
-        // Validate required fields and highlight invalid ones (only 'review-by-engineer' and 'disposition')
-        const requiredFields = ['review-by-engineer', 'disposition'];
-        let formIsValid = true;
-
-        requiredFields.forEach(field => {
-            const input = document.querySelector(`[name="${field}"]`) || document.getElementById(field);
-            if (!input || (!input.value.trim() && !input.checked)) {
-                formIsValid = false;
-                input?.classList.add('error');
-            } else {
-                input?.classList.remove('error');
-            }
-        });
-
-        // If form is invalid, stop form submission
-        if (!formIsValid) {
-            alert('Please fill out all required fields correctly.');
-            return; // Prevent form submission
-        }
-
-        try {
-            const response = await fetch(`/api/engineerForms/${engineeringFormData.engFormID}`, {
-                method: status === "UPDATE" ? 'PUT' : 'POST', // Use PUT if updating
+        if (currentEngFormID) {
+            // If engineering form ID exists, update the existing form
+            const response = await fetch(`/api/engineerForms/${currentEngFormID}`, {
+                method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(engineeringFormData)
+                body: JSON.stringify(formData),
             });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            if (response.ok) {
+                alert('Engineering form updated successfully');
+            } else {
+                alert('Error updating engineering form');
             }
+        } else {
+            // If no engineering form ID exists, create a new form
+            const response = await fetch(`/api/engineerForms`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
 
-            const result = await response.json();
-            alert(status === "UPDATE" ? 'Engineering form updated successfully' : 'Engineering form created successfully');
+            if (response.ok) {
+                const newEngForm = await response.json();
+                const newEngFormID = newEngForm.engFormID;
 
-            const ncrFormNo = document.getElementById('ncr-no').value.replace(/\D/g, '');  // Clean NCR form ID
-            await notifyDepartmentManager(ncrFormNo, "Purchasing");
+                const ncrFormID = ncrID;  
+                const updatedNCRData = { engFormID: newEngFormID };
 
-        } catch (error) {
-            console.error('Error creating or updating engineering form:', error);
-            alert('Failed to create or update engineering form. Please try again');
+                // Update the NCR form with the new engineering form ID
+                const updateResponse = await fetch(`/api/ncrForms/${ncrFormID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedNCRData),
+                });
+
+                if (updateResponse.ok) {
+                    alert('Engineering form created and NCR form updated successfully');
+
+                    // Send email only if the form is newly created
+                    const ncrFormNo = document.getElementById('ncr-no').value.replace(/\D/g, '');
+                    await notifyDepartmentManager(ncrFormNo, "Purchasing");
+                } else {
+                    alert('Error updating NCR form with engineering form ID');
+                    console.error('Error updating NCR form:', updateResponse);
+                }
+            } else {
+                alert('Error creating engineering form');
+            }
         }
-    } else if (status === "ERROR") {
-        alert('Unknown error, Please try again and if the issue persists check with administrator');
-    } else if (status === "INCOMPLETE") {
-        alert('Cannot create or update engineering form. Form is incomplete meaning there is no quality rep entry.\nCheck quality representative entry and try again');
-    } else if (status === "INVALID") {
-        alert('Cannot create or update engineering form. NCR number is not valid.');
+    } catch (error) {
+        alert('Error processing the form: ' + error);
+        console.error('Error processing the form:', error);
     }
-}
-
+});
 
 async function notifyDepartmentManager(ncrFormNo, department) {
     const recipient = "andrewdionne09@gmail.com"; 
@@ -479,4 +317,3 @@ Please review and proceed with the necessary actions at your earliest convenienc
         console.error('An unexpected error occurred:', error);
     }
 }
-

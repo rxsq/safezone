@@ -135,13 +135,16 @@ function renderBarChart(data) {
     const labels = Object.keys(dateCounts);
     const values = Object.values(dateCounts);
 
+    // Number of labels to skip for better spacing when the range is wide
+    const skipLabels = Math.max(Math.floor(labels.length / 20), 1); // Adjust the divisor (20) based on your preference
+
     new Chart(ctx, {
         type: 'line',
         data: {
-            labels: labels,
+            labels: labels.filter((label, index) => index % skipLabels === 0), // Skip labels to prevent overlap
             datasets: [{
                 label: "NCR's per Year-Month",
-                data: values,
+                data: values.filter((_, index) => index % skipLabels === 0), // Only show corresponding data for visible labels
                 backgroundColor: '#173451',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1,
@@ -153,6 +156,11 @@ function renderBarChart(data) {
                     title: {
                         display: true,
                         text: 'Year-Month',
+                    },
+                    ticks: {
+                        autoSkip: true, // Automatically skip labels if necessary
+                        maxRotation: 45, // Rotate labels for better readability
+                        minRotation: 45,
                     },
                 },
                 y: {
@@ -213,13 +221,16 @@ async function renderSupplierChart(data) {
     const labels = Object.keys(supplierCounts); // Supplier names
     const values = Object.values(supplierCounts); // NCR counts per supplier
 
+    // Number of labels to skip for better spacing when there are too many
+    const skipLabels = Math.max(Math.floor(labels.length / 20), 1); // Adjust the divisor (20) based on your preference
+
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: labels,
+            labels: labels.filter((label, index) => index % skipLabels === 0), // Skip labels to prevent overlap
             datasets: [{
                 label: "NCR's per Supplier",
-                data: values,
+                data: values.filter((_, index) => index % skipLabels === 0), // Only show corresponding data for visible labels
                 backgroundColor: '#173451',
                 borderColor: 'rgba(255, 171, 0, 1)',
                 borderWidth: 1,
@@ -234,7 +245,13 @@ async function renderSupplierChart(data) {
                     },
                     ticks: {
                         autoSkip: false, // Display all supplier names on the x-axis
-                    }
+                        maxRotation: 45, // Rotate labels to prevent overlap
+                        minRotation: 45,
+                    },
+                    // To prevent label overlap in case of long names, adjust this option
+                    grid: {
+                        display: false, // Hide grid lines if they're interfering with label visibility
+                    },
                 },
                 y: {
                     beginAtZero: true,
@@ -269,6 +286,7 @@ function viewNCR(ncrFormID){
 function editNCR(ncrFormID){
     const mode = 'edit'
     window.location.href = `edit-ncr.html?ncrFormID=${ncrFormID}`;
+    sessionStorage.setItem("mode", "edit");
     populateNCRInputs(ncrFormID);
 }
 
@@ -422,6 +440,9 @@ document.addEventListener('DOMContentLoaded', function(){
     newNCRButton.addEventListener('click', function() {
         window.location.href = 'non-conformance-report.html?';
     });
+
+    // Default create mode
+    sessionStorage.setItem("mode", "create");
 });
 
 
