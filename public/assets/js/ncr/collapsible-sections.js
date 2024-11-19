@@ -1,3 +1,4 @@
+// Function which allows for collapsing sections
 document.querySelectorAll('.collapsible').forEach((legend, index) => {
     const sectionId = legend.id.replace('legend-', 'section-');
     const section = document.getElementById(sectionId);

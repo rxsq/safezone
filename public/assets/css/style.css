@@ -77,6 +77,11 @@ body {
   transition: all 0.5s ease;
 }
 
+.error {
+  box-shadow: 0 0 5px 2px rgba(255, 0, 0, 0.5);
+  border: 1px solid #d9534f;
+}
+
 .sidebar.collapsed ul {
   display: flex; 
   flex-direction: column; 

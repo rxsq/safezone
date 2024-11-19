@@ -1,4 +1,42 @@
-// Bootstrap toggle for tooltips
+const filterBtn = document.getElementById('filter-btn');
+const resetBtn = document.getElementById('reset-filter-btn');
+
+const supplierSelect = document.getElementById('supplier-name');
+const productSelect = document.getElementById('po-prod-no');
+const statusSelect = document.getElementById('status');
+const issueDatePicker = document.getElementById('filterIssueDate');
+
+// Event listener for filter button
+// filterBtn.addEventListener('click', function(){
+    
+// });
+
+// //Event listener for reset button
+// resetBtn.addEventListener('click', function(){
+//     supplierSelect.value = "-1";
+    
+//     resetProductSelect();
+
+//     statusSelect.value = "active";
+//     issueDatePicker.value = "";
+// });
+
+function resetProductSelect(){
+    while (productSelect.options.length) {
+        productSelect.remove(0);
+    }
+
+    const defaultOption = document.createElement('option');
+    defaultOption.value = "-1";  
+    defaultOption.textContent = "Select a Product";  
+    defaultOption.selected = true; 
+    //defaultOption.disabled = true;   
+
+    productSelect.appendChild(defaultOption);
+
+}
+
+//bootstrap tooltip 
 function tooltip() {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.forEach(function (tooltipTriggerEl) {
@@ -6,56 +44,53 @@ function tooltip() {
     });
 }
 
-// Fetch from NCR Forms API
-function fetchNcrForms(){
-    fetch('api/ncrForms')
+function fetchNcrForms() {
+    fetch('/api/ncrForms')
         .then(response => {
-            if(!response.ok){
-                throw new Error('Network response was not ok.');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
             return response.json();
         })
         .then(data => {
+            //console.log(data);
             populateRecentNcrTable(data);
             updateMetrics(data);
-            renderBarChart(data);
-            renderSupplierChart(data);
+            renderBarChart(data); // Render chart with the fetched data
             tooltip();
+
         })
-        .catch(error => console.error('Error fetching NCR forms:', error))
+        .catch(error => console.error('Error fetching NCR forms:', error));
+
 }
 
-// Function to update metrics on page
-function updateMetrics(data){
-    // Parse through data to get metric values
+function updateMetrics(data) {
     const total = data.length;
-    const active = data.filter(ncr => ncr.ncrStatusID === 1).length;
-    const inactive = data.filter(ncr => ncr.ncrStatusID === 2).length;
+    const active = data.filter(ncr => ncr.ncrStatusID == "OPEN").length;
+    const inactive = data.filter(ncr => ncr.ncrStatusID == "CLSD").length;
 
-    // Set metrics
     document.getElementById('metricTotal').innerText = total;
     document.getElementById('metricActive').innerText = active;
     document.getElementById('metricInactive').innerText = inactive;
-}
 
-// Function to populate recent NCR table
+};
+
+// Function to populate recent NCR table with data
 async function populateRecentNcrTable(data){
     // Get tablebody element & clear innerHTML
     const tableBody = document.getElementById('tbodyRecentNCR');
     tableBody.innerHTML = '';
-
-    data.sort((a,b) => new Date(b.ncrIssueDate) - new Date(a.ncrIssueDate));
 
     let openRecords = 0; 
 
     // Loop which iterates over all items in data array
     for(let i = 0; i < data.length; i ++){
         // If 5 open records are showing, then break out of loop
-        if(openRecords === 5) break;
+        //if(openRecords === 5) break;
 
         let ncr = data[i];
 
-        const row = document.createElement('tr'); // Create new row element to be used in the table
+        const row = document.createElement('tr'); 
 
         let ncrStatus;
         // If status is open, incriment openRecords
@@ -97,184 +132,6 @@ async function populateRecentNcrTable(data){
     }
 }
 
-// DOMContentLoaded EventListener
-document.addEventListener('DOMContentLoaded', function () {
-    tooltip();
-});
-
-// Groups NCR records by issue date
-function groupByIssueDate(data) {
-    const dateCounts = {};
-
-    data.forEach(ncr => {
-        const issueDate = ncr.ncrIssueDate.substring(0, 10); // Format: YYYY-MM-DD
-        dateCounts[issueDate] = (dateCounts[issueDate] || 0) + 1;
-    });
-
-    return dateCounts;
-}
-
-//Groups NCR records by YYYY-MM
-function groupByYearMonth(data) {
-    const dateCounts = {};
-
-    data.forEach(ncr => {
-        // Extract "YYYY-MM" from "YYYY-MM-DD" format
-        const issueYearMonth = ncr.ncrIssueDate.substring(0, 7); // e.g., "2024-11"
-        dateCounts[issueYearMonth] = (dateCounts[issueYearMonth] || 0) + 1;
-    });
-
-    return dateCounts;
-}    
-// NCR chart 
-function renderBarChart(data) {
-    const ctx = document.getElementById('issueDateChart').getContext('2d');
-
-    // Get the grouped data by year-month
-    const dateCounts = groupByYearMonth(data);
-    const labels = Object.keys(dateCounts);
-    const values = Object.values(dateCounts);
-
-    // Number of labels to skip for better spacing when the range is wide
-    const skipLabels = Math.max(Math.floor(labels.length / 20), 1); // Adjust the divisor (20) based on your preference
-
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels.filter((label, index) => index % skipLabels === 0), // Skip labels to prevent overlap
-            datasets: [{
-                label: "NCR's per Year-Month",
-                data: values.filter((_, index) => index % skipLabels === 0), // Only show corresponding data for visible labels
-                backgroundColor: '#173451',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
-            }],
-        },
-        options: {
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Year-Month',
-                    },
-                    ticks: {
-                        autoSkip: true, // Automatically skip labels if necessary
-                        maxRotation: 45, // Rotate labels for better readability
-                        minRotation: 45,
-                    },
-                },
-                y: {
-                    beginAtZero: true, // Ensure Y-axis starts at 0
-                    title: {
-                        display: true,
-                        text: "Number of NCR",
-                    },
-                    ticks: {
-                        stepSize: 1, // Count NCR forms in whole numbers (0, 1, 2, etc.)
-                    },
-                },
-            },
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                },
-            },
-        },
-    });
-}
-
-//Groups NCR's by supplier
-async function groupBySupplier(data) {
-    const supplierCounts = {};
-
-    // Iterate over each NCR record to count by supplier name
-    for (let ncr of data) {
-        const prodID = ncr.prodID;
-        
-        // Fetch the product based on prodID
-        const productResponse = await fetch(`/api/products/${prodID}`);
-        const productData = await productResponse.json();
-
-        const supID = productData.supID;
-
-        // Fetch the supplier based on supID
-        const supplierResponse = await fetch(`/api/suppliers/${supID}`);
-        const supplierData = await supplierResponse.json();
-
-        const supplierName = supplierData.supName || 'Unknown'; // Get the supplier name or default to 'Unknown'
-
-        // Count NCRs per supplier
-        supplierCounts[supplierName] = (supplierCounts[supplierName] || 0) + 1;
-    }
-
-    return supplierCounts; // Returns an object like { "Supplier Name 1": count, "Supplier Name 2": count, ... }
-}
-// Supplier chart
-async function renderSupplierChart(data) {
-    const ctx = document.getElementById('supplierChart').getContext('2d');
-
-    // Group NCRs by supplier name using groupBySupplier function
-    const supplierCounts = await groupBySupplier(data); // Await the asynchronous grouping function
-
-    const labels = Object.keys(supplierCounts); // Supplier names
-    const values = Object.values(supplierCounts); // NCR counts per supplier
-
-    // Number of labels to skip for better spacing when there are too many
-    const skipLabels = Math.max(Math.floor(labels.length / 20), 1); // Adjust the divisor (20) based on your preference
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels.filter((label, index) => index % skipLabels === 0), // Skip labels to prevent overlap
-            datasets: [{
-                label: "NCR's per Supplier",
-                data: values.filter((_, index) => index % skipLabels === 0), // Only show corresponding data for visible labels
-                backgroundColor: '#173451',
-                borderColor: 'rgba(255, 171, 0, 1)',
-                borderWidth: 1,
-            }],
-        },
-        options: {
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Supplier Name',
-                    },
-                    ticks: {
-                        autoSkip: false, // Display all supplier names on the x-axis
-                        maxRotation: 45, // Rotate labels to prevent overlap
-                        minRotation: 45,
-                    },
-                    // To prevent label overlap in case of long names, adjust this option
-                    grid: {
-                        display: false, // Hide grid lines if they're interfering with label visibility
-                    },
-                },
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: "Number of NCR",
-                    },
-                    ticks: {
-                        stepSize: 1, // Use whole numbers for NCR count
-                    },
-                },
-            },
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                },
-            },
-        },
-    });
-}
-
 // Viewing NCR's
 function viewNCR(ncrFormID){
     const mode = 'view';
@@ -286,7 +143,6 @@ function viewNCR(ncrFormID){
 function editNCR(ncrFormID){
     const mode = 'edit'
     window.location.href = `edit-ncr.html?ncrFormID=${ncrFormID}`;
-    sessionStorage.setItem("mode", "edit");
     populateNCRInputs(ncrFormID);
 }
 
@@ -368,6 +224,7 @@ function printNCR(ncrFormID) {
         });
 }
 
+
 // Archive NCR 
 function archiveNCR(ncrFormID, ncrFormNo) {
     fetch(`/api/ncrForms/${ncrFormID}`)
@@ -430,20 +287,51 @@ function archiveNCR(ncrFormID, ncrFormNo) {
         });
 }
 
+function populateSupplierDropDownLists(suppliers) {
+    const supplierDropDown = document.getElementById('editSupplier');
 
-//DOMContentLoaded Event Listener
-document.addEventListener('DOMContentLoaded', function(){
-    fetchNcrForms();
+    if (!supplierDropDown) {
+        console.error('Dropdown element not found on the page');
+        return;
+    }
 
-    const newNCRButton = document.getElementById('new-ncr-btn');
+    if (!Array.isArray(suppliers)) {
+        console.error('Suppliers is not an array:', suppliers);
+        return;
+    }
 
-    newNCRButton.addEventListener('click', function() {
-        window.location.href = 'non-conformance-report.html?';
+    supplierDropDown.innerHTML = '';
+
+    suppliers.forEach(supplier => {
+        const option = document.createElement('option');
+        option.value = supplier.supID;
+        option.textContent = supplier.supName;
+        supplierDropDown.appendChild(option);
     });
 
-    // Default create mode
-    sessionStorage.setItem("mode", "create");
-});
+    supplierDropDown.addEventListener('change', function () {
+        const selectedSupplierID = this.value;
+        fetch('/api/products')
+            .then(response => response.json())
+            .then(products => {
+                populateProductDropDownLists(products, selectedSupplierID);
+            });
+    });
+}
 
 
+function populateProductDropDownLists(products, selectedSupplierID) {
+    const productDropDown = document.getElementById('editProduct');
+    productDropDown.innerHTML = '';
 
+    const filteredProducts = products.filter(product => product.supID == selectedSupplierID);
+
+    filteredProducts.forEach(product => {
+        const option = document.createElement('option');
+        option.value = product.prodID;
+        option.textContent = product.prodName;
+        productDropDown.appendChild(option);
+    });
+}
+
+fetchNcrForms();

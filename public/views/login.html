@@ -122,8 +122,8 @@
 
                             // Store user details in sessionStorage
                             sessionStorage.setItem('userRole', roleDescription); // Store role description
-                            sessionStorage.setItem('userName', `${user.empFirstName} ${user.empLastName}`); // Store full name
-
+                            sessionStorage.setItem('userName', `${user.empFirst} ${user.empLast}`); // Store full name
+                            sessionStorage.setItem('empID', `${user.empID}`) // Store ID
                             // Redirect to the desired page after successful login
                             window.location.href = 'index.html'; // Change to your desired page
                         })
