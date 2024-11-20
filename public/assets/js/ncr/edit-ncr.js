@@ -268,6 +268,8 @@ submitEngBtn.addEventListener('click', async function(event) {
                 if (updateResponse.ok) {
                     alert('Engineering form created and NCR form updated successfully');
 
+                    location.reload();
+
                     // Send email only if the form is newly created
                     const ncrFormNo = document.getElementById('ncr-no').value.replace(/\D/g, '');
                     await notifyDepartmentManager(ncrFormNo, "Purchasing");

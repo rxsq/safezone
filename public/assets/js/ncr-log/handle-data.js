@@ -143,6 +143,7 @@ function viewNCR(ncrFormID){
 function editNCR(ncrFormID){
     const mode = 'edit'
     window.location.href = `edit-ncr.html?ncrFormID=${ncrFormID}`;
+    sessionStorage.setItem("mode", "edit");
     populateNCRInputs(ncrFormID);
 }
 
