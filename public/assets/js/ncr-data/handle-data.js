@@ -11,9 +11,9 @@ function fetchNcrForms() {
             return response.json();
         })
         .then(data => {
-            updateMetrics(data);
-            renderBarChart(data); // Render chart with the fetched data
-            renderSupplierChart(data);
+            updateMetrics(data.items);
+            renderBarChart(data.items); // Render chart with the fetched data
+            renderSupplierChart(data.items);
 
         })
         .catch(error => console.error('Error fetching NCR forms:', error));

@@ -43,7 +43,14 @@ async function generateCode(){
         }
 
         const data = await response.json();
-        return data.length + 1;
+
+        const currentYear = new Date().getFullYear();
+        
+        const filteredItems = data.items.filter(ncrData => {
+            const issueYear = new Date(ncrData.ncrIssueDate).getFullYear();
+            return issueYear === currentYear;
+        });
+        return filteredItems.length + 1;
     }
     catch(error){
         console.error('Error fetching NCR forms to create new NCR number:', error);

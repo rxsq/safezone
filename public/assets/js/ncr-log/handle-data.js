@@ -1,27 +1,8 @@
-const filterBtn = document.getElementById('filter-btn');
-const resetBtn = document.getElementById('reset-filter-btn');
+const pageSize = 10;
+let currentPage = 1;
 
-const supplierSelect = document.getElementById('supplier-name');
-const productSelect = document.getElementById('po-prod-no');
-const statusSelect = document.getElementById('status');
-const issueDatePicker = document.getElementById('filterIssueDate');
-
-// Event listener for filter button
-// filterBtn.addEventListener('click', function(){
-    
-// });
-
-// //Event listener for reset button
-// resetBtn.addEventListener('click', function(){
-//     supplierSelect.value = "-1";
-    
-//     resetProductSelect();
-
-//     statusSelect.value = "active";
-//     issueDatePicker.value = "";
-// });
-
-function resetProductSelect(){
+function resetProductSelect() {
+    const productSelect = document.getElementById('editProduct');
     while (productSelect.options.length) {
         productSelect.remove(0);
     }
@@ -30,13 +11,11 @@ function resetProductSelect(){
     defaultOption.value = "-1";  
     defaultOption.textContent = "Select a Product";  
     defaultOption.selected = true; 
-    //defaultOption.disabled = true;   
 
     productSelect.appendChild(defaultOption);
-
 }
 
-//bootstrap tooltip 
+// bootstrap tooltip 
 function tooltip() {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.forEach(function (tooltipTriggerEl) {
@@ -44,8 +23,21 @@ function tooltip() {
     });
 }
 
-function fetchNcrForms() {
-    fetch('/api/ncrForms')
+const urlParams = new URLSearchParams(window.location.search);
+const savedSupplier = urlParams.get('supplier');
+const savedStage = urlParams.get('stage');
+const savedIssueDate = urlParams.get('issueDate');
+
+function fetchNcrForms(page = 1, pagelimitSize = 5) {
+    const paginationParams = `page=${page}&limit=${pagelimitSize}`;
+    let url = `/api/ncrForms?${paginationParams}`;
+
+    // Append filters to the URL if they exist
+    if (savedSupplier) url += `&supplier=${savedSupplier}`;
+    if (savedStage) url += `&stage=${savedStage}`;
+    if (savedIssueDate) url += `&issueDate=${savedIssueDate}`;
+
+    fetch(url)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -53,16 +45,105 @@ function fetchNcrForms() {
             return response.json();
         })
         .then(data => {
-            //console.log(data);
-            populateRecentNcrTable(data);
-            updateMetrics(data);
-            renderBarChart(data); // Render chart with the fetched data
-            tooltip();
+            if (data.status === "success") {
+                // Update page number
+                document.getElementById('page-number').textContent = `Page ${data.currentPage}`;
+                
+                populateRecentNcrTable(data.items);
+                tooltip();
 
+                renderPaginationControls(data); // Modified to handle URL params
+            } else {
+                console.error('Failed fetching data for pagination');
+            }
         })
         .catch(error => console.error('Error fetching NCR forms:', error));
-
 }
+
+// Function to render pagination controls
+function renderPaginationControls(data) {
+    const paginationContainer = document.getElementById('pagination-controls');
+    paginationContainer.innerHTML = ''; // Clear previous pagination buttons
+
+    const currentPage = data.currentPage;
+    const totalPages = data.totalPages;
+
+    const maxButtons = 3; // Maximum number of page buttons to show at once
+    const pagesToShow = Math.min(maxButtons, totalPages); // Make sure we don't exceed total pages
+    
+    let startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
+    let endPage = Math.min(totalPages, startPage + pagesToShow - 1);
+
+    if (endPage === totalPages) {
+        startPage = Math.max(1, totalPages - pagesToShow + 1);
+    }
+
+    // Create 'First' and 'Prev' buttons
+    createNavigationButton(paginationContainer, 'First', 1, currentPage === 1);
+    createNavigationButton(paginationContainer, 'Prev', currentPage - 1, currentPage === 1);
+
+    // Create page number buttons
+    for (let i = startPage; i <= endPage; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.onclick = () => fetchNcrForms(i);
+        pageButton.disabled = i === currentPage; // Disable the current page button
+        paginationContainer.appendChild(pageButton);
+    }
+
+    // Show "..." button if there are more pages after the last displayed page
+    if (endPage < totalPages) {
+        const ellipsisButton = document.createElement('button');
+        ellipsisButton.textContent = '...';
+        ellipsisButton.onclick = () => showPageInput(currentPage, totalPages);
+        paginationContainer.appendChild(ellipsisButton);
+    }
+
+    // Create 'Next' and 'Last' buttons
+    createNavigationButton(paginationContainer, 'Next', currentPage + 1, currentPage === totalPages);
+    createNavigationButton(paginationContainer, 'Last', totalPages, currentPage === totalPages);
+}
+
+// Function to create navigation buttons
+function createNavigationButton(container, text, page, isDisabled) {
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.onclick = () => fetchNcrForms(page);
+    button.disabled = isDisabled;
+    container.appendChild(button);
+}
+
+// Function to show page input 
+function showPageInput(currentPage, totalPages) {
+    const paginationContainer = document.getElementById('pagination-controls');
+
+    // Input field
+    const pageInput = document.createElement('input');
+    pageInput.type = 'number';
+    pageInput.value = currentPage;
+    pageInput.min = 1;
+    pageInput.max = totalPages;
+    pageInput.classList.add('page-input');
+
+    // Create the submit button
+    const submitButton = document.createElement('button');
+    submitButton.textContent = 'Go';
+    submitButton.onclick = () => {
+        const inputPage = parseInt(pageInput.value);
+        if (inputPage >= 1 && inputPage <= totalPages) {
+            fetchNcrForms(inputPage);
+        } else {
+            alert('Please enter a valid page number');
+        }
+    };
+
+    // Clear pagination and show the input field
+    paginationContainer.innerHTML = '';
+    paginationContainer.appendChild(pageInput);
+    paginationContainer.appendChild(submitButton);
+    pageInput.style.display = 'inline-block'; // Show the input
+}
+
 
 function updateMetrics(data) {
     const total = data.length;
@@ -72,34 +153,26 @@ function updateMetrics(data) {
     document.getElementById('metricTotal').innerText = total;
     document.getElementById('metricActive').innerText = active;
     document.getElementById('metricInactive').innerText = inactive;
-
-};
+}
 
 // Function to populate recent NCR table with data
-async function populateRecentNcrTable(data){
-    // Get tablebody element & clear innerHTML
+async function populateRecentNcrTable(data) {
     const tableBody = document.getElementById('tbodyRecentNCR');
     tableBody.innerHTML = '';
 
-    let openRecords = 0; 
+    let openRecords = 0;
 
-    // Loop which iterates over all items in data array
-    for(let i = 0; i < data.length; i ++){
-        // If 5 open records are showing, then break out of loop
-        //if(openRecords === 5) break;
-
+    for (let i = 0; i < data.length; i++) {
         let ncr = data[i];
 
         const row = document.createElement('tr'); 
 
         let ncrStatus;
-        // If status is open, incriment openRecords
-        if(ncr.ncrStatusID === 1){
+        if (ncr.ncrStatusID === 1) {
             ncrStatus = "Open";
             openRecords++;
         } else continue;
 
-        // Fetch supplier name 
         const productResponse = await fetch(`/api/products/${ncr.prodID}`);
         const productData = await productResponse.json();
 
@@ -108,12 +181,11 @@ async function populateRecentNcrTable(data){
 
         const supplierName = supplierData.supName;
 
-        // Generating table row
         row.innerHTML = `
             <td>${ncr.ncrFormNo}</td>
             <td>${supplierName}</td>
             <td>${ncr.ncrIssueDate.substring(0, 10)}</td>
-            <td>${ncrStatus}</td>
+            <td>${ncr.ncrStage}</td>
             <td class="action-buttons-td">
                 <button class="edit-btn" onclick="viewNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View NCR">
                     <i class="bi bi-eye"></i>
@@ -132,72 +204,38 @@ async function populateRecentNcrTable(data){
     }
 }
 
-// Viewing NCR's
-function viewNCR(ncrFormID){
-    const mode = 'view';
+function viewNCR(ncrFormID) {
     sessionStorage.setItem("mode", "view");
     window.location.href = `non-conformance-report.html?ncrFormID=${ncrFormID}`;
 }
 
-// Editing NCR's
-function editNCR(ncrFormID){
-    const mode = 'edit'
-    window.location.href = `edit-ncr.html?ncrFormID=${ncrFormID}`;
+function editNCR(ncrFormID) {
     sessionStorage.setItem("mode", "edit");
+    window.location.href = `edit-ncr.html?ncrFormID=${ncrFormID}`;
     populateNCRInputs(ncrFormID);
 }
 
-// Printing NCR to PDF
 function printNCR(ncrFormID) {
     const isConfirmed = confirm('Are you sure you want to generate and print the NCR report?');
     if (!isConfirmed) return;
 
-    console.log(`Fetching NCR form with ID: ${ncrFormID}`);
-
     fetch(`/api/ncrForms/${ncrFormID}`)
         .then(response => {
-            console.log('Received response for NCR form:', response);
             if (!response.ok) throw new Error('Failed to fetch NCR form');
             return response.json();
         })
         .then(ncrData => {
-            console.log('NCR data received:', ncrData);
             if (!ncrData || typeof ncrData !== 'object') throw new Error('Invalid NCR data received');
 
-            // Fetch related data
-            const productFetch = fetch(`/api/products/${ncrData.prodID}`).then(res => res.json()); // Fetch product details
-            const qualityFetch = fetch(`/api/qualityForms/${ncrData.qualFormID}`).then(res => res.json()); // Fetch quality form data
-            const engineeringFetch = ncrData.engFormID ? fetch(`/api/engineerForms/${ncrData.engFormID}`).then(res => res.json()) : Promise.resolve(null); // Fetch engineering data if available
-            const purchasingFetch = ncrData.purFormID ? fetch(`/api/purchasingForms/${ncrData.purFormID}`).then(res => res.json()) : Promise.resolve(null);  // Fetch purchasing data if available
+            const productFetch = fetch(`/api/products/${ncrData.prodID}`).then(res => res.json());
+            const qualityFetch = fetch(`/api/qualityForms/${ncrData.qualFormID}`).then(res => res.json());
+            const engineeringFetch = ncrData.engFormID ? fetch(`/api/engineerForms/${ncrData.engFormID}`).then(res => res.json()) : Promise.resolve(null);
+            const purchasingFetch = ncrData.purFormID ? fetch(`/api/purchasingForms/${ncrData.purFormID}`).then(res => res.json()) : Promise.resolve(null);
 
             return Promise.all([ncrData, productFetch, qualityFetch, engineeringFetch, purchasingFetch]);
         })
         .then(([ncrData, productData, qualityData, engineeringData, purchasingData]) => {
-            console.log('All data fetched:', { ncrData, productData, qualityData, engineeringData, purchasingData });
-
-            // Use `supID` from `productData` to fetch supplier data
-            return Promise.all([
-                Promise.resolve(ncrData),
-                Promise.resolve(productData),
-                fetch(`/api/suppliers/${productData.supID}`).then(res => res.json()), // Fetch supplier data
-                Promise.resolve(qualityData),
-                Promise.resolve(engineeringData),
-                Promise.resolve(purchasingData),
-            ]);
-        })
-        .then(([ncrData, productData, supplierData, qualityData, engineeringData, purchasingData]) => {
-            console.log('Supplier data fetched:', supplierData);
-            
-            const pdfData = {
-                ncrData,
-                productData,
-                supplierData,
-                qualityData,
-                engineeringData,
-                purchasingData,
-            };
-
-            console.log('Sending data to generate PDF:', pdfData);
+            const pdfData = { ncrData, productData, supplierData, qualityData, engineeringData, purchasingData };
 
             return fetch('/api/ncrPdfRoute/generate-ncr-report', {
                 method: 'POST',
@@ -206,12 +244,10 @@ function printNCR(ncrFormID) {
             });
         })
         .then(response => {
-            console.log('Received response for PDF generation:', response);
             if (!response.ok) throw new Error('Failed to generate PDF');
             return response.blob();
         })
         .then(blob => {
-            console.log('Received PDF blob');
             const url = window.URL.createObjectURL(blob);
             const downloadLink = document.createElement('a');
             downloadLink.href = url;
@@ -226,113 +262,18 @@ function printNCR(ncrFormID) {
 }
 
 
-// Archive NCR 
-function archiveNCR(ncrFormID, ncrFormNo) {
-    fetch(`/api/ncrForms/${ncrFormID}`)
-        .then(response => {
-            if (!response.ok) throw new Error('Failed to fetch NCR form');
-            return response.json();
-        })
-        .then(data => {
-            const { engFormID, purFormID, ncrStage } = data;
-
-            if (ncrStage === 'ARC') {
-                alert('This NCR form is already archived.');
-                return;
-            }
-
-            // Check for incomplete fields
-            const incompleteFields = [];
-            if (!engFormID) incompleteFields.push('Engineering Form');
-            //if (!purFormID) incompleteFields.push('Purchasing Form');
-
-            let confirmationMessage = `Are you sure you want to archive this NCR form?`;
-            if (incompleteFields.length > 0) {
-                confirmationMessage += `\nThe following form(s) are not completed: ${incompleteFields.join(', ')}.`;
-            }
-
-            // Ask for confirmation
-            if (!confirm(confirmationMessage)) {
-                return;
-            }
-
-            // Proceed to archive the form
-            fetch(`/api/ncrForms/${ncrFormNo}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    ncrStage: 'ARC',
-                    ncrStatusID: 2, 
-                }),
-            })
-                .then(response => {
-                    if (response.ok) {
-                        alert('NCR form archived successfully!');
-                        window.location.reload(); // Refresh the page
-                    } else {
-                        return response.json().then(error => {
-                            throw new Error(error.message || 'Failed to archive NCR form');
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error archiving NCR form:', error);
-                    alert(`Error: ${error.message}`);
-                });
-        })
-        .catch(error => {
-            console.error('Error fetching NCR form:', error);
-            alert(`Error: ${error.message}`);
-        });
-}
-
-function populateSupplierDropDownLists(suppliers) {
-    const supplierDropDown = document.getElementById('editSupplier');
-
-    if (!supplierDropDown) {
-        console.error('Dropdown element not found on the page');
-        return;
+function changePage(direction) {
+    if (direction === 'next') {
+        currentPage++;
+    } else if (direction === 'prev') {
+        currentPage--;
+    } else if (direction === 'first') {
+        currentPage = 1;
+    } else if (direction === 'last') {
+        currentPage = totalPages;
     }
 
-    if (!Array.isArray(suppliers)) {
-        console.error('Suppliers is not an array:', suppliers);
-        return;
-    }
-
-    supplierDropDown.innerHTML = '';
-
-    suppliers.forEach(supplier => {
-        const option = document.createElement('option');
-        option.value = supplier.supID;
-        option.textContent = supplier.supName;
-        supplierDropDown.appendChild(option);
-    });
-
-    supplierDropDown.addEventListener('change', function () {
-        const selectedSupplierID = this.value;
-        fetch('/api/products')
-            .then(response => response.json())
-            .then(products => {
-                populateProductDropDownLists(products, selectedSupplierID);
-            });
-    });
+    fetchNcrForms(currentPage);
 }
 
-
-function populateProductDropDownLists(products, selectedSupplierID) {
-    const productDropDown = document.getElementById('editProduct');
-    productDropDown.innerHTML = '';
-
-    const filteredProducts = products.filter(product => product.supID == selectedSupplierID);
-
-    filteredProducts.forEach(product => {
-        const option = document.createElement('option');
-        option.value = product.prodID;
-        option.textContent = product.prodName;
-        productDropDown.appendChild(option);
-    });
-}
-
-fetchNcrForms();
+fetchNcrForms(); 

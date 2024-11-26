@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const { LIMIT_LENGTH } = require('sqlite3');
+const { read } = require('pdfkit');
 const router = express.Router();
 
 // Path to the JSON file
@@ -17,14 +19,76 @@ const writeJsonFile = (file, data) => {
     fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
 };
 
+function paginatedResults(model){
+    return (req, res, next) => {
+        const page = parseInt(req.query.page);
+        const limit = parseInt(req.query.limit);
+
+        const startIndex = (page -1) * limit;
+        const endIndex = page * limit;
+
+        const results = {}
+
+        if(endIndex < model.length){
+            results.next = {
+                page: page + 1,
+                limit: limit
+            }
+        }
+
+        if(startIndex > 0){
+            results.previous = {
+                page: page - 1,
+                limit: limit
+            }
+        }
+
+        results.results = model.slice(startIndex, endIndex);
+
+        res.paginatedResults = results;
+        next();
+    }
+}
+
 // GET all NCR forms
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
     try {
-        const data = readJsonFile(filename);
-        res.json(data);
+        const data = readJsonFile(filename); // Reading the data file
+
+        // If no query parameters are present, return all records
+        if (Object.keys(req.query).length === 0) {
+            return res.json({
+                status: 'success',
+                totalRecords: data.length,
+                totalPages: Math.ceil(data.length / 10), // Assuming a default limit of 10 per page
+                currentPage: 1, // Since we're returning all records, it's page 1
+                items: data,
+            });
+        }
+
+        // Otherwise, apply pagination middleware
+        res.locals.data = data; // Save data to res.locals to use later in the response handler
+        paginatedResults(data)(req, res, next);
     } catch (error) {
         res.status(500).json({ status: 'error', message: 'Failed to read JSON file' });
     }
+}, (req, res) => {
+    const data = res.locals.data; // Access data from res.locals
+    const totalRecords = data.length;
+    const limit = parseInt(req.query.limit) || 10; // Default limit if not provided
+    const totalPages = Math.ceil(totalRecords / limit);
+    const currentPage = parseInt(req.query.page) || 1;
+
+    // Send paginated results with additional metadata
+    res.json({
+        status: 'success',
+        totalRecords: totalRecords,
+        totalPages: totalPages,
+        currentPage: currentPage,
+        items: res.paginatedResults.results,
+        next: res.paginatedResults.next,
+        previous: res.paginatedResults.previous
+    });
 });
 
 // GET a specific NCR form by ncrFormID

@@ -41,31 +41,31 @@
                 </a>
             </li>
             <li>
-                <a href="ncr-log.html" data-bs-toggle="tooltip" title="NCR Log">
+                <a href="ncr-log.html" data-bs-toggle="tooltip" title="NCR Log" id="ncr-log-nav">
                     <i class="bi bi-card-list"></i>
                     <span class="links-name">NCR Log</span>
                 </a>
             </li>
             <li>
-                <a href="ncr-data.html" data-bs-toggle="tooltip" title="NCT Data">
+                <a href="ncr-data.html" data-bs-toggle="tooltip" title="NCR Data" id="ncr-data-nav">
                     <i class="bi bi-bar-chart"></i>
                     <span class="links-name">NCR Data</span>
                 </a>
             </li>
             <li>
-                <a href="product.html" data-bs-toggle="tooltip" title="Products">
+                <a href="product.html" data-bs-toggle="tooltip" title="Products" id="products-nav">
                     <i class="bi bi-box-seam"></i>
                     <span class="links-name">Products</span>
                 </a>
             </li>
             <li>
-                <a href="Employee.html" data-bs-toggle="tooltip" title="Employees">
+                <a href="Employee.html" data-bs-toggle="tooltip" title="Employees" id="employees-nav">
                     <i class="bi bi-people"></i>
                     <span class="links-name">Employees</span>
                 </a>
             </li>
             <li>
-                <a href="supplier.html" data-bs-toggle="tooltip" title="Supplier">
+                <a href="supplier.html" data-bs-toggle="tooltip" title="Supplier" id="suppliers-nav">
                     <i class="bi bi-truck"></i>
                     <span class="links-name">Suppliers</span>
                 </a>
@@ -92,11 +92,11 @@
                     <button class="new-ncr-btn" onclick="location.href='non-conformance-report.html'" id="new-ncr-btn">+
                         New NCR</button>
                     <button class="export-data-btn">Export Data</button>
-                    <select class="date-range-selector">
+                    <!--<select class="date-range-selector">
                         <option value="7-days">Last 7 Days</option>
                         <option value="30-days">Last 30 Days</option>
                         <option value="custom">Custom Range</option>
-                    </select>
+                    </select>-->
                 </div>
             </header>
 
@@ -142,10 +142,10 @@
                 <table class="table table-striped table-hover" id="ncrRecentTable">
                     <thead>
                         <tr>
-                            <th><a href="#">NCR Number</a></th>
+                            <th><a href="#">NCR No</a></th>
                             <th><a href="#">Supplier</a></th>
                             <th><a href="#">Issue Date</a></th>
-                            <th><a href="#">Status</a></th>
+                            <th><a href="#">Stage</a></th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>

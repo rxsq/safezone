@@ -90,16 +90,26 @@
                 <div class="actions">
                     <button class="new-ncr-btn" onclick="location.href='non-conformance-report.html'">+ New NCR</button>
                     <button class="export-data-btn">Export Data</button>
-                    <select class="date-range-selector">
-                        <option value="7-days">Last 7 Days</option>
-                        <option value="30-days">Last 30 Days</option>
-                        <option value="custom">Custom Range</option>
-                    </select>
+                    <div class="date-range-container">
+                        <select class="date-range-selector" id="date-range-selector">
+                            <option value="" selected disabled>Date Range</option>
+                            <option value="7-days">Last 7 Days</option>
+                            <option value="30-days">Last 30 Days</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                        <div id="custom-range-container" style="display: none;">
+                            <label for="start-date">Start Date:</label>
+                            <input type="date" id="start-date">
+                            <label for="end-date">End Date:</label>
+                            <input type="date" id="end-date">
+                            <button id="submit-custom-date" class="filter-btn">Filter Date Range</button>
+                        </div>
+                    </div>
                 </div>
             </header>
 
             <section class="ncr-trends">
-                <!--<h2>Filter</h2>
+                <h2>Filter</h2>
                  <form id="ncrFilterForm">
                     <div class="two-column">
                         <div class="form-group">
@@ -108,18 +118,19 @@
                                 <option value="-1" disabled selected>Select a Supplier</option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="filterProduct" class="form-label">Product</label>
                             <select id="po-prod-no" name="po-prod-no">
                                 <option value="-1" disabled selected>Select a Product</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="form-group">
-                            <label for="filterStatus" class="form-label">Status</label>
+                            <label for="filterStatus" class="form-label">Stage</label>
                             <select id="status" name="status">
-                                <option value="active">Open</option>
-                                <option value="inactive">Closed</option>
-                                <option value="in-progress">In Progress</option>
+                                <option value="" disabled selected>Select a Stage</option>
+                                <option value="QUA">Quality</option>
+                                <option value="ENG">Engineering</option>
+                                <option value="PUR">Purchasing</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -131,7 +142,7 @@
                         <button type="button" class="filter-btn" id="filter-btn">Apply Filters</button>
                         <button type="reset" class="reset-btn" id="reset-filter-btn">Reset</button>
                     </div>
-                </form> -->
+                </form> 
                 <table class="table table-striped table-hover" id="ncrRecentTable">
                     <thead>
                         <tr>
@@ -140,7 +151,7 @@
                             <th><a href="#">Supplier</a></th>
                             <!-- <th>Defect Description</th> -->
                             <th><a href="#">Issue Date</a></th>
-                            <th><a href="#">Status</a></th>
+                            <th><a href="#">Stage</a></th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -150,7 +161,11 @@
                 </table>
             </section>
 
+            <div id="pagination-controls" class="pagination-container">
 
+            </div>
+            
+            <div id="page-number" class="page-number"></div>
         </div>
 
     </div>
@@ -290,9 +305,10 @@
     </div>
     <script src="../assets/js/main/sidebar.js"></script>
     <script src="../assets/js/ncr-log/handle-data.js"></script>
+    <script src="../assets/js/ncr-log/filter-data.js"></script>
     <script src="../assets/js/main/user-role-handling.js"></script>
     <script src="../assets/js/main/tooltip.js"></script>
-    <script defer src="../assets/js/ncr/populate-form-fields.js"></script>
+    <!-- <script src="../assets/js/ncr/populate-form-fields.js"></script> -->
 </body>
 
 </html>

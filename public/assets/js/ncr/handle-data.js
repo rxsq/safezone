@@ -8,7 +8,7 @@ function tooltip() {
 
 // Fetch from NCR Forms API
 function fetchNcrForms(){
-    fetch('api/ncrForms')
+    fetch('/api/ncrForms')
         .then(response => {
             if(!response.ok){
                 throw new Error('Network response was not ok.');
@@ -16,10 +16,10 @@ function fetchNcrForms(){
             return response.json();
         })
         .then(data => {
-            populateRecentNcrTable(data);
-            updateMetrics(data);
-            renderBarChart(data);
-            renderSupplierChart(data);
+            populateRecentNcrTable(data.items);
+            updateMetrics(data.items);
+            renderBarChart(data.items);
+            renderSupplierChart(data.items);
             tooltip();
         })
         .catch(error => console.error('Error fetching NCR forms:', error))
@@ -78,7 +78,7 @@ async function populateRecentNcrTable(data){
             <td>${ncr.ncrFormNo}</td>
             <td>${supplierName}</td>
             <td>${ncr.ncrIssueDate.substring(0, 10)}</td>
-            <td>${ncrStatus}</td>
+            <td>${ncr.ncrStage}</td>
             <td class="action-buttons-td">
                 <button class="edit-btn" onclick="viewNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View NCR">
                     <i class="bi bi-eye"></i>

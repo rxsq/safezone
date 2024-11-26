@@ -18,7 +18,8 @@ const sendEmail = (to, subject, text) => {
       text: text // plain text body
     };
   
-    return transporter.sendMail(mailOptions);
+    //disabled while in debugging state
+    //return transporter.sendMail(mailOptions);
   };
   
   module.exports = sendEmail;
