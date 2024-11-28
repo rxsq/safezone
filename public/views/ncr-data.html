@@ -34,7 +34,7 @@
                     <span class="links-name">Dashboard</span>
                 </a>
             </li>
-            <li>
+            <li id="create-ncr-nav" style="display:none;">
                 <a href="non-conformance-report.html" data-bs-toggle="tooltip" title="Create NCR" id="createNCRLink">
                     <i class="bi bi-file-earmark-plus"></i>
                     <span class="links-name">Create NCR</span>
@@ -58,7 +58,7 @@
                     <span class="links-name">Products</span>
                 </a>
             </li>
-            <li>
+            <li id="employees-nav"  style="display: none;">
                 <a href="Employee.html" data-bs-toggle="tooltip" title="Employees">
                     <i class="bi bi-people"></i>
                     <span class="links-name">Employees</span>
@@ -89,13 +89,8 @@
             <header>
                 <h1>Non-Conformance Report Dashboard</h1>
                 <div class="actions">
-                    <button class="new-ncr-btn" onclick="location.href='non-conformance-report.html'">+ New NCR</button>
-                    <button class="export-data-btn">Export Data</button>
-                    <!--<select class="date-range-selector">
-                        <option value="7-days">Last 7 Days</option>
-                        <option value="30-days">Last 30 Days</option>
-                        <option value="custom">Custom Range</option>
-                    </select>-->
+                    <button class="new-ncr-btn" onclick="location.href='non-conformance-report.html'" style="display:none;">+ New NCR</button>
+                    <button class="back-to-dashboard-btn" onclick="window.location.href='index.html'">Back to Dashboard</button>
                 </div>
             </header>
 
@@ -121,7 +116,7 @@
             </section>
 
             <section class="ncr-trends">
-                <h2>NCR's in 2024</h2>
+                <h2>NCR's Per Year-Month</h2>
                 <div class="chart">
                     <canvas id="issueDateChart"></canvas>
                 </div>

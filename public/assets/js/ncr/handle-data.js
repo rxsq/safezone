@@ -89,7 +89,7 @@ async function populateRecentNcrTable(data){
                 <button class="delete-btn" onclick="archiveNCR('${ncr.ncrFormID}', '${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
                     <i class="bi bi-archive"></i>
                 </button>
-                <button class="bi bi-file-earmark-pdf" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
+                <button class="bi bi-filetype-pdf" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
                 </button>
             </td>
         `;
@@ -399,7 +399,7 @@ function archiveNCR(ncrFormID, ncrFormNo) {
             }
 
             // Proceed to archive the form
-            fetch(`/api/ncrForms/${ncrFormNo}`, {
+            fetch(`/api/ncrForms/${ncrFormID}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

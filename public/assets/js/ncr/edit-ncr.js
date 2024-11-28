@@ -6,7 +6,7 @@ function fetchQualityForm(qualFormID) {
         .then(response => response.json())
         .then(async qualityFormData => {
             if (qualityFormData.qualFormSupplierProcess !== null) {
-                document.getElementById('rfecInsp').checked = true;
+                document.getElementById('recInsp').checked = true;
             }
             if (qualityFormData.qualFormProductionProcess !== null) {
                 document.getElementById('wip').checked = true;

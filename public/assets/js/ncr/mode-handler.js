@@ -38,7 +38,7 @@ function adminAccess(){
 
 function qualityAccess(){
     disableAllInputs();  // Disable all inputs by default
-
+    disableEngineeringForm();
     const qualityFields = document.querySelectorAll('#section-quality input, #section-quality select, #section-quality textarea');
     qualityFields.forEach(input => {
         input.removeAttribute('readonly');
@@ -54,6 +54,8 @@ function engineeringAccess(){
         input.removeAttribute('readonly');
         input.removeAttribute('disabled');
     });
+
+    document.getElementById('submit-quality-btn').style.display = "none";
 }
 
 function noAccess(){
@@ -94,3 +96,8 @@ function disableAllInputs(){
         input.setAttribute('disabled', true);
     });
 }
+
+function disableEngineeringForm(){
+    document.getElementById('engineering-fieldset').style.display = "none";
+}
+

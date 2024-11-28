@@ -28,7 +28,7 @@ const savedSupplier = urlParams.get('supplier');
 const savedStage = urlParams.get('stage');
 const savedIssueDate = urlParams.get('issueDate');
 
-function fetchNcrForms(page = 1, pagelimitSize = 5) {
+function fetchNcrForms(page = 1, pagelimitSize = pageSize) {
     const paginationParams = `page=${page}&limit=${pagelimitSize}`;
     let url = `/api/ncrForms?${paginationParams}`;
 
@@ -196,7 +196,7 @@ async function populateRecentNcrTable(data) {
                 <button class="delete-btn" onclick="archiveNCR('${ncr.ncrFormID}', '${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
                     <i class="bi bi-archive"></i>
                 </button>
-                <button class="bi bi-file-earmark-pdf" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
+                <button class="bi bi-filetype-pdf" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
                 </button>
             </td>
         `;

@@ -14,7 +14,6 @@ function validateInputs(){
     const salary = parseFloat(document.getElementById('empSalary').value.trim());
     const phone = document.getElementById('empPhone').value.trim();
     const address = document.getElementById('empAddress').value.trim();
-    //const active = document.getElementById('empActive').checked;
     const username = document.getElementById('empUsername').value.trim();
     const password = document.getElementById('empPassword').value.trim();
     const position = parseInt(document.getElementById('position').value.trim());
@@ -45,7 +44,6 @@ function validateInputs(){
     }
     else{
         const errorMessages = errorList.join('\n');
-        //alert(`Validation Errors:\n${errorMessages}`) //Temp alert for testing
         document.getElementById('errorModalBody').innerText = `Validation Errors:\n${errorMessages}`;
         errorModal.show();        
     }
@@ -60,10 +58,10 @@ async function createEmployee() {
         empSalary: parseFloat(document.getElementById('empSalary').value.trim()),
         empPhone: document.getElementById('empPhone').value.trim(),
         empAddress: document.getElementById('empAddress').value.trim(),
-        empActive: document.getElementById('empActive').checked ? 'ACTV' : 'INAC', // Checkbox for active status
+        empActive: document.getElementById('empActive').checked ? 'ACTV' : 'INAC', 
         empUsername: document.getElementById('empUsername').value.trim(),
         empPassword: document.getElementById('empPassword').value.trim(),
-        posID: parseInt(document.getElementById('position').value.trim()) // Assuming position ID is a number
+        posID: parseInt(document.getElementById('position').value.trim()) 
     };
 
     try {

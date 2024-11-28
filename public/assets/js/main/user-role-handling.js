@@ -4,6 +4,15 @@ function updateProfileSection() {
     const userPosID = sessionStorage.getItem('userPosID'); // Get the stored user position ID
     const profileContainer = document.querySelector('.profile');
 
+    if(userRole == "Administrator"){
+        enableEmployeeNavItem();
+        enableCreateNCR();
+    }
+
+    if(userRole == "Quality"){
+        enableCreateNCR();
+    }
+
     // Check if the profile container exists
     if (!profileContainer) return;
 
@@ -11,7 +20,7 @@ function updateProfileSection() {
     profileContainer.innerHTML = '';
 
     // Fetch positions data
-    fetch('../assets/data/positions.json') // Update this path to your actual JSON file location
+    fetch('../assets/data/positions.json') 
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -20,7 +29,7 @@ function updateProfileSection() {
         })
         .then(positions => {
             // Find the position description based on userPosID
-            const position = positions.find(pos => pos.posID === parseInt(userPosID, 10)); // Ensure posID is an integer
+            const position = positions.find(pos => pos.posID === parseInt(userPosID, 10)); 
             const roleDescription = position ? position.posDescription : 'Unknown Position';
 
             // Define profile content
@@ -45,10 +54,10 @@ function updateProfileSection() {
                     // Clear session storage on logout
                     sessionStorage.removeItem('userRole');
                     sessionStorage.removeItem('userName');
-                    sessionStorage.removeItem('userPosID'); // Clear position ID as well
+                    sessionStorage.removeItem('userPosID'); 
 
                     // Redirect to login page
-                    window.location.href = 'login.html'; // Change this to your actual login page URL
+                    window.location.href = 'login.html'; 
                 });
             }
         })
@@ -57,6 +66,17 @@ function updateProfileSection() {
             // Handle error appropriately
             profileContainer.innerHTML = `<p>Error loading profile data. Please try again later.</p>`;
         });
+}
+
+function enableEmployeeNavItem(){
+    document.getElementById('employees-nav').style.display = "block";
+}
+
+function enableCreateNCR(){
+    if (window.location.pathname === '/ncr-log.html') {
+        document.getElementById('new-ncr-btn').style.display = "block";
+    }
+    document.getElementById('create-ncr-nav').style.display = "block";
 }
 
 // Call the function on page load to set the profile section

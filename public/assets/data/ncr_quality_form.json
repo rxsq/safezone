@@ -1,8 +1,7 @@
 [
   {
     "qualFormID": 1,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Defective coating on the surface.",
     "qualItemDesc": "Paint Coating",
     "qualItemID": 1,
@@ -16,8 +15,7 @@
   },
   {
     "qualFormID": 2,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Damaged resistors during shipment.",
     "qualItemDesc": "Resistors",
     "qualItemID": 2,
@@ -31,8 +29,7 @@
   },
   {
     "qualFormID": 3,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Scratches on the surface of the circuit board.",
     "qualItemDesc": "Circuit Board",
     "qualItemID": 3,
@@ -46,8 +43,7 @@
   },
   {
     "qualFormID": 4,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Incorrect dimensions of the metal part.",
     "qualItemDesc": "Metal Parts",
     "qualItemID": 4,
@@ -61,8 +57,7 @@
   },
   {
     "qualFormID": 5,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Packaging defects observed in boxes.",
     "qualItemDesc": "Packaging Boxes",
     "qualItemID": 5,
@@ -76,8 +71,7 @@
   },
   {
     "qualFormID": 6,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Incorrect color of plastic parts.",
     "qualItemDesc": "Plastic Parts",
     "qualItemID": 6,
@@ -91,8 +85,7 @@
   },
   {
     "qualFormID": 7,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Broken hinges on laptop cases.",
     "qualItemDesc": "Laptop Cases",
     "qualItemID": 7,
@@ -106,8 +99,7 @@
   },
   {
     "qualFormID": 8,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Missing components in kits.",
     "qualItemDesc": "Component Kits",
     "qualItemID": 8,
@@ -121,8 +113,7 @@
   },
   {
     "qualFormID": 9,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Broken glass screens.",
     "qualItemDesc": "Glass Screens",
     "qualItemID": 9,
@@ -136,8 +127,7 @@
   },
   {
     "qualFormID": 10,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Defective wiring in the electronic components.",
     "qualItemDesc": "Electronic Components",
     "qualItemID": 10,
@@ -151,8 +141,7 @@
   },
   {
     "qualFormID": 11,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Incorrect screen size for monitors.",
     "qualItemDesc": "Monitors",
     "qualItemID": 11,
@@ -166,8 +155,7 @@
   },
   {
     "qualFormID": 12,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Faulty power supply units.",
     "qualItemDesc": "Power Supply Units",
     "qualItemID": 12,
@@ -181,8 +169,7 @@
   },
   {
     "qualFormID": 13,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Defective fan motors in cooling systems.",
     "qualItemDesc": "Cooling Systems",
     "qualItemID": 13,
@@ -196,8 +183,7 @@
   },
   {
     "qualFormID": 14,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Faulty lenses in optical devices.",
     "qualItemDesc": "Optical Lenses",
     "qualItemID": 14,
@@ -211,8 +197,7 @@
   },
   {
     "qualFormID": 15,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Corrosion on metal parts.",
     "qualItemDesc": "Metal Parts",
     "qualItemID": 15,
@@ -226,8 +211,7 @@
   },
   {
     "qualFormID": 16,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Missing safety labels on packaging.",
     "qualItemDesc": "Packaging Boxes",
     "qualItemID": 16,
@@ -241,8 +225,7 @@
   },
   {
     "qualFormID": 17,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Incorrect type of capacitors.",
     "qualItemDesc": "Capacitors",
     "qualItemID": 17,
@@ -256,8 +239,7 @@
   },
   {
     "qualFormID": 18,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Outdated firmware in electronics.",
     "qualItemDesc": "Electronic Components",
     "qualItemID": 18,
@@ -271,8 +253,7 @@
   },
   {
     "qualFormID": 19,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Defective gaskets.",
     "qualItemDesc": "Gaskets",
     "qualItemID": 19,
@@ -286,8 +267,7 @@
   },
   {
     "qualFormID": 20,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Incorrect materials used in construction.",
     "qualItemDesc": "Construction Materials",
     "qualItemID": 20,
@@ -301,8 +281,7 @@
   },
   {
     "qualFormID": 21,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Broken internal connectors.",
     "qualItemDesc": "Internal Connectors",
     "qualItemID": 21,
@@ -316,8 +295,7 @@
   },
   {
     "qualFormID": 22,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Unstable voltage regulators.",
     "qualItemDesc": "Voltage Regulators",
     "qualItemID": 22,
@@ -331,8 +309,7 @@
   },
   {
     "qualFormID": 23,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Defective keyboard keys.",
     "qualItemDesc": "Keyboards",
     "qualItemID": 23,
@@ -346,8 +323,7 @@
   },
   {
     "qualFormID": 24,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Cracked cases for portable chargers.",
     "qualItemDesc": "Portable Chargers",
     "qualItemID": 24,
@@ -361,8 +337,7 @@
   },
   {
     "qualFormID": 25,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Paint discoloration on external parts.",
     "qualItemDesc": "External Parts",
     "qualItemID": 25,
@@ -376,8 +351,7 @@
   },
   {
     "qualFormID": 26,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Damaged seals in packaging.",
     "qualItemDesc": "Packaging Seals",
     "qualItemID": 26,
@@ -391,8 +365,7 @@
   },
   {
     "qualFormID": 27,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Temperature sensor malfunction.",
     "qualItemDesc": "Temperature Sensors",
     "qualItemID": 27,
@@ -406,8 +379,7 @@
   },
   {
     "qualFormID": 28,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Battery leakage.",
     "qualItemDesc": "Batteries",
     "qualItemID": 28,
@@ -421,8 +393,7 @@
   },
   {
     "qualFormID": 29,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Incorrect chipsets.",
     "qualItemDesc": "Chipsets",
     "qualItemID": 29,
@@ -436,8 +407,7 @@
   },
   {
     "qualFormID": 30,
-    "qualFormSupplierProcess": null,
-    "qualFormProductionProcess": "WIP",
+    "qualFormProcessApplicable": "WIP",
     "qualIssueDesc": "Incorrect plastic parts in assembly.",
     "qualItemDesc": "Plastic Parting",
     "qualItemID": 30,

@@ -34,7 +34,7 @@
                     <span class="links-name">Dashboard</span>
                 </a>
             </li>
-            <li>
+            <li id="create-ncr-nav" style="display:none;">
                 <a href="non-conformance-report.html" data-bs-toggle="tooltip" title="Create NCR" id="createNCRLink">
                     <i class="bi bi-file-earmark-plus"></i>
                     <span class="links-name">Create NCR</span>
@@ -58,8 +58,8 @@
                     <span class="links-name">Products</span>
                 </a>
             </li>
-            <li>
-                <a href="Employee.html" data-bs-toggle="tooltip" title="Employees" id="employees-nav">
+            <li id="employees-nav"  style="display: none;">
+                <a href="Employee.html" data-bs-toggle="tooltip" title="Employees">
                     <i class="bi bi-people"></i>
                     <span class="links-name">Employees</span>
                 </a>
@@ -89,14 +89,8 @@
             <header>
                 <h1>Non-Conformance Report Dashboard</h1>
                 <div class="actions">
-                    <button class="new-ncr-btn" onclick="location.href='non-conformance-report.html'" id="new-ncr-btn">+
-                        New NCR</button>
-                    <button class="export-data-btn">Export Data</button>
-                    <!--<select class="date-range-selector">
-                        <option value="7-days">Last 7 Days</option>
-                        <option value="30-days">Last 30 Days</option>
-                        <option value="custom">Custom Range</option>
-                    </select>-->
+                    <button class="new-ncr-btn" onclick="location.href='non-conformance-report.html'" id="new-ncr-btn" style="display:none;">+ New NCR</button>
+                    <button class="export-data-btn" onclick="window.location.href='ncr-data.html'">See Analytics</button>
                 </div>
             </header>
 

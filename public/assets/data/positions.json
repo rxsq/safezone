@@ -18,9 +18,5 @@
     {
         "posID": 5,
         "posDescription": "Administrator"
-    },
-    {
-        "posID": 6,
-        "posDescription": "Employee"
     }
 ]

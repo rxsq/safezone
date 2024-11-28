@@ -33,7 +33,7 @@
                     <span class="links-name">Dashboard</span>
                 </a>
             </li>
-            <li>
+            <li id="create-ncr-nav" style="display:none;">
                 <a href="non-conformance-report.html" data-bs-toggle="tooltip" title="Create NCR" id="createNCRLink">
                     <i class="bi bi-file-earmark-plus"></i>
                     <span class="links-name">Create NCR</span>
@@ -46,7 +46,7 @@
                 </a>
             </li>
             <li>
-                <a href="ncr-data.html" data-bs-toggle="tooltip" title="NCT Data">
+                <a href="ncr-data.html" data-bs-toggle="tooltip" title="NCR Data">
                     <i class="bi bi-bar-chart"></i>
                     <span class="links-name">NCR Data</span>
                 </a>
@@ -57,7 +57,7 @@
                     <span class="links-name">Products</span>
                 </a>
             </li>
-            <li>
+            <li id="employees-nav"  style="display: none;">
                 <a href="Employee.html" data-bs-toggle="tooltip" title="Employees">
                     <i class="bi bi-people"></i>
                     <span class="links-name">Employees</span>
@@ -88,9 +88,8 @@
             <header>
                 <h1>NCR Log</h1>
                 <div class="actions">
-                    <button class="new-ncr-btn" onclick="location.href='non-conformance-report.html'">+ New NCR</button>
-                    <button class="export-data-btn">Export Data</button>
-                    <div class="date-range-container">
+                    <button class="new-ncr-btn" id="new-ncr-btn" onclick="location.href='non-conformance-report.html'" style="display:none;">+ New NCR</button>
+                    <!-- <div class="date-range-container">
                         <select class="date-range-selector" id="date-range-selector">
                             <option value="" selected disabled>Date Range</option>
                             <option value="7-days">Last 7 Days</option>
@@ -104,7 +103,8 @@
                             <input type="date" id="end-date">
                             <button id="submit-custom-date" class="filter-btn">Filter Date Range</button>
                         </div>
-                    </div>
+                    </div> -->
+                    <button class="back-to-dashboard-btn" onclick="window.location.href='index.html'">Back to Dashboard</button>
                 </div>
             </header>
 
@@ -147,9 +147,7 @@
                     <thead>
                         <tr>
                             <th><a href="#">NCR Number</a></th>
-                            <!-- <th><a href="#" id="">Document Title</a></th> -->
                             <th><a href="#">Supplier</a></th>
-                            <!-- <th>Defect Description</th> -->
                             <th><a href="#">Issue Date</a></th>
                             <th><a href="#">Stage</a></th>
                             <th class="text-center">Actions</th>

@@ -9,8 +9,7 @@ async function createQualityForm() {
     // Collect data from form fields
     const qualityFormData = {
         qualFormID: await getQualityFormID(),
-        qualFormSupplierProcess: getSupplierProcess(),
-        qualFormProductionProcess: getProductionProcess(),
+        qualFormProcessApplicable: getProcess(),
         qualItemDesc: document.getElementById('description-item')?.value?.trim() || '', 
         qualIssueDesc: document.getElementById('description-defect')?.value?.trim() || '',
         qualItemID: parseInt(document.getElementById('po-prod-no')?.value?.trim(), 10) || null, 
@@ -138,18 +137,11 @@ async function getQualityFormID(){
     }
 }
 
-// Function which handles supplier process
-function getSupplierProcess(){
+// Function which handles supplier/ production process
+function getProcess(){
     if(document.getElementById('recInsp').checked){
         return "SUP";
-    } else return null;
-}
-
-//Function which handles production process
-function getProductionProcess(){
-    if(document.getElementById('wip').checked){
-        return "WIP";
-    } else return null;
+    } else return "WIP";
 }
 
 // Function to create new NCR in "ncr_form.json"
