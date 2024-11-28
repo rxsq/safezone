@@ -376,7 +376,7 @@ p {
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 30px;
 }
 
 .form-group button {
@@ -557,6 +557,10 @@ button {
   cursor: pointer;
   font-size: 1em;
   padding: 10px 20px;
+}
+
+.button-gap {
+  margin-right: 10px;
 }
 
 button:hover {

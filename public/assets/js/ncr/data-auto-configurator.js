@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', async function(){
         document.getElementById('ncr-date').value = new Date().toISOString().substring(0, 10);
         document.getElementById('revision-date').value = new Date().toISOString().substring(0, 10);
         document.getElementById('engineer-date').value = new Date().toISOString().substring(0, 10);
+        document.getElementById('purchasing-date').value = new Date().toISOString().substring(0, 10);
 
         // Set NCR No and Stage
         document.getElementById('ncr-no').value = currentYear + "-" + await getNCRCode();  // Function in create quality script
@@ -88,6 +89,11 @@ document.addEventListener('DOMContentLoaded', async function(){
         if((!document.getElementById('engineering').value) && ((sessionStorage.getItem("userRole") == "Administrator") || (sessionStorage.getItem("userRole") == "Engineering"))){
             document.getElementById('engineering').value = sessionStorage.getItem('userName');
             document.getElementById('engineer-date').value = new Date().toISOString().substring(0, 10);
+        }
+
+        if((!document.getElementById('purchasing').value) && ((sessionStorage.getItem("userRole") == "Administrator") || (sessionStorage.getItem("userRole") == "Purchasing"))){
+            document.getElementById('purchasing').value = sessionStorage.getItem('userName');
+            document.getElementById('purchasing-date').value = new Date().toISOString().substring(0, 10);
         }
 });
 

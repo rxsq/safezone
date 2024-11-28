@@ -30,7 +30,7 @@
         </div>
         <ul class="nav-list">
             <li>
-                <a href="index.html"  data-bs-toggle="tooltip" title="Dashboard">
+                <a href="index.html" data-bs-toggle="tooltip" title="Dashboard">
                     <i class="bi bi-speedometer2"></i>
                     <span class="links-name">Dashboard</span>
                 </a>
@@ -127,9 +127,10 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <button class="new-suppliers-btn" data-bs-toggle="tooltip" title="Add New Supplier" id="new-suppliers-btn" onclick="window.location.href='create-supplier.html'">
+                            <button class="new-suppliers-btn" data-bs-toggle="tooltip" title="Add New Supplier"
+                                id="new-suppliers-btn" onclick="window.location.href='create-supplier.html'">
                                 <i class="bi bi-plus-circle"></i>
-                              </button>
+                            </button>
                         </div>
                         <div class="form-group">
                             <label class="required" data-bs-toggle="tooltip" title="Required">Identify Process
@@ -196,9 +197,9 @@
                         </div>
                         <div class="form-group">
                             <label for="quality-rep-name" class="required">Quality Representative's Name</label>
-                            <input type="text" id="quality-rep-name" name="quality-rep-name" value="{qualityRepName}" data-bs-toggle="tooltip"
-                                title="Required"
-                                readonly> <!-- Readonly added for auto generation: Andrew-->
+                            <input type="text" id="quality-rep-name" name="quality-rep-name" value="{qualityRepName}"
+                                data-bs-toggle="tooltip" title="Required" readonly>
+                            <!-- Readonly added for auto generation: Andrew-->
                         </div>
                         <div class="form-group">
                             <label for="quality-rep-date">Date</label>
@@ -207,6 +208,7 @@
                     </div>
 
                     <div class="form-group submit-btn-container">
+                        <button type="button" class="btn btn-secondary button-gap" id="sample-data-btn-quality">Sample Data</button>
                         <button type="submit" class="submit-btn" id="submit-quality-btn">Create New NCR</button>
                     </div>
                 </div>
@@ -224,10 +226,8 @@
                                 <div class="four-column">
                                     <label><input type="radio" name="review-by-engineer" value="Use As Is">Use As
                                         Is</label>
-                                    <label><input type="radio" name="review-by-engineer"
-                                            value="Repair">Repair</label>
-                                    <label><input type="radio" name="review-by-engineer"
-                                            value="Rework">Rework</label>
+                                    <label><input type="radio" name="review-by-engineer" value="Repair">Repair</label>
+                                    <label><input type="radio" name="review-by-engineer" value="Rework">Rework</label>
                                     <label><input type="radio" name="review-by-engineer" value="Scrap">Scrap</label>
                                 </div>
                             </div>
@@ -254,7 +254,7 @@
                             <label>Does the drawing require updating</label>
                             <p>Sequence of work steps required when "repair" or "rework" indicated</p>
                             <div class="four-column">
-                                <label><input type="radio" name="require-updating" value="1" > Yes</label>
+                                <label><input type="radio" name="require-updating" value="1"> Yes</label>
                                 <label><input type="radio" name="require-updating" value="0"> No</label>
                             </div>
                         </div>
@@ -286,10 +286,75 @@
                         </div>
                     </section>
 
-
                     <div class="form-group submit-btn-container">
+                        <button type="button" class="btn btn-secondary button-gap" id="sample-data-btn-engineering">Sample Data</button>
                         <button type="submit" class="submit-btn" id="submit-engineering-btn">Submit</button>
                     </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="border p-2" id="purchasing-fieldset">
+                <legend class="w-auto collapsible" id="legend-purchasing">Purchasing</legend>
+                <div id="section-purchasing">
+                    <h2 style="display: none;">Purchasing Top Info</h2>
+                    <div class="four-column">
+                        <div class="form-group">
+                            <label class="required" data-bs-toggle="tooltip" title="Required">Purchasing's Preliminary
+                                Decision</label>
+                            <div class="four-column">
+                                <label><input type="radio" name=""
+                                        value="Return to Supplier for either rework or replacement">Return to Supplier
+                                    for either rework or replacement</label>
+                                <label><input type="radio" name="" value="Rework In-House">Rework In-House</label>
+                                <label><input type="radio" name="" value="Scrap In-House">Scrap In-House</label>
+                                <label><input type="radio" name="" value="Defer for HBC Engineering Review">Defer for
+                                    HBC Engineering Review</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="four-column">
+                        <div class="form-group">
+                            <label class="required" data-bs-toggle="tooltip" title="Required">Was a CAR raised?</label>
+                            <div class="four-column">
+                                <label><input type="radio" name="car-raised" value="1">Yes</label>
+                                <label><input type="radio" name="car-raised" value="0">No</label>
+                            </div>
+                            <div class="four-column">
+                                <label style="margin-top: 15px;">If "Yes" indicate CAR Number<input type="text" id="car-number" name="car-number"
+                                        data-bs-toggle="tooltip" title="Required"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="required" data-bs-toggle="tooltip" title="Required">Follow-up
+                                Required?</label>
+                            <div class="four-column">
+                                <label><input type="radio" name="follow-up-required" value="1">Yes</label>
+                                <label><input type="radio" name="follow-up-required" value="0">No</label>
+                            </div>
+                            <div class="four-column">
+                                <label style="margin-top: 15px;">If "Yes" indicate type & expected date<input type="text" id="purchasing-followup"
+                                        name="purchasing-followup" data-bs-toggle="tooltip" title="Required"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two-column">
+                        <div class="form-group">
+                            <label for="purchasing" class="required">Operations Manager</label>
+                            <input type="text" id="purchasing" name="purchasing" data-bs-toggle="tooltip"
+                                title="Required">
+                        </div>
+                        <div class="form-group">
+                            <label for="purchasing-date" class="required">Date</label>
+                            <input type="date" id="purchasing-date" name="purchasing-date" readonly>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group submit-btn-container">
+                        <button type="button" class="btn btn-secondary button-gap" id="sample-data-btn-purchasing">Sample Data</button>
+                        <button type="submit" class="submit-btn" id="submit-purchasing-btn">Submit</button>
+                    </div>
+
                 </div>
             </fieldset>
 
@@ -342,6 +407,7 @@
     <script src="../assets/js/ncr/create-scripts/create-quality-form.js"></script>
     <script src="../assets/js/ncr/create-scripts/create-engineering-form.js"></script>
     <script src="../assets/js/ncr/mode-handler.js"></script>
+    <script src="../assets/js/ncr/sample-data.js"></script>
 </body>
 
 </html>
