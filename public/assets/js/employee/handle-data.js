@@ -13,6 +13,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+function initializeTooltips() {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltipTriggerList.forEach((tooltipTriggerEl) => {
+        new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+}
+
 // Function to fetch employees 
 function fetchEmployees() {
     Promise.all([
@@ -41,19 +48,20 @@ function populateEmployeeTable(data) {
             <td>${employee.empEmail}</td>
             <td>${employee.empPhone.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')}</td>
             <td>${empPosition}</td>
-            <td class="action-buttons-td">
-                <button class="view-btn" onclick="viewEmployee('${employee.empID}')"
+            <td class="text-center action-buttons-td">
+                <button class="action-btn" onclick="viewEmployee('${employee.empID}')"
                      data-bs-toggle="tooltip" title="View Employee"> <i class="bi bi-eye"></i>
                 </button>
-                <button class="edit-btn" onclick="editEmployee('${employee.empID}')"
+                <button class="action-btn" onclick="editEmployee('${employee.empID}')"
                      data-bs-toggle="tooltip" title="Edit Employee"> <i class="bi bi-pencil"></i>
                 </button>
-                <button class="delete-btn" onclick="deleteEmployee('${employee.empID}', '${employee.empFirst} ${employee.empLast}')"
+                <button class="action-btn" onclick="deleteEmployee('${employee.empID}', '${employee.empFirst} ${employee.empLast}')"
                      data-bs-toggle="tooltip" title="Delete Employee"> <i class="bi bi-trash"></i>
                 </button>
             </td>
         `;
         tableBody.appendChild(row);
+        initializeTooltips();
     });
 }
 

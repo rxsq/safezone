@@ -59,14 +59,14 @@ function populateProductTable(data) {
             <td>${product.prodName}</td>
             <td>${product.prodCategory}</td>
             <td id="supplier-${product.prodID}">Loading...</td>
-            <td class="text-center">
-                <button class="view-btn" onclick="viewProduct('${product.prodID}')"
+            <td class="text-center action-buttons-td">
+                <button class="action-btn" onclick="viewProduct('${product.prodID}')"
                    data-bs-toggle="tooltip" title="View Product"> <i class="bi bi-eye"></i>
                 </button>
-                <button class="edit-btn" onclick="editProduct('${product.prodID}')"
+                <button class="action-btn" onclick="editProduct('${product.prodID}')"
                     data-bs-toggle="tooltip" title="Edit Product"> <i class="bi bi-pencil"></i>
                 </button>
-                <button class="delete-btn" onclick="deleteProduct('${product.prodID}', '${product.prodName}')"
+                <button class="action-btn" onclick="deleteProduct('${product.prodID}', '${product.prodName}')"
                    data-bs-toggle="tooltip" title="Delete Product"> <i class="bi bi-trash"></i>
                 </button>
             </td>

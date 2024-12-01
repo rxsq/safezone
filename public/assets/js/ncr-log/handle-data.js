@@ -16,9 +16,9 @@ function resetProductSelect() {
 }
 
 // bootstrap tooltip 
-function tooltip() {
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+function initializeTooltips() {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltipTriggerList.forEach((tooltipTriggerEl) => {
         new bootstrap.Tooltip(tooltipTriggerEl);
     });
 }
@@ -50,7 +50,6 @@ function fetchNcrForms(page = 1, pagelimitSize = pageSize) {
                 document.getElementById('page-number').textContent = `Page ${data.currentPage}`;
                 
                 populateRecentNcrTable(data.items);
-                tooltip();
 
                 renderPaginationControls(data); // Modified to handle URL params
             } else {
@@ -187,20 +186,22 @@ async function populateRecentNcrTable(data) {
             <td>${ncr.ncrIssueDate.substring(0, 10)}</td>
             <td>${ncr.ncrStage}</td>
             <td class="action-buttons-td">
-                <button class="edit-btn" onclick="viewNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View NCR">
+                <button class="action-btn" onclick="viewNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View NCR">
                     <i class="bi bi-eye"></i>
                 </button>
-                <button class="edit-btn" onclick="editNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Edit NCR">
+                <button class="action-btn" onclick="editNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Edit NCR">
                     <i class="bi bi-pencil"></i>
                 </button>
-                <button class="delete-btn" onclick="archiveNCR('${ncr.ncrFormID}', '${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
+                <button class="action-btn" onclick="archiveNCR('${ncr.ncrFormID}', '${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
                     <i class="bi bi-archive"></i>
                 </button>
-                <button class="bi bi-filetype-pdf" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
+                <button class="action-btn" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
+                    <i class="bi bi-filetype-pdf"></i>
                 </button>
             </td>
         `;
         tableBody.appendChild(row);
+        initializeTooltips();
     }
 }
 

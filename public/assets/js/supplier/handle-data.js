@@ -17,6 +17,13 @@ function fetchSuppliers() {
         .catch(error => console.error('Error fetching suppliers:', error));
 }
 
+function initializeTooltips() {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltipTriggerList.forEach((tooltipTriggerEl) => {
+        new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+}
+
 // Function to populate the supplier table
 function populateSupplierTable(data) {
     const tableBody = document.getElementById('supplier-list');
@@ -29,19 +36,20 @@ function populateSupplierTable(data) {
             <td>${supplier.supContactName}</td>
             <td>${supplier.supContactEmail}</td>
             <td>${supplier.supContactPhone}</td>
-            <td class="action-buttons-td">
-                <button class="view-btn" onclick="viewSupplier('${supplier.supID}')"
+            <td class="text-center action-buttons-td">
+                <button class="action-btn" onclick="viewSupplier('${supplier.supID}')"
                     data-bs-toggle="tooltip" title="View Supplier"> <i class="bi bi-eye"></i>
                 </button>
-                <button class="edit-btn" onclick="editSupplier('${supplier.supID}')"
+                <button class="action-btn" onclick="editSupplier('${supplier.supID}')"
                       data-bs-toggle="tooltip" title="Edit Supplier"> <i class="bi bi-pencil"></i>
                 </button>
-                <button class="delete-btn" onclick="deleteSupplier('${supplier.supID}', '${supplier.supName}')"
+                <button class="action-btn" onclick="deleteSupplier('${supplier.supID}', '${supplier.supName}')"
                      data-bs-toggle="tooltip" title="Delete Supplier"> <i class="bi bi-trash"></i>
                 </button>
             </td>
         `;
         tableBody.appendChild(row);
+        initializeTooltips();
     });
 }
 

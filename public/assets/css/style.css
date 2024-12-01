@@ -140,12 +140,19 @@ body {
 
 .sidebar.collapsed ul li {
   width: 100%; 
+  text-align: center;;
+}
+
+.sidebar.collapsed ul li i {
+  margin: 0; 
+  padding: 0;
 }
 
 .sidebar.collapsed ul li a {
   display: flex; 
   justify-content: center; 
   align-items: center; 
+  padding: 0;
   width: 100%; 
 }
 
@@ -184,10 +191,15 @@ body {
   text-align: center;
   left: 70%;
 }
+
+.sidebar:not(.collapsed) [data-bs-toggle="tooltip"]::after,
+.sidebar:not(.collapsed) [data-bs-toggle="tooltip"]::before {
+    display: none !important;
+}
 /**/
 
 .sidebar .nav-list {
-  margin-top: 20px;
+  margin-top: 40px;
   width: 100%;
 }
 
@@ -241,6 +253,7 @@ body {
   border-radius: 12px;
   color: #111;
   display: flex;
+  font-size: 1.4em;
   font-weight: 600;
   text-decoration: none;
   transition: all 0.4s ease;
@@ -249,14 +262,17 @@ body {
 .sidebar ul li a:hover {
   background: #d0d0d0;
   color: #000;
+  border-radius: 12px;
+  text-align: center;
 }
 
 .sidebar ul li i {
   border-radius: 12px;
-  font-size: 22px;
-  height: 50px;
-  line-height: 50px;
-  min-width: 50px;
+  font-size: 30px;
+  height: 60px;
+  line-height: 60px;
+  min-width: 60px;
+  padding: 0 30px 0 20px;
   text-align: center;
 }
 
@@ -293,18 +309,18 @@ body {
 }
 
 .profile .profile-details .name {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
 }
 
 .profile .profile-details .job {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .profile #log-out {
   bottom: 5px;
   border-radius: 12px;
-  font-size: 20px;
+  font-size: 24px;
   left: 88%;
   line-height: 50px;
   min-width: 50px;
@@ -487,6 +503,10 @@ textarea {
   padding: 8px 16px;
 }
 
+.action-btn {
+  width: 100px;
+}
+
 .filter-buttons {
   margin-top: 10px;
   padding-bottom: 20px;
@@ -508,9 +528,10 @@ textarea {
   margin-bottom: 25px;
 }
 
-.action-buttons-td {
-  text-align: center;
-  font-size: 0.9em;
+.action-buttons-td button {
+  margin: 0 5px; 
+  padding: 8px; 
+  font-size: 1.2em; 
 }
 
 .cancel-btn {
@@ -743,6 +764,50 @@ canvas {
 
 .modal-content {
   border-radius: 12px;
+}
+
+/* Adjusting the NCR Recent Table column proportions */
+#ncrRecentTable th:nth-child(1),
+#ncrRecentTable td:nth-child(1) {
+  width: 15%; 
+}
+
+#ncrRecentTable th:nth-child(2),
+#ncrRecentTable td:nth-child(2) {
+  width: 30%; 
+}
+
+#ncrRecentTable th:nth-child(3),
+#ncrRecentTable td:nth-child(3) {
+  width: 10%; 
+}
+
+#ncrRecentTable th:nth-child(4),
+#ncrRecentTable td:nth-child(4) {
+  width: 5%; 
+}
+
+#ncrRecentTable th:nth-child(5),
+#ncrRecentTable td:nth-child(5) {
+  width: 40%; 
+}
+
+/* Center-align the action buttons */
+#ncrRecentTable td.action-buttons-td {
+  text-align: center;
+}
+
+/* Ensure the table fits well within the layout */
+#ncrRecentTable {
+  table-layout: fixed; 
+  width: 100%; 
+}
+
+/* Improve spacing for action buttons */
+#ncrRecentTable td.action-buttons-td button {
+  margin: 0 5px; 
+  padding: 8px; 
+  font-size: 1.2em; 
 }
 
 /* Media Query for split screen */
