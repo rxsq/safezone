@@ -100,29 +100,53 @@
                 <div class="two-column">
                     <div class="form-group">
                         <label for="empFirstName">First Name</label>
+                        <i class="bi bi-question-circle text-primary"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        title="Enter the employee's first name."></i>
                         <input type="text" id="empFirstName" name="firstName">
                     </div>
                     <div class="form-group">
                         <label for="empLastName">Last Name</label>
+                        <i class="bi bi-question-circle text-primary"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        title="Enter the employee's last name."></i>
                         <input type="text" id="empLastName" name="lastName">
                     </div>
                 </div>
                 <div class="two-column">
                     <div class="form-group">
                         <label for="empEmail">Email</label>
+                        <i class="bi bi-question-circle text-primary"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="Provide a valid email address for the employee."></i>
                         <input type="text" id="empEmail" name="email">
                     </div>
                     <div class="form-group">
                         <label for="empPhone">Phone</label>
+                        <i class="bi bi-question-circle text-primary"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        title="Enter the employee's phone number, including the area code."></i>
                         <input type="text" id="empPhone" name="phone">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="empUsername">Username</label>
+                    <i class="bi bi-question-circle text-primary"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    title="Choose a unique username for the employee's account."></i>
                     <input type="text" id="empUsername" name="username">
                 </div>
                 <div class="form-group">
                     <label for="empPassword">Password</label>
+                    <i class="bi bi-question-circle text-primary"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    title="Set a secure password for the employee."></i>
                     <input type="text" id="empPassword" name="password">
                 </div>
             </fieldset>
@@ -132,6 +156,10 @@
                 <div class="two-column">
                     <div class="form-group">
                         <label>Position</label>
+                        <i class="bi bi-question-circle text-primary"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        title="Select the employee's position from the dropdown menu."></i>
                         <select id="position">
 
                         </select>
@@ -148,6 +176,17 @@
     <script defer src="../assets/js/main/sidebar.js"></script>
     <script defer src="../assets/js/employee/create-employee.js"></script>
     <script defer src="../assets/js/employee/populate-form-fields.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Initialize tooltips
+    document.addEventListener('DOMContentLoaded', function () {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
 </body>
 
 </html>
