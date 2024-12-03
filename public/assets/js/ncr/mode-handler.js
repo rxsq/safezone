@@ -21,6 +21,7 @@ function handleUserRole(userRole){
         case "Administrator": adminAccess(); break;
         case "Quality": qualityAccess(); break;
         case "Engineering": engineeringAccess(); break;
+        case "Purchasing": purchasingAccess(); break;
         default: noAccess();
     }
 }
@@ -39,6 +40,7 @@ function adminAccess(){
 function qualityAccess(){
     disableAllInputs();  // Disable all inputs by default
     disableEngineeringForm();
+    disablePurchasingForm();
     const qualityFields = document.querySelectorAll('#section-quality input, #section-quality select, #section-quality textarea');
     qualityFields.forEach(input => {
         input.removeAttribute('readonly');
@@ -48,7 +50,7 @@ function qualityAccess(){
 
 function engineeringAccess(){
     disableAllInputs();  // Disable all inputs by default
-
+    disablePurchasingForm();
     const engineeringFields = document.querySelectorAll('#section-engineering input, #section-engineering select, #section-engineering textarea');
     engineeringFields.forEach(input => {
         input.removeAttribute('readonly');
@@ -56,6 +58,19 @@ function engineeringAccess(){
     });
 
     document.getElementById('submit-quality-btn').style.display = "none";
+}
+
+function purchasingAccess(){
+    disableAllInputs();
+
+    const purchasingFields = document.querySelectorAll('#section-purchasing input, #section-purchasing select, #section-purchasing textarea');
+    purchasingFields.forEach(input => {
+        input.removeAttribute('readonly');
+        input.removeAttribute('disabled');
+    });
+
+    document.getElementById('submit-quality-btn').style.display = "none";
+    document.getElementById('submit-engineering-btn').style.display = "none"
 }
 
 function noAccess(){
@@ -99,5 +114,9 @@ function disableAllInputs(){
 
 function disableEngineeringForm(){
     document.getElementById('engineering-fieldset').style.display = "none";
+}
+
+function disablePurchasingForm(){
+    document.getElementById('purchasing-fieldset').style.display = "none";
 }
 

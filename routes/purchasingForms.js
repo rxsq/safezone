@@ -27,6 +27,24 @@ router.get('/', (req, res) => {
     }
 });
 
+//get by id
+router.get('/:purFormID', (req, res) => {
+    const purFormID = req.params.purFormID;
+
+    try {
+        const existingData = readJsonFile(filename);
+        const form = existingData.find(item => item.purFormID === parseInt(purFormID));
+
+        if (!form) {
+            return res.status(404).json({ status: 'error', message: 'Engineering form not found' });
+        }
+
+        res.json(form); // Return the specific purchasing form
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: 'Failed to read JSON file' });
+    }
+});
+
 // POST a new Purchasing form
 router.post('/', (req, res) => {
     const newPurchasingForm = req.body;
@@ -35,11 +53,20 @@ router.post('/', (req, res) => {
         if (err) return res.status(500).json({ message: 'Error reading data file' });
 
         let purchasingForms = JSON.parse(data);
+
+        // Generate a new ID for the new form
+        const newPurFormID = purchasingForms.length ? purchasingForms[purchasingForms.length - 1].purFormID + 1 : 1; // Increments last ID or sets 1 if no forms exist
+
+        // Add the new ID to the new form data
+        newPurchasingForm.purFormID = newPurFormID;
+
         purchasingForms.push(newPurchasingForm); // Add new form to array
 
         fs.writeFile(filename, JSON.stringify(purchasingForms, null, 2), (err) => {
             if (err) return res.status(500).json({ message: 'Error writing to data file' });
-            res.status(201).json({ message: 'Purchasing form created successfully' });
+            
+            // Return the newly created form including the purFormID
+            res.status(201).json(newPurchasingForm);
         });
     });
 });

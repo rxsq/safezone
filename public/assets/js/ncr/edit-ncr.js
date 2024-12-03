@@ -1,4 +1,4 @@
-let qualityForm, engineeringForm, ncrID;
+let qualityForm, engineeringForm, purchasingForm, ncrID;
 
 // Function to fetch and populate quality form data
 function fetchQualityForm(qualFormID) {
@@ -68,6 +68,29 @@ function fetchEngineeringForm(engFormID) {
         });
 }
 
+//Function to fetch purchasing form data
+function fetchPurchasingForm(purFormID) {
+    fetch(`/api/purchasingForms/${purFormID}`)  // Correct route is 'purchasingForms', not 'purchasingForm'
+    .then(response => response.json())
+    .then(async purFormData => {
+        // LOGIC TO POPULATE INPUTS BASED ON EXISTING DATA
+        console.log(purFormData); // Example: logging fetched data for debugging
+        // Populate form inputs based on purFormData
+        document.getElementById('car-number').value = purFormData.purCarNo;
+        document.getElementById('purchasing-followup').value = purFormData.purFollowUpType;
+        document.getElementById('purchasing-followup-date').value = purFormData.purFollowUpDate;
+        document.getElementById('purchasing-date').value = purFormData.purNCRClosingDate;
+        // Check radio buttons (for example)
+        document.querySelector(`input[name="preliminary-decision"][value="${purFormData.purDescription}"]`).checked = true;
+        document.querySelector(`input[name="car-raised"][value="${purFormData.purCarRaised}"]`).checked = true;
+        document.querySelector(`input[name="follow-up-required"][value="${purFormData.purFollowUpReq}"]`).checked = true;
+    })
+    .catch(error => {
+        console.error('Error fetching purchasing form:', error);
+        alert('Failed to load purchasing form.');
+    });
+}
+
 // Function to fetch supplier ID based on product ID
 async function getSupplierID(prodID) {
     return fetch(`/api/products/${prodID}`)
@@ -87,6 +110,7 @@ async function populateNCRInputs(ncrFormID) {
             formatAndPopulateStage();
             qualityForm = ncrForm.qualFormID;
             engineeringForm = ncrForm.engFormID;
+            purchasingForm = ncrForm.purFormID;
             ncrID = ncrForm.ncrFormID;
             setSupplierAndTriggerChange(await getSupplierID(ncrForm.prodID));
             document.getElementById('po-prod-no').value = ncrForm.prodID;
@@ -97,6 +121,10 @@ async function populateNCRInputs(ncrFormID) {
             
             if (engineeringForm) {
                 fetchEngineeringForm(engineeringForm);
+            }
+
+            if(purchasingForm){
+                fetchPurchasingForm(purchasingForm);
             }
         })
         .catch(error => {
@@ -254,7 +282,7 @@ submitEngBtn.addEventListener('click', async function(event) {
                 const newEngFormID = newEngForm.engFormID;
 
                 const ncrFormID = ncrID;  
-                const updatedNCRData = { engFormID: newEngFormID };
+                const updatedNCRData = { engFormID: newEngFormID, ncrStage: "PUR" };
 
                 // Update the NCR form with the new engineering form ID
                 const updateResponse = await fetch(`/api/ncrForms/${ncrFormID}`, {
@@ -286,6 +314,131 @@ submitEngBtn.addEventListener('click', async function(event) {
         console.error('Error processing the form:', error);
     }
 });
+
+const submitPurBtn = document.getElementById('submit-purchasing-btn');
+submitPurBtn.addEventListener('click', async function (event) {
+    event.preventDefault();
+
+    console.log("purchasing form", purchasingForm);
+
+    // Determine if we are updating an existing purchasing form
+    const currentPurFormID = purchasingForm ? purchasingForm.purFormID : null;
+
+    // Collect form data
+    const formData = {
+        purFormID: await getPurchasingFormID(), // Get or generate the form ID
+        purDescription: document.querySelector('input[name="preliminary-decision"]:checked').value,
+        purCarRaised: Number(document.querySelector('input[name="car-raised"]:checked').value),
+        purCarNo: Number(document.getElementById('car-number').value) || null,
+        purFollowUpReq: Number(document.querySelector('input[name="follow-up-required"]:checked').value),
+        purFollowUpType: document.getElementById('purchasing-followup').value || null,
+        purFollowUpDate: document.getElementById('purchasing-followup-date').value || null,
+        purInspectorID: Number(sessionStorage.getItem('empID')),
+        purNCRClosingDate: document.getElementById('purchasing-date').value,
+    };
+
+    try {
+        if (currentPurFormID) {
+            // Update existing purchasing form
+            const response = await fetch(`/api/purchasingForms/${currentPurFormID}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                alert('Purchasing form updated successfully');
+            } else {
+                alert('Error updating purchasing form');
+            }
+        } else {
+            // Create a new purchasing form
+            const response = await fetch(`/api/purchasingForms`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                const newPurForm = await response.json();
+                console.log("Full response from API:", newPurForm); // Log the full response to see its structure
+                
+                const newPurFormID = newPurForm.purFormID; // Extract purFormID
+                console.log("New Purchasing Form ID:", newPurFormID); 
+
+                console.log(newPurFormID);
+
+                // Update the NCR form with the new purchasing form ID
+                const ncrFormID = ncrID; // Ensure ncrID is correctly defined elsewhere
+                const updatedNCRData = { purFormID: newPurFormID, ncrStage: "ARC", ncrStatusID: 2 };
+
+                const updateResponse = await fetch(`/api/ncrForms/${ncrFormID}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedNCRData),
+                });
+
+                if (updateResponse.ok) {
+                    alert('Purchasing form created and NCR form updated successfully');
+
+                    // Optionally reload the page
+                    location.reload();
+
+                    // Notify the department manager
+                    const ncrFormNo = document.getElementById('ncr-no').value.replace(/\D/g, '');
+                    await notifyDepartmentManager(ncrFormNo, "");
+                } else {
+                    alert('Error updating NCR form with purchasing form ID');
+                    console.error('Error updating NCR form:', await updateResponse.json());
+                }
+            } else {
+                alert('Error creating purchasing form');
+                console.error('Error response:', await response.json());
+            }
+        }
+    } catch (error) {
+        alert('Error processing the form: ' + error.message);
+        console.error('Error processing the form:', error);
+    }
+});
+
+// Function which ghenerates the existing purchasing form ID
+async function getPurchasingFormID(status) {
+    if(status === "UPDATE"){
+        // Return the existing form ID fromt he databse or from the user input if updating
+        const ncrNo = document.getElementById('ncr-no').value.replace(/\D/g, '');
+        try{
+            const response = await fetch(`/api/purchasingForms/${ncrNo}`) // Fetch existing form based on NCR no
+
+            if(!response.ok){
+                throw new Error('Form not found for update.');
+            }
+
+            const data = await response.json();
+            return data.purFormID;
+        } catch(error){
+            console.error('Error fetching purchasing form for update: ', error);
+            throw error;
+        }
+    }
+    else{
+        // Generate the new form ID
+        try{
+            const response = await fetch('/api/purchasingForms');
+
+            if(!response.ok){
+                throw new Error('Network response was not ok.');
+            }
+
+            const data = await response.json();
+            return data.length + 1;
+        }
+        catch(error){
+            console.error('Error generating new purchasing form ID', error);
+            throw error;
+        }
+    }
+}
 
 async function notifyDepartmentManager(ncrFormNo, department) {
     const recipient = "andrewdionne09@gmail.com"; 

@@ -54,6 +54,8 @@ async function populateRecentNcrTable(data){
 
         let ncr = data[i];
 
+        
+
         const row = document.createElement('tr'); // Create new row element to be used in the table
 
         let ncrStatus;

@@ -2,6 +2,17 @@
 async function createEngineeringForm() {
     const status = await checkNCRValidity();
 
+    let revisionDate;
+
+    // If else ladder which checks against the checked value in the radio button and handles data accordingly so it doesnt display in data if user checks "no"
+    if(document.querySelector('input[name="require-updating"]:checked').value === 1) // "Yes" case for "Does the drawing require updating"
+    {
+        revisionDate = null;
+    }
+    else{
+        revisionDate = document.getElementById('revision-date').value;
+    }
+
     if (status === "VALID" || status === "UPDATE") {
         // Collect inputs
         const engineeringFormData = { 
@@ -10,9 +21,9 @@ async function createEngineeringForm() {
             engCustNotification: document.querySelector('input[name="require-notification"]:checked').value,
             engDispositionDesc: document.getElementById('disposition').value,
             engDrawingUpdate: document.querySelector('input[name="require-updating"]:checked').value,
-            engRevisionNo: document.getElementById('original-rev-number').value,
-            engUpdatedRevisionNo: document.getElementById('updated-rev-number').value,
-            engUpdatedRevisionDate: document.getElementById('revision-date').value,
+            engRevisionNo: document.getElementById('original-rev-number').value || null,
+            engUpdatedRevisionNo: document.getElementById('updated-rev-number').value || null,
+            engUpdatedRevisionDate: revisionDate,
             engID: sessionStorage.getItem("empID"),
             engDate: document.getElementById('engineer-date').value
         };
@@ -66,6 +77,50 @@ async function createEngineeringForm() {
     } else if (status === "INVALID") {
         alert('Cannot create or update engineering form. NCR number is not valid.');
     }
+}
+
+async function updateNCR(){
+    const ncrNo = document.getElementById('ncr-no').value.replace(/\D/g, '');
+
+    // Stage changed bc quality form should already be created once this is called
+    sessionStorage.setItem("currentNCRStage", "PUR"); 
+
+    const ncrData = {
+        ncrFormID: Number(ncrFormID),
+        ncrFormNo: Number(ncrFormNo),
+        qualFormID: Number(qualFormID),
+        engFormID: null, //NULL since no eng form has been yet created
+        purFormID: null, //NULL sine no pur form has been yet created
+        prodID: Number(document.getElementById('po-prod-no').value),
+        ncrStatusID: 1, // 1: Open, 2: Closed
+        ncrStage: sessionStorage.getItem("currentNCRStage"),
+        ncrIssueDate: document.getElementById('quality-rep-date').value
+    }
+
+    try{
+        const response = await fetch('/api/ncrForms', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(ncrData)
+        });
+
+        if(!response.ok){
+            throw new Error('Network response was not ok');
+        }
+
+        const result = await response.json();
+        
+        alert('Success creating NCR and Quality Assuance Form. Engineering department has been notified');
+    
+        await notifyDepartmentManager(ncrFormNo, "Engineering");
+    }
+    catch(error){
+        console.error('Error creating new NCR report:', error);
+        alert('Failed to create NCR. Please try again.');
+    }
+
 }
 
 // Function to generate or get the existing engineering form ID
@@ -172,6 +227,15 @@ Please review and proceed with the necessary actions at your earliest convenienc
 // EventListener code for submit button
 document.getElementById('submit-engineering-btn').addEventListener('click', function() {
     createEngineeringForm();
+});
+
+//Eventlisteners for "Does the drawing require updating" to show or not show fields (defaults to no)
+document.getElementById('require-updating-yes').addEventListener('change', function(){
+    document.getElementById('revision-info').style.display = "";
+});
+
+document.getElementById('require-updating-no').addEventListener('change', function(){
+    document.getElementById('revision-info').style.display = "none";
 });
 
 // Input validation and error handling for required fields

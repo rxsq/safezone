@@ -116,7 +116,7 @@
                 </div>
             </fieldset>
 
-            <fieldset class="border p-2">
+            <fieldset class="border p-2" id="quality-fieldset">
                 <legend class="w-auto collapsible" id="legend-quality">Quality Representative</legend>
                 <div id="section-quality">
                     <div class="two-column">
@@ -211,7 +211,7 @@
                     </div>
                 </div>
             </fieldset>
-            <fieldset class="border p-2">
+            <fieldset class="border p-2" id="engineering-fieldset">
                 <legend class="w-auto collapsible" id="legend-engineering">Engineering</legend>
                 <div id="section-engineering">
                     <section class="bordered">
@@ -290,6 +290,73 @@
                     <div class="form-group submit-btn-container">
                         <button type="submit" class="submit-btn" id="submit-engineering-btn">Submit</button>
                     </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="border p-2" id="purchasing-fieldset">
+                <legend class="w-auto collapsible" id="legend-purchasing">Purchasing</legend>
+                <div id="section-purchasing">
+                    <h2 style="display: none;">Purchasing Top Info</h2>
+                    <div class="four-column">
+                        <div class="form-group">
+                            <label class="required" data-bs-toggle="tooltip" title="Required">Purchasing's Preliminary
+                                Decision</label>
+                            <div class="four-column">
+                                <label><input type="radio" name="preliminary-decision"
+                                        value="Return to Supplier for either rework or replacement">Return to Supplier
+                                    for either rework or replacement</label>
+                                <label><input type="radio" name="preliminary-decision" value="Rework In-House">Rework In-House</label>
+                                <label><input type="radio" name="preliminary-decision" value="Scrap In-House">Scrap In-House</label>
+                                <label><input type="radio" name="preliminary-decision" value="Defer for HBC Engineering Review">Defer for
+                                    HBC Engineering Review</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="four-column">
+                        <div class="form-group">
+                            <label class="required" data-bs-toggle="tooltip" title="Required">Was a CAR raised?</label>
+                            <div class="four-column">
+                                <label><input type="radio" name="car-raised" value="1">Yes</label>
+                                <label><input type="radio" name="car-raised" value="0">No</label>
+                            </div>
+                            <div class="four-column">
+                                <label style="margin-top: 15px;">If "Yes" indicate CAR Number<input type="text" id="car-number" name="car-number"
+                                        data-bs-toggle="tooltip" title="Required"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="required" data-bs-toggle="tooltip" title="Required">Follow-up
+                                Required?</label>
+                            <div class="four-column">
+                                <label><input type="radio" name="follow-up-required" value="1">Yes</label>
+                                <label><input type="radio" name="follow-up-required" value="0">No</label>
+                            </div>
+                            <div class="four-column">
+                                <label style="margin-top: 15px;">If "Yes" indicate type & expected date<input type="text" id="purchasing-followup"
+                                        name="purchasing-followup" data-bs-toggle="tooltip" title="Required"></label>
+                                <label style="margin-top: 15px;">Follow up date<input type="date" id="purchasing-followup-date"
+                                        name="purchasing-followup" data-bs-toggle="tooltip" title="Required"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two-column">
+                        <div class="form-group">
+                            <label for="purchasing" class="required">Operations Manager</label>
+                            <input type="text" id="purchasing" name="purchasing" data-bs-toggle="tooltip"
+                                title="Required">
+                        </div>
+                        <div class="form-group">
+                            <label for="purchasing-date" class="required">Date</label>
+                            <input type="date" id="purchasing-date" name="purchasing-date" readonly>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group submit-btn-container">
+                        <button type="button" class="btn btn-secondary button-gap" id="sample-data-btn-purchasing">Sample Data</button>
+                        <button type="submit" class="submit-btn" id="submit-purchasing-btn">Create Purchasing Form</button>
+                    </div>
+
                 </div>
             </fieldset>
 

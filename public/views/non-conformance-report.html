@@ -252,12 +252,12 @@
                             <label>Does the drawing require updating</label>
                             <p>Sequence of work steps required when "repair" or "rework" indicated</p>
                             <div class="four-column">
-                                <label><input type="radio" name="require-updating" value="1"> Yes</label>
-                                <label><input type="radio" name="require-updating" value="0"> No</label>
+                                <label><input type="radio" name="require-updating" value="1" id="require-updating-yes"> Yes</label>
+                                <label><input type="radio" name="require-updating" value="0" id="require-updating-no" checked> No</label>
                             </div>
                         </div>
-                        <div class="four-column">
-                            <div class="form-group">
+                        <div class="four-column" id="revision-info" style="display: none;">
+                            <div class="form-group" id="updated-revision-info">
                                 <label for="original-rev-number">Original Revision Number</label>
                                 <input type="text" id="original-rev-number" name="original-rev-number">
                             </div>
@@ -286,7 +286,7 @@
 
                     <div class="form-group submit-btn-container">
                         <button type="button" class="btn btn-secondary button-gap" id="sample-data-btn-engineering">Sample Data</button>
-                        <button type="submit" class="submit-btn" id="submit-engineering-btn">Submit</button>
+                        <button type="submit" class="submit-btn" id="submit-engineering-btn">Create Engineering Form</button>
                     </div>
                 </div>
             </fieldset>
@@ -300,12 +300,12 @@
                             <label class="required" data-bs-toggle="tooltip" title="Required">Purchasing's Preliminary
                                 Decision</label>
                             <div class="four-column">
-                                <label><input type="radio" name=""
+                                <label><input type="radio" name="preliminary-decision"
                                         value="Return to Supplier for either rework or replacement">Return to Supplier
                                     for either rework or replacement</label>
-                                <label><input type="radio" name="" value="Rework In-House">Rework In-House</label>
-                                <label><input type="radio" name="" value="Scrap In-House">Scrap In-House</label>
-                                <label><input type="radio" name="" value="Defer for HBC Engineering Review">Defer for
+                                <label><input type="radio" name="preliminary-decision" value="Rework In-House">Rework In-House</label>
+                                <label><input type="radio" name="preliminary-decision" value="Scrap In-House">Scrap In-House</label>
+                                <label><input type="radio" name="preliminary-decision" value="Defer for HBC Engineering Review">Defer for
                                     HBC Engineering Review</label>
                             </div>
                         </div>
@@ -332,6 +332,8 @@
                             <div class="four-column">
                                 <label style="margin-top: 15px;">If "Yes" indicate type & expected date<input type="text" id="purchasing-followup"
                                         name="purchasing-followup" data-bs-toggle="tooltip" title="Required"></label>
+                                <label style="margin-top: 15px;">Follow up date<input type="date" id="purchasing-followup-date"
+                                        name="purchasing-followup" data-bs-toggle="tooltip" title="Required"></label>
                             </div>
                         </div>
                     </div>
@@ -350,7 +352,7 @@
 
                     <div class="form-group submit-btn-container">
                         <button type="button" class="btn btn-secondary button-gap" id="sample-data-btn-purchasing">Sample Data</button>
-                        <button type="submit" class="submit-btn" id="submit-purchasing-btn">Submit</button>
+                        <button type="submit" class="submit-btn" id="submit-purchasing-btn">Create Purchasing Form</button>
                     </div>
 
                 </div>

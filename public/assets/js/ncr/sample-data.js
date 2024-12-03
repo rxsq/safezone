@@ -1,8 +1,9 @@
 // sample data for quality inspector
 document.getElementById('sample-data-btn-quality').addEventListener('click', function () {
-    document.getElementById('supplier-name').value = "Paint Supply Co.";
+    document.getElementById('supplier-name').value = 1;
+    populateProductDropDownLists(window.products, document.getElementById('supplier-name').value);
     document.querySelector('input[name="process-applicable"][value="supplier"]').checked = true;
-    document.getElementById('po-prod-no').value = "2";
+    document.getElementById('po-prod-no').value = 1;
     document.getElementById('sales-order-no').value = "SO54321";
     document.getElementById('quantity-received').value = "100";
     document.getElementById('quantity-defective').value = "5";
