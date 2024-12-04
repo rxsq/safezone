@@ -220,23 +220,52 @@ function printNCR(ncrFormID) {
     const isConfirmed = confirm('Are you sure you want to generate and print the NCR report?');
     if (!isConfirmed) return;
 
+    console.log(`Fetching NCR form with ID: ${ncrFormID}`);
+
     fetch(`/api/ncrForms/${ncrFormID}`)
         .then(response => {
+            console.log('Received response for NCR form:', response);
             if (!response.ok) throw new Error('Failed to fetch NCR form');
             return response.json();
         })
         .then(ncrData => {
+            console.log('NCR data received:', ncrData);
             if (!ncrData || typeof ncrData !== 'object') throw new Error('Invalid NCR data received');
 
-            const productFetch = fetch(`/api/products/${ncrData.prodID}`).then(res => res.json());
-            const qualityFetch = fetch(`/api/qualityForms/${ncrData.qualFormID}`).then(res => res.json());
-            const engineeringFetch = ncrData.engFormID ? fetch(`/api/engineerForms/${ncrData.engFormID}`).then(res => res.json()) : Promise.resolve(null);
-            const purchasingFetch = ncrData.purFormID ? fetch(`/api/purchasingForms/${ncrData.purFormID}`).then(res => res.json()) : Promise.resolve(null);
+            // Fetch related data
+            const productFetch = fetch(`/api/products/${ncrData.prodID}`).then(res => res.json()); // Fetch product details
+            const qualityFetch = fetch(`/api/qualityForms/${ncrData.qualFormID}`).then(res => res.json()); // Fetch quality form data
+            const engineeringFetch = ncrData.engFormID ? fetch(`/api/engineerForms/${ncrData.engFormID}`).then(res => res.json()) : Promise.resolve(null); // Fetch engineering data if available
+            const purchasingFetch = ncrData.purFormID ? fetch(`/api/purchasingForms/${ncrData.purFormID}`).then(res => res.json()) : Promise.resolve(null);  // Fetch purchasing data if available
 
             return Promise.all([ncrData, productFetch, qualityFetch, engineeringFetch, purchasingFetch]);
         })
         .then(([ncrData, productData, qualityData, engineeringData, purchasingData]) => {
-            const pdfData = { ncrData, productData, supplierData, qualityData, engineeringData, purchasingData };
+            console.log('All data fetched:', { ncrData, productData, qualityData, engineeringData, purchasingData });
+
+            // Use `supID` from `productData` to fetch supplier data
+            return Promise.all([
+                Promise.resolve(ncrData),
+                Promise.resolve(productData),
+                fetch(`/api/suppliers/${productData.supID}`).then(res => res.json()), // Fetch supplier data
+                Promise.resolve(qualityData),
+                Promise.resolve(engineeringData),
+                Promise.resolve(purchasingData),
+            ]);
+        })
+        .then(([ncrData, productData, supplierData, qualityData, engineeringData, purchasingData]) => {
+            console.log('Supplier data fetched:', supplierData);
+            
+            const pdfData = {
+                ncrData,
+                productData,
+                supplierData,
+                qualityData,
+                engineeringData,
+                purchasingData,
+            };
+
+            console.log('Sending data to generate PDF:', pdfData);
 
             return fetch('/api/ncrPdfRoute/generate-ncr-report', {
                 method: 'POST',
@@ -245,10 +274,12 @@ function printNCR(ncrFormID) {
             });
         })
         .then(response => {
+            console.log('Received response for PDF generation:', response);
             if (!response.ok) throw new Error('Failed to generate PDF');
             return response.blob();
         })
         .then(blob => {
+            console.log('Received PDF blob');
             const url = window.URL.createObjectURL(blob);
             const downloadLink = document.createElement('a');
             downloadLink.href = url;

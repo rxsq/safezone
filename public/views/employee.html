@@ -26,6 +26,12 @@
       </div>
       <i class="bi bi-list" id="btn-close"></i>
     </div>
+    <div class="notification-container">
+      <button id="notificationBell" class="btn" data-bs-toggle="modal" data-bs-target="#notificationModal">
+          <i class="bi bi-bell"></i> 
+          <span id="notificationCount" class="badge bg-danger"></span>
+      </button>
+  </div>
    <ul class="nav-list">
             <li>
                 <a href="index.html"  data-bs-toggle="tooltip" title="Dashboard">
@@ -241,6 +247,8 @@
   <script defer src="../assets/js/employee/handle-data.js"></script>
   <script src="../assets/js/main/user-role-handling.js"></script>
   <script defer src="../assets/js/main/sidebar.js"></script>
+  <script src="../assets/js/main/inject-notification-modal.js"></script>
+  <script src="../assets/js/main/notification-handling.js"></script>
 </body>
 
 </html>

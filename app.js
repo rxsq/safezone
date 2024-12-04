@@ -12,6 +12,7 @@ const purchasingFormsRoutes = require('./routes/purchasingForms');
 const statusRoutes = require('./routes/status'); 
 const emailRoutes = require('./routes/emailRoutes');
 const pdfRoutes = require('./routes/ncrPdfRoute.js');
+const notificationsRoutes = require('./routes/notifications'); 
 
 
 const app = express();
@@ -36,7 +37,7 @@ app.use('/api/purchasingForms', purchasingFormsRoutes); // Route for Purchasing 
 app.use('/api/status', statusRoutes); // Route for Stanpm tus
 app.use('/api/email', emailRoutes);
 app.use('/api/ncrPdfRoute', pdfRoutes);
-
+app.use('/api/notifications', notificationsRoutes);
 
 // Serve the HTML page for NCR Forms
 // app.get('/ncrForms', (req, res) => {

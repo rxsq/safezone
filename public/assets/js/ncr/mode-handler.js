@@ -24,6 +24,8 @@ function handleUserRole(userRole){
         case "Purchasing": purchasingAccess(); break;
         default: noAccess();
     }
+
+    navigateToUserForm();
 }
 
 function viewModeAccess(){
@@ -120,3 +122,38 @@ function disablePurchasingForm(){
     document.getElementById('purchasing-fieldset').style.display = "none";
 }
 
+// Function which closes forms based on the status of the current form (only in edit mode of course)
+function navigateToUserForm(){
+    if(mode === "edit"){
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const ncrFormID = urlParams.get('ncrFormID');  
+
+        fetch(`/api/ncrForms/${ncrFormID}`)
+        .then(response => response.json())
+        .then(async ncrForm => {
+            if (ncrForm.qualFormID === null) {
+                document.getElementById('section-quality').style.display = "block";
+                document.getElementById('section-engineering').style.display = "none";
+                document.getElementById('section-purchasing').style.display = "none";
+            } else if (ncrForm.engFormID === null) {
+                document.getElementById('section-quality').style.display = "none";
+                document.getElementById('section-engineering').style.display = "block";
+                document.getElementById('section-purchasing').style.display = "none";
+            } else if (ncrForm.purFormID === null) {
+                document.getElementById('section-quality').style.display = "none";
+                document.getElementById('section-engineering').style.display = "none";
+                document.getElementById('section-purchasing').style.display = "block";
+            } else {
+                console.log("All forms are closed or completed.");
+                document.getElementById('section-quality').style.display = "none";
+                document.getElementById('section-engineering').style.display = "none";
+                document.getElementById('section-purchasing').style.display = "none";
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching NCR form:', error);
+        });
+    }
+    else return;
+}
