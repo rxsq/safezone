@@ -2,21 +2,17 @@ const supplierSelect = document.getElementById('supplier-name');
 const productSelect = document.getElementById('po-prod-no');
 const statusSelect = document.getElementById('status');
 
+
+
 function fetchNcrForms() {
     fetch('/api/ncrForms')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            updateMetrics(data.items);
-            renderBarChart(data.items); // Render chart with the fetched data
-            renderSupplierChart(data.items);
-
-        })
-        .catch(error => console.error('Error fetching NCR forms:', error));
+    .then(response => response.json())
+    .then(data => {
+        updateMetrics(data.items);
+        renderBarChart(data.items);
+        renderSupplierChart(data.items);
+    })
+    .catch(error => console.error('Error fetching NCR forms:', error));
 
 }
 
@@ -127,7 +123,7 @@ async function groupBySupplier(data) {
         supplierCounts[supplierName] = (supplierCounts[supplierName] || 0) + 1;
     }
 
-    return supplierCounts; 
+    return supplierCounts; // Returns an object like { "Supplier Name 1": count, "Supplier Name 2": count, ... }
 }
 // Supplier chart
 async function renderSupplierChart(data) {
@@ -139,13 +135,16 @@ async function renderSupplierChart(data) {
     const labels = Object.keys(supplierCounts); // Supplier names
     const values = Object.values(supplierCounts); // NCR counts per supplier
 
+    // Number of labels to skip for better spacing when there are too many
+    const skipLabels = Math.max(Math.floor(labels.length / 20), 1); // Adjust the divisor (20) based on your preference
+
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: labels,
+            labels: labels.filter((label, index) => index % skipLabels === 0), // Skip labels to prevent overlap
             datasets: [{
                 label: "NCR's per Supplier",
-                data: values,
+                data: values.filter((_, index) => index % skipLabels === 0), // Only show corresponding data for visible labels
                 backgroundColor: '#173451',
                 borderColor: 'rgba(255, 171, 0, 1)',
                 borderWidth: 1,
@@ -160,7 +159,13 @@ async function renderSupplierChart(data) {
                     },
                     ticks: {
                         autoSkip: false, // Display all supplier names on the x-axis
-                    }
+                        maxRotation: 45, // Rotate labels to prevent overlap
+                        minRotation: 45,
+                    },
+                    // To prevent label overlap in case of long names, adjust this option
+                    grid: {
+                        display: false, // Hide grid lines if they're interfering with label visibility
+                    },
                 },
                 y: {
                     beginAtZero: true,
@@ -184,7 +189,5 @@ async function renderSupplierChart(data) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function(){
-    fetchNcrForms();
-});
 
+fetchNcrForms();
