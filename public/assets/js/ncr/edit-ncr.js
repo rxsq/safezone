@@ -296,7 +296,7 @@ submitEngBtn.addEventListener('click', async function(event) {
                 if (updateResponse.ok) {
                     alert('Engineering form created and NCR form updated successfully');
 
-                    location.reload();
+                    //location.reload();
 
                     // Send email only if the form is newly created
                     const ncrFormNo = document.getElementById('ncr-no').value.replace(/\D/g, '');
@@ -361,15 +361,15 @@ submitPurBtn.addEventListener('click', async function (event) {
 
             if (response.ok) {
                 const newPurForm = await response.json();
-                console.log("Full response from API:", newPurForm); // Log the full response to see its structure
+                console.log("Full response from API:", newPurForm); 
                 
-                const newPurFormID = newPurForm.purFormID; // Extract purFormID
+                const newPurFormID = newPurForm.purFormID; 
                 console.log("New Purchasing Form ID:", newPurFormID); 
 
                 console.log(newPurFormID);
 
                 // Update the NCR form with the new purchasing form ID
-                const ncrFormID = ncrID; // Ensure ncrID is correctly defined elsewhere
+                const ncrFormID = ncrID; 
                 const updatedNCRData = { purFormID: newPurFormID, ncrStage: "ARC", ncrStatusID: 2 };
 
                 const updateResponse = await fetch(`/api/ncrForms/${ncrFormID}`, {
@@ -408,7 +408,7 @@ async function getPurchasingFormID(status) {
         // Return the existing form ID fromt he databse or from the user input if updating
         const ncrNo = document.getElementById('ncr-no').value.replace(/\D/g, '');
         try{
-            const response = await fetch(`/api/purchasingForms/${ncrNo}`) // Fetch existing form based on NCR no
+            const response = await fetch(`/api/purchasingForms/${ncrNo}`) 
 
             if(!response.ok){
                 throw new Error('Form not found for update.');
@@ -471,4 +471,63 @@ Please review and proceed with the necessary actions at your earliest convenienc
     } catch (error) {
         console.error('An unexpected error occurred:', error);
     }
+
+    
+    const notificationMessage = `NCR Form ${ncrFormNo} in the ${department} department requires your attention.`;
+            
+    let empID;
+    
+    switch(department){
+        case "Engineering": empID = 2; break;
+        case "Purchasing": empID = 3; break;
+    }
+
+    // Add a new notification for the employee
+    const notificationResponse = await fetch('/api/notifications/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            user_id: empID, 
+            message: notificationMessage,
+            ncrFormID: ncrID
+        }),
+    });
+
+    const notificationResult = await notificationResponse.json();
+    if (notificationResponse.ok) {
+        console.log('Notification added successfully:', notificationResult);
+    } else {
+        console.error('Error adding notification:', notificationResult.error);
+    }
+
+
 }
+
+//Eventlisteners for "Does the drawing require updating" to show or not show fields (defaults to no)
+document.getElementById('require-updating-yes').addEventListener('change', function(){
+    document.getElementById('revision-info').style.display = "";
+});
+
+document.getElementById('require-updating-no').addEventListener('change', function(){
+    document.getElementById('revision-info').style.display = "none";
+});
+
+//Eventlisteners for "CAR number entry"
+document.getElementById('car-yes').addEventListener('change', function(){
+    document.getElementById('car-info').style.display = "";
+});
+
+document.getElementById('car-no').addEventListener('change', function(){
+    document.getElementById('car-info').style.display = "none";
+});
+
+//Eventlisteners for "Follow up required"
+document.getElementById('followup-yes').addEventListener('change', function(){
+    document.getElementById('followup-info').style.display = "";
+});
+
+document.getElementById('followup-no').addEventListener('change', function(){
+    document.getElementById('followup-info').style.display = "none";
+});

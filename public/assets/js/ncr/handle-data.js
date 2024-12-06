@@ -47,6 +47,8 @@ async function populateRecentNcrTable(data){
 
     let openRecords = 0; 
 
+    let userRole = sessionStorage.getItem('userRole');
+
     // Loop which iterates over all items in data array
     for(let i = 0; i < data.length; i ++){
         // If 5 open records are showing, then break out of loop
@@ -54,9 +56,18 @@ async function populateRecentNcrTable(data){
 
         let ncr = data[i];
 
-        
-
         const row = document.createElement('tr'); // Create new row element to be used in the table
+
+        //Only show necessary forms to user
+        if(userRole === "Quality" && ncr.ncrStage != "QUA"){
+            continue;
+        }
+        if(userRole === "Engineering" && ncr.ncrStage != "ENG"){
+            continue;
+        }
+        if(userRole === "Purchasing" && ncr.ncrStage != "PUR"){
+            continue;
+        }  
 
         let ncrStatus;
         // If status is open, incriment openRecords
@@ -102,7 +113,7 @@ async function populateRecentNcrTable(data){
 
 // DOMContentLoaded EventListener
 document.addEventListener('DOMContentLoaded', function () {
-    tooltip();
+    loadNotifications();
 });
 
 // Groups NCR records by issue date
@@ -446,7 +457,23 @@ document.addEventListener('DOMContentLoaded', function(){
 
     // Default create mode
     sessionStorage.setItem("mode", "create");
+
+    const loggedInUser = {
+        name: sessionStorage.getItem('userName'),
+        department: sessionStorage.getItem('userRole')
+    }
+
+    const ncrHeading = document.getElementById('ncr-heading');
+    ncrHeading.textContent = `New NCR's for ${loggedInUser.department}`
+
+    const empID = sessionStorage.getItem('empID');
+    loadNotifications(empID); 
 });
 
+// Show the modal when the notification bell is clicked
+document.getElementById('notificationBell').addEventListener('click', () => {
+    const empID = sessionStorage.getItem('empID');
+    loadNotifications(empID); // Fetch and load notifications
+});
 
 

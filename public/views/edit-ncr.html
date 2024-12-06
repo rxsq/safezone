@@ -28,6 +28,12 @@
             </div>
             <i class="bi bi-list" id="btn-close"></i>
         </div>
+        <div class="notification-container">
+            <button id="notificationBell" class="btn" data-bs-toggle="modal" data-bs-target="#notificationModal">
+                <i class="bi bi-bell"></i> 
+                <span id="notificationCount" class="badge bg-danger"></span>
+            </button>
+        </div>
         <ul class="nav-list">
             <li>
                 <a href="index.html"  data-bs-toggle="tooltip" title="Dashboard">
@@ -122,23 +128,32 @@
                     <div class="two-column">
                         <div class="form-group">
                             <label for="supplier-name" class="required">Supplier Name</label>
-                            <select id="supplier-name" name="supplier-name" data-bs-toggle="tooltip" title="Required">
+                                <i class="bi bi-question-circle text-primary" 
+                                data-bs-toggle="tooltip" 
+                                data-bs-placement="right" 
+                                title="Select the supplier from the dropdown list."></i>
+                           <select id="supplier-name" name="supplier-name" data-bs-toggle="tooltip" title="Required">
                                 <option value="" selected>Select a Supplier</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <button class="new-suppliers-btn" data-bs-toggle="tooltip" title="Add New Supplier" id="new-suppliers-btn" onclick="location.href='create-supplier.html'">
+                            <button class="new-suppliers-btn" data-bs-toggle="tooltip" title="Add New Supplier"
+                                id="new-suppliers-btn" onclick="window.location.href='create-supplier.html'">
                                 <i class="bi bi-plus-circle"></i>
                             </button>
                         </div>
                         <div class="form-group">
                             <label class="required" data-bs-toggle="tooltip" title="Required">Identify Process
                                 Applicable</label>
-                            <div class="checkbox-group">
-                                <label><input type="checkbox" name="process-applicable" value="supplier" id="recInsp">
+                                <i class="bi bi-question-circle text-primary" 
+                            data-bs-toggle="tooltip" 
+                            data-bs-placement="right" 
+                            title="Choose if it Supplier or Rec-Insp and WIP Production Order"></i>
+                            <div class="checkbox-group" id="process-applicable">
+                                <label><input type="radio" name="process-applicable" value="supplier" id="recInsp">
                                     Supplier or
                                     Rec-Insp</label>
-                                <label><input type="checkbox" name="process-applicable" value="wip" id="wip"> WIP
+                                <label><input type="radio" name="process-applicable" value="wip" id="wip"> WIP
                                     (Production Order)</label>
                             </div>
                         </div>
@@ -147,22 +162,38 @@
                     <div class="four-column">
                         <div class="form-group">
                             <label for="po-prod-no" class="required">Product</label>
+                            <i class="bi bi-question-circle text-primary" 
+                               data-bs-toggle="tooltip" 
+                               data-bs-placement="right" 
+                               title="Select a product relating to the NCR."></i>
                             <select id="po-prod-no" name="po-prod-no" data-bs-toggle="tooltip" title="Required">
                                 <option value="" selected>Select a Product</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="sales-order-no" class="required">Sales Order Number</label>
+                            <i class="bi bi-question-circle text-primary" 
+                            data-bs-toggle="tooltip" 
+                            data-bs-placement="right" 
+                            title="A sales Order Number is required in this field which is required"></i>
                             <input type="text" id="sales-order-no" name="sales-order-no" data-bs-toggle="tooltip"
                                 title="Required">
                         </div>
                         <div class="form-group">
                             <label for="quantity-received" class="required">Quantity Received</label>
+                            <i class="bi bi-question-circle text-primary" 
+                            data-bs-toggle="tooltip" 
+                            data-bs-placement="right" 
+                            title="Enter the quantity of the product received."></i>
                             <input type="text" id="quantity-received" name="quantity-received" data-bs-toggle="tooltip"
                                 title="Required">
                         </div>
                         <div class="form-group">
                             <label for="quantity-defective" class="required">Quantity Defective</label>
+                            <i class="bi bi-question-circle text-primary" 
+                            data-bs-toggle="tooltip" 
+                            data-bs-placement="right" 
+                            title="Enter the quantity of the product that was defected."></i>
                             <input type="text" id="quantity-defective" name="quantity-defective"
                                 data-bs-toggle="tooltip" title="Required">
                         </div>
@@ -170,11 +201,19 @@
 
                     <div class="form-group">
                         <label for="description-item" class="required">Description of Item (including SAP No.)</label>
+                        <i class="bi bi-question-circle text-primary" 
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="right" 
+                        title="Provide a detailed description of the item, including its SAP number."></i>
                         <textarea id="description-item" name="description-item" rows="3" class="full-width"
                             data-bs-toggle="tooltip" title="Required"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="description-defect" class="required">Description of Defect</label>
+                        <i class="bi bi-question-circle text-primary" 
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="right" 
+                        title="Describe the defect in detail."></i>
                         <textarea id="description-defect" name="description-defect" rows="3" class="full-width"
                             data-bs-toggle="tooltip" title="Required"></textarea>
                     </div>
@@ -189,16 +228,20 @@
                         <div class="form-group">
                             <label class="required" data-bs-toggle="tooltip" title="Required">Item Marked
                                 Nonconforming</label>
-                            <div class="two-column">
+                                <i class="bi bi-question-circle text-primary"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="right"
+                                title="Select Yes or No if Item is Marked"></i>
+                            <div class="two-column" id="item-nonconforming">
                                 <label><input type="radio" name="item-nonconforming" value="1"> Yes</label>
                                 <label><input type="radio" name="item-nonconforming" value="0"> No</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="quality-rep-name" class="required">Quality Representative's Name</label>
-                            <input type="text" id="quality-rep-name" name="quality-rep-name" value="{qualityRepName}" data-bs-toggle="tooltip"
-                                title="Required"
-                                readonly> <!-- Readonly added for auto generation: Andrew-->
+                            <input type="text" id="quality-rep-name" name="quality-rep-name" value="{qualityRepName}"
+                                data-bs-toggle="tooltip" title="Required" readonly>
+                            <!-- Readonly added for auto generation: Andrew-->
                         </div>
                         <div class="form-group">
                             <label for="quality-rep-date">Date</label>
@@ -207,7 +250,8 @@
                     </div>
 
                     <div class="form-group submit-btn-container">
-                        <button type="submit" class="submit-btn" id="submit-quality-btn">Submit</button>
+                        <button type="button" class="btn btn-secondary button-gap" id="sample-data-btn-quality">Sample Data</button>
+                        <button type="submit" class="submit-btn" id="submit-quality-btn">Create New NCR</button>
                     </div>
                 </div>
             </fieldset>
@@ -215,19 +259,21 @@
                 <legend class="w-auto collapsible" id="legend-engineering">Engineering</legend>
                 <div id="section-engineering">
                     <section class="bordered">
-                        <h2 style="display: none;">Engineering top info</h2>
+                        <h2 style="display: none;">Engineering Top Info</h2>
                         <div class="two-column">
                             <div class="form-group">
                                 <label class="required" data-bs-toggle="tooltip" title="Required">Review by Chief
                                     Engineering</label>
+                                    <i class="bi bi-question-circle text-primary" 
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="right" 
+                                    title="Choose if it Use As is, Repair, Rework or Scrap"></i>
                                 <p>Indicate disposition by "checking" one of the following</p>
                                 <div class="four-column">
                                     <label><input type="radio" name="review-by-engineer" value="Use As Is">Use As
                                         Is</label>
-                                    <label><input type="radio" name="review-by-engineer"
-                                            value="Repair">Repair</label>
-                                    <label><input type="radio" name="review-by-engineer"
-                                            value="Rework">Rework</label>
+                                    <label><input type="radio" name="review-by-engineer" value="Repair">Repair</label>
+                                    <label><input type="radio" name="review-by-engineer" value="Rework">Rework</label>
                                     <label><input type="radio" name="review-by-engineer" value="Scrap">Scrap</label>
                                 </div>
                             </div>
@@ -247,28 +293,48 @@
                         <h2 style="display: none;">Engineering bottom info</h2>
                         <div class="form-group">
                             <label for="disposition" class="required">Disposition</label>
+                            <i class="bi bi-question-circle text-primary" 
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="right" 
+                                    title="Provide a detailed disposition of the Engineering"></i>
                             <textarea id="disposition" name="disposition" rows="3" class="full-width"
                                 data-bs-toggle="tooltip" title="Required"></textarea>
                         </div>
                         <div class="form-group">
                             <label>Does the drawing require updating</label>
+                            <i class="bi bi-question-circle text-primary" 
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="right" 
+                                    title="Choose Yes Or No if the drawing require updating"></i>
                             <p>Sequence of work steps required when "repair" or "rework" indicated</p>
                             <div class="four-column">
-                                <label><input type="radio" name="require-updating" value="1" > Yes</label>
-                                <label><input type="radio" name="require-updating" value="0"> No</label>
+                                <label><input type="radio" name="require-updating" value="1" id="require-updating-yes"> Yes</label>
+                                <label><input type="radio" name="require-updating" value="0" id="require-updating-no" checked> No</label>
                             </div>
                         </div>
-                        <div class="four-column">
-                            <div class="form-group">
+                        <div class="four-column" id="revision-info" style="display: none;">
+                            <div class="form-group" id="updated-revision-info">
                                 <label for="original-rev-number">Original Revision Number</label>
+                                <i class="bi bi-question-circle text-primary" 
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="right" 
+                                    title="Provide an Original Revision Number."></i>
                                 <input type="text" id="original-rev-number" name="original-rev-number">
                             </div>
                             <div class="form-group">
                                 <label for="updated-rev-number">Updated Revision Number</label>
+                                <i class="bi bi-question-circle text-primary" 
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="right" 
+                                    title="Provide an Updated Revision Number."></i>
                                 <input type="text" id="updated-rev-number" name="updated-rev-number">
                             </div>
                             <div class="form-group">
                                 <label for="revision-date">Revision Date</label>
+                                <i class="bi bi-question-circle text-primary" 
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="right" 
+                                    title="The Revision Dtae is Update."></i>
                                 <input type="date" id="revision-date" name="revision-date">
                             </div>
                         </div>
@@ -286,9 +352,9 @@
                         </div>
                     </section>
 
-
                     <div class="form-group submit-btn-container">
-                        <button type="submit" class="submit-btn" id="submit-engineering-btn">Submit</button>
+                        <button type="button" class="btn btn-secondary button-gap" id="sample-data-btn-engineering">Sample Data</button>
+                        <button type="submit" class="submit-btn" id="submit-engineering-btn">Create Engineering Form</button>
                     </div>
                 </div>
             </fieldset>
@@ -301,6 +367,10 @@
                         <div class="form-group">
                             <label class="required" data-bs-toggle="tooltip" title="Required">Purchasing's Preliminary
                                 Decision</label>
+                                <i class="bi bi-question-circle text-primary" 
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="right" 
+                                    title="Choose an option if it Return to Supplier for either rework or replacement, Rework In-House, Scrap In-House, Defer for HBC Engineering Review"></i>
                             <div class="four-column">
                                 <label><input type="radio" name="preliminary-decision"
                                         value="Return to Supplier for either rework or replacement">Return to Supplier
@@ -315,23 +385,36 @@
                     <div class="four-column">
                         <div class="form-group">
                             <label class="required" data-bs-toggle="tooltip" title="Required">Was a CAR raised?</label>
+                            <i class="bi bi-question-circle text-primary" 
+                            data-bs-toggle="tooltip" 
+                            data-bs-placement="right" 
+                             title="Choose Yes or No if a car was raised."></i>
                             <div class="four-column">
-                                <label><input type="radio" name="car-raised" value="1">Yes</label>
-                                <label><input type="radio" name="car-raised" value="0">No</label>
+                                <label><input type="radio" name="car-raised" value="1" id="car-yes">Yes</label>
+                                <label><input type="radio" name="car-raised" value="0" id="car-no">No</label>
                             </div>
-                            <div class="four-column">
+                            <div class="four-column" id="car-info">
                                 <label style="margin-top: 15px;">If "Yes" indicate CAR Number<input type="text" id="car-number" name="car-number"
                                         data-bs-toggle="tooltip" title="Required"></label>
+                                        <i class="bi bi-question-circle text-primary"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="right"
+                                        title="Provide the Corrective Action Request (CAR) number if applicable."></i>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="required" data-bs-toggle="tooltip" title="Required">Follow-up
                                 Required?</label>
+                                <i class="bi bi-question-circle text-primary"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="right"
+                                title="Specify whether follow-up actions are needed to address this issue."></i>
+      
                             <div class="four-column">
-                                <label><input type="radio" name="follow-up-required" value="1">Yes</label>
-                                <label><input type="radio" name="follow-up-required" value="0">No</label>
+                                <label><input type="radio" name="follow-up-required" value="1" id="followup-yes">Yes</label>
+                                <label><input type="radio" name="follow-up-required" value="0" id="followup-no">No</label>
                             </div>
-                            <div class="four-column">
+                            <div class="four-column" id="followup-info">
                                 <label style="margin-top: 15px;">If "Yes" indicate type & expected date<input type="text" id="purchasing-followup"
                                         name="purchasing-followup" data-bs-toggle="tooltip" title="Required"></label>
                                 <label style="margin-top: 15px;">Follow up date<input type="date" id="purchasing-followup-date"
@@ -342,11 +425,19 @@
                     <div class="two-column">
                         <div class="form-group">
                             <label for="purchasing" class="required">Operations Manager</label>
+                            <i class="bi bi-question-circle text-primary"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="Enter the name of the Operations Manager responsible for this decision."></i>
                             <input type="text" id="purchasing" name="purchasing" data-bs-toggle="tooltip"
                                 title="Required">
                         </div>
                         <div class="form-group">
                             <label for="purchasing-date" class="required">Date</label>
+                            <i class="bi bi-question-circle text-primary"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="The date is fixed to the exact date of purchase."></i>
                             <input type="date" id="purchasing-date" name="purchasing-date" readonly>
                         </div>
                     </div>
@@ -407,6 +498,9 @@
     <script src="../assets/js/ncr/collapsible-sections.js"></script>
     <script src="../assets/js/main/tooltip.js"></script>
     <script src="../assets/js/ncr/mode-handler.js"></script>
+    <script src="../assets/js/ncr/sample-data.js"></script>
+    <script src="../assets/js/main/inject-notification-modal.js"></script>
+    <script src="../assets/js/main/notification-handling.js"></script>
 </body>
 
 </html>

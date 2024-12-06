@@ -26,6 +26,12 @@
             </div>
             <i class="bi bi-list" id="btn-close"></i>
         </div>
+        <div class="notification-container">
+            <button id="notificationBell" class="btn" data-bs-toggle="modal" data-bs-target="#notificationModal">
+                <i class="bi bi-bell"></i> 
+                <span id="notificationCount" class="badge bg-danger"></span>
+            </button>
+        </div>
         <ul class="nav-list">
             <li>
                 <a href="index.html"  data-bs-toggle="tooltip" title="Dashboard">
@@ -114,7 +120,7 @@
                     <div class="two-column">
                         <div class="form-group">
                             <label for="filterSupplier" class="form-label">Supplier</label>
-                            <select id="supplier-name" name="supplier-name">
+                            <select id="supplier-name" name="supplier-name" class="form-select">
                                 <option value="-1" disabled selected>Select a Supplier</option>
                             </select>
                         </div>
@@ -126,11 +132,20 @@
                         </div> -->
                         <div class="form-group">
                             <label for="filterStatus" class="form-label">Stage</label>
-                            <select id="status" name="status">
+                            <select id="status" name="status" class="form-select">
                                 <option value="" disabled selected>Select a Stage</option>
                                 <option value="QUA">Quality</option>
                                 <option value="ENG">Engineering</option>
                                 <option value="PUR">Purchasing</option>
+                                <option value="ARC">Archived</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filterOpenStatus" class="form-label">Status</label>
+                            <select id="openStatus" name="openStatus" class="form-select">
+                                <option value="" disabled selected>Select a Status</option>
+                                <option value="1">Open</option>
+                                <option value="2">Closed</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -302,6 +317,8 @@
         </div>
     </div>
     <script src="../assets/js/main/sidebar.js"></script>
+    <script src="../assets/js/main/inject-notification-modal.js"></script>
+    <script src="../assets/js/main/notification-handling.js"></script>
     <script src="../assets/js/ncr-log/handle-data.js"></script>
     <script src="../assets/js/ncr-log/filter-data.js"></script>
     <script src="../assets/js/main/user-role-handling.js"></script>
