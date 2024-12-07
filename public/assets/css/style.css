@@ -929,112 +929,11 @@ canvas {
 }
 
 
-/* General styles for larger screens (default) */
-body {
-  font-size: 16px;
-}
-
-.sidebar {
-  width: 250px;
-}
-
-.main-content {
-  margin-left: 250px;
-}
-
-/* Zoom +400% or mobile-first design */
-@media only screen and (max-width: 480px) {
-  body {
-    font-size: 14px; /* Adjust font size for readability */
-  }
-
-  .sidebar {
-    position: absolute;
-    width: 70px; /* Collapse sidebar to icons only */
-    z-index: 1000;
-  }
-
-  .sidebar a {
-    font-size: 10px; /* Adjust text */
-  }
-
-  .main-content {
-    margin-left: 70px;
-  }
-
-  .chart-container {
-    width: 100%; /* Adjust chart width for smaller screens */
-    overflow-x: auto; /* Add horizontal scroll for charts */
-  }
-
-  .recent-ncrs-table {
-    font-size: 12px; /* Adjust table font */
-    overflow-x: auto; /* Enable horizontal scrolling for tables */
-  }
-}
 
 
 
-/*Mobile Phone*/
-@media only screen and (max-width: 480px) {
-  body {
-    font-size: 0.9em; /* Smaller text for smaller screens */
-  }
 
-  .sidebar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 70px; /* Adjust sidebar height for mobile */
-    flex-direction: row; /* Arrange items horizontally */
-    align-items: center;
-    justify-content: space-around;
-    padding: 10px 0;
-    z-index: 1000;
-  }
 
-  .sidebar a {
-    font-size: 0.9em;
-    padding: 5px;
-  }
-
-  .sidebar .nav-list .links-name {
-    display: none; /* Hide link text, icons only */
-  }
-
-  .home-content {
-    margin-left: 0;
-    width: 100%;
-    padding-bottom: 80px; /* Add padding to avoid overlapping with the sidebar */
-  }
-  h1 {
-    font-size: 1.1em;
-  }
-
-  button {
-    padding: 6px 12px;
-    font-size: 0.9em;
-  }
-
-  .chart-container {
-    width: 100%;
-    overflow-x: auto; /* Enable horizontal scrolling for charts */
-  }
-
-  .breadcrumb {
-    font-size: 0.8em;
-  }
-
-  .metric-card p {
-    font-size: 1.2em; /* Reduce metric font size */
-  }
-
-  .pagination a {
-    padding: 5px 10px;
-    font-size: 0.8em;
-  }
-}
 
 
 
