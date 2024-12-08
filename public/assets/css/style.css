@@ -41,9 +41,11 @@ body {
 }
 
 .logo-content .logo img {
-  height: 100%;
-  object-fit: cover;
-  width: 100%;
+  height: 100%; 
+  max-height: 180px; 
+  width: auto; 
+  max-width: 100%; 
+  object-fit: contain; 
 }
 
 /* PAGINATION STYLING*/
@@ -133,7 +135,7 @@ body {
 }
 
 /*NOTIFICATION/ NOTIFICATION BELL STYLING*/
-.notification-container {
+/* .notification-container {
   position: absolute;
   top: 60px;
   right: 10px;
@@ -150,7 +152,49 @@ body {
   position: absolute;
   top: -5px;
   right: -5px;
+} */
+
+.notification-container {
+  margin-top: 10px; /* Space between nav list and notifications */
+  padding: 0;
+  width: 100%;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  bottom: 70px;
+  position: absolute;
+  left: 0;
 }
+
+.notification-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #111;
+  font-size: 17px;
+  font-weight: 600;
+  padding: 10px 14px;
+  transition: all 0.3s ease;
+}
+
+.notification-link:hover {
+  background: #d0d0d0;
+  border-radius: 12px;
+}
+
+.notification-link .bi {
+  font-size: 24px;
+  margin-right: 25px;
+}
+
+.notification-link .badge {
+  margin-left: 45px;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  padding: 4px 8px;
+  font-size: 0.9em;
+}
+
 
 .custom-header {
   background-color: #173451;
@@ -208,12 +252,12 @@ body {
 }
 
 .sidebar.collapsed #log-out {
-  left: 70%; 
+  left: 50%; 
   transform: translateX(-55%); 
 }
 
 .sidebar.collapsed {
-  width: 70px;
+  width: 80px;
 }
 
 .sidebar.collapsed .nav-list .links-name{
@@ -225,20 +269,94 @@ body {
   width:100%;
 }
 
+.sidebar.collapsed .notification-container {
+  text-align: center;
+}
+
+.sidebar.collapsed .notification-container .notification-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; 
+  padding: 0;
+}
+
+.sidebar.collapsed .notification-container .notification-link .bi {
+  margin: 0; 
+  font-size: 24px; 
+  position: relative;
+}
+
+.sidebar.collapsed .notification-container .notification-link .badge {
+  position: absolute;
+  top: -10px; 
+  right: -10px; 
+  margin: 0; 
+  transform: translate(-50%, 50%); 
+  font-size: 12px; 
+  line-height: 1;
+}
+
+.sidebar.collapsed .notification-container .notification-link .notification-label{
+  display: none;
+}
+
 .sidebar.collapsed img, .sidebar.collapsed .search-box, .sidebar.collapsed .name-job .name {
   display:none;
 }
 
-.sidebar.collapsed .name-job .job{
+/* .sidebar.collapsed .name-job .job{
   transform: translateY(3.5vh);
   text-align: center;
   left: 70%;
+  font-size: 0.7em;
+} */
+
+.sidebar.collapsed .profile-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.sidebar.collapsed .profile-content .profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.sidebar.collapsed .profile-content .profile .profile-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar.collapsed .profile-content .profile .name-job {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 50px; 
+}
+
+.sidebar.collapsed .profile-content .profile .name-job .job {
+  font-size: 0.6em;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .sidebar:not(.collapsed) [data-bs-toggle="tooltip"]::after,
 .sidebar:not(.collapsed) [data-bs-toggle="tooltip"]::before {
     display: none !important;
 }
+
 /**/
 
 .sidebar .nav-list {
@@ -556,7 +674,7 @@ textarea {
 }
 
 .reset-btn {
-  background-color: grey;
+  background-color: #B81414;
 }
 
 .view-more-btn-container {
@@ -590,6 +708,10 @@ textarea {
 
 .cancel-btn:hover {
   background-color: #d0d0d0;
+}
+
+.reset-btn:hover {
+  background-color: rgb(255, 0, 0);
 }
 
 header {
