@@ -16,6 +16,10 @@
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
+<div id="loading-spinner-wrapper" class="loading-spinner-wrapper">
+  <div class="spinner"></div>
+</div>
+
 <body>
   <div class="sidebar" id="sidebar">
     <div class="logo-content">
@@ -26,12 +30,6 @@
       </div>
       <i class="bi bi-list" id="btn-close"></i>
     </div>
-    <!-- <div class="notification-container">
-      <button id="notificationBell" class="btn" data-bs-toggle="modal" data-bs-target="#notificationModal">
-          <i class="bi bi-bell"></i> 
-          <span id="notificationCount" class="badge bg-danger"></span>
-      </button>
-  </div> -->
     <ul class="nav-list">
       <li>
           <a href="index.html"  data-bs-toggle="tooltip" title="Dashboard">
@@ -114,7 +112,7 @@
         <section class="ncr-trends">
           <div class="top-flex">
             <h2>Suppliers</h2>
-            <button class="new-suppliers-btn" onclick="window.location.href='create-supplier.html';">+ New Supplier</button>
+            <button class="new-suppliers-btn" id="new-suppliers-btn" onclick="window.location.href='create-supplier.html';">+ New Supplier</button>
           </div>
           <table class="table table-striped table-hover">
             <thead>
@@ -131,13 +129,11 @@
             </tbody>
           </table>
         </section>
-        <div class="pagination">
-          <a href="#">Back</a>
-          <a href="#">1</a>
-          <a href="#">2</a>
-          <a href="#">3</a>
+        <div id="pagination-controls" class="pagination-container">
 
-          <a href="#">Next</a>
+        </div>
+        
+        <div id="page-number" class="page-number"></div>
         </div>
       </div>
     </div>
@@ -148,7 +144,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" id="deleteModalBody">
@@ -173,10 +169,7 @@
         <div class="modal-body">
           <form id="editForm">
             <div class="row">
-              <div class="col-md-3 mb-3">
-                <label for="editSupID" class="form-label">Supplier ID</label>
-                <input type="text" class="form-control" id="editSupID" required readonly>
-              </div>
+                <input type="hidden" class="form-control" id="editSupID" required readonly>
               <div class="col-md-9 mb-3">
                 <label for="editSupplierName" class="form-label">Supplier Name</label>
                 <input type="text" class="form-control" id="editSupplierName" required>
@@ -227,7 +220,6 @@
         </div>
         <div class="modal-body">
           <div id="viewModalContent">
-            <p><strong>Supplier ID:</strong> <span id="viewSupplierID"></span></p>
             <p><strong>Supplier Name:</strong> <span id="viewSupplierName"></span></p>
             <p><strong>Contact Name:</strong> <span id="viewContactName"></span></p>
             <p><strong>Contact Email:</strong> <span id="viewContactEmail"></span></p>
@@ -244,8 +236,9 @@
     </div>
   </div>
   <script defer src="../assets/js/main/sidebar.js"></script>
-  <script defer src="../assets/js/supplier/handle-data.js"></script>
+  <script type="module" defer src="../assets/js/supplier/handle-data.js"></script>
   <script src="../assets/js/main/user-role-handling.js"></script>
+  <script src="../assets/js/supplier/user-restriction-handling.js"></script>
   <script src="../assets/js/main/inject-notification-modal.js"></script>
   <script src="../assets/js/main/notification-handling.js"></script>
 </body>

@@ -1,11 +1,95 @@
+const pageSize = 6;
+let currentPage = 1;
+
 document.addEventListener('DOMContentLoaded', function () {
     fetchProducts();
     populateSupplierDropdown();
 });
 
+// Function to render pagination controls
+function renderPaginationControls(data) {
+    const paginationContainer = document.getElementById('pagination-controls');
+    paginationContainer.innerHTML = ''; 
+
+    const currentPage = data.currentPage;
+    const totalPages = data.totalPages;
+
+    const maxButtons = 3; 
+    const pagesToShow = Math.min(maxButtons, totalPages); 
+    
+    let startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
+    let endPage = Math.min(totalPages, startPage + pagesToShow - 1);
+
+    if (endPage === totalPages) {
+        startPage = Math.max(1, totalPages - pagesToShow + 1);
+    }
+
+    createNavigationButton(paginationContainer, 'First', 1, currentPage === 1);
+    createNavigationButton(paginationContainer, 'Prev', currentPage - 1, currentPage === 1);
+
+    for (let i = startPage; i <= endPage; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.onclick = () => fetchNcrForms(i);
+        pageButton.disabled = i === currentPage;
+        paginationContainer.appendChild(pageButton);
+    }
+
+    if (endPage < totalPages) {
+        const ellipsisButton = document.createElement('button');
+        ellipsisButton.textContent = '...';
+        ellipsisButton.onclick = () => showPageInput(currentPage, totalPages);
+        paginationContainer.appendChild(ellipsisButton);
+    }
+
+    createNavigationButton(paginationContainer, 'Next', currentPage + 1, currentPage === totalPages);
+    createNavigationButton(paginationContainer, 'Last', totalPages, currentPage === totalPages);
+}
+
+// Function to create navigation buttons
+function createNavigationButton(container, text, page, isDisabled) {
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.onclick = () => fetchNcrForms(page);
+    button.disabled = isDisabled;
+    container.appendChild(button);
+}
+
+// Function to show page input 
+function showPageInput(currentPage, totalPages) {
+    const paginationContainer = document.getElementById('pagination-controls');
+
+    const pageInput = document.createElement('input');
+    pageInput.type = 'number';
+    pageInput.value = currentPage;
+    pageInput.min = 1;
+    pageInput.max = totalPages;
+    pageInput.classList.add('page-input');
+
+    const submitButton = document.createElement('button');
+    submitButton.textContent = 'Go';
+    submitButton.onclick = () => {
+        const inputPage = parseInt(pageInput.value);
+        if (inputPage >= 1 && inputPage <= totalPages) {
+            fetchNcrForms(inputPage);
+        } else {
+            alert('Please enter a valid page number');
+        }
+    };
+
+    paginationContainer.innerHTML = '';
+    paginationContainer.appendChild(pageInput);
+    paginationContainer.appendChild(submitButton);
+    pageInput.style.display = 'inline-block'; 
+}
+
+
 // Function to fetch products from the server
-function fetchProducts() {
-    fetch('/api/products')
+function fetchProducts(page = 1, pagelimitSize = pageSize) {
+    const paginationParams = `page=${page}&limit=${pagelimitSize}`;
+    let url = `/api/products?${paginationParams}`;
+
+    fetch(url)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -13,7 +97,12 @@ function fetchProducts() {
             return response.json();
         })
         .then(data => {
-            populateProductTable(data);
+            document.getElementById('page-number').textContent = `Page ${data.currentPage}`;
+                
+            populateProductTable(data.items);
+
+            renderPaginationControls(data); 
+
         })
         .catch(error => console.error('Error fetching products:', error));
 }
@@ -26,7 +115,7 @@ function populateSupplierDropdown() {
             const supplierDropdown = document.getElementById('editSupplier');
             supplierDropdown.innerHTML = ""; // Clear existing options
 
-            suppliers.forEach(supplier => {
+            suppliers.items.forEach(supplier => {
                 const option = document.createElement('option');
                 option.value = supplier.supID;
                 option.textContent = supplier.supName;

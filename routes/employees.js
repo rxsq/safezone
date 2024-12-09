@@ -17,20 +17,77 @@ const writeJsonFile = (file, data) => {
     fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
 };
 
-// GET all employees
-router.get('/', (req, res) => {
+function paginatedResults(model){
+    return(req, res, next) => {
+        const page = parseInt(req.query.page);
+        const limit = parseInt(req.query.limit);
+
+        const startIndex = (page -1) * limit;
+        const endIndex = page * limit;
+
+        const results = {};
+
+        if(endIndex < model.lengt){
+            results.next = {
+                page: page + 1,
+                limit: limit
+            }
+        }
+
+        if(startIndex > 0){
+            results.previous = {
+                page: page -1,
+                limit: limit
+            }
+        }
+
+        results.results = model.slice(startIndex, endIndex);
+
+        res.paginatedResults = results;
+        next();
+    }
+}
+
+router.get('/', (req, res, next) => {
     try {
-        const data = readJsonFile(filename);
-        res.json(data);
+        const data = readJsonFile(filename); 
+
+        if (Object.keys(req.query).length === 0) {
+            return res.json({
+                status: 'success',
+                totalRecords: data.length,
+                totalPages: Math.ceil(data.length / 10),
+                currentPage: 1, 
+                items: data,
+            });
+        }
+
+        res.locals.data = data; 
+        paginatedResults(data)(req, res, next);
     } catch (error) {
-        console.error(error);
         res.status(500).json({ status: 'error', message: 'Failed to read JSON file' });
     }
+}, (req, res) => {
+    const data = res.locals.data; 
+    const totalRecords = data.length;
+    const limit = parseInt(req.query.limit) || 10; 
+    const totalPages = Math.ceil(totalRecords / limit);
+    const currentPage = parseInt(req.query.page) || 1;
+
+    res.json({
+        status: 'success',
+        totalRecords: totalRecords,
+        totalPages: totalPages,
+        currentPage: currentPage,
+        items: res.paginatedResults.results,
+        next: res.paginatedResults.next,
+        previous: res.paginatedResults.previous
+    });
 });
 
 // GET an employee by empID
 router.get('/:empID', (req, res) => {
-    const value = Number(req.params.empID); // Convert to number
+    const value = Number(req.params.empID); 
 
     if (isNaN(value)) {
         return res.status(400).json({ status: 'error', message: 'Employee ID not provided or invalid' });

@@ -21,19 +21,11 @@
         <div class="logo-content">
             <div class="logo">
                 <a href="index.html">
-                    <!-- <i class='bx bxs-hot'></i>
-                        <div class="logo-name">CrossFire Niagara</div> -->
                     <img src="/assets/images/crossfire_logo_edited.png" alt="">
                 </a>
             </div>
             <i class="bi bi-list" id="btn-close"></i>
         </div>
-        <!-- <div class="notification-container">
-            <button id="notificationBell" class="btn" data-bs-toggle="modal" data-bs-target="#notificationModal">
-                <i class="bi bi-bell"></i> 
-                <span id="notificationCount" class="badge bg-danger"></span>
-            </button>
-        </div> -->
         <ul class="nav-list">
             <li>
                 <a href="index.html"  data-bs-toggle="tooltip" title="Dashboard">
@@ -110,6 +102,7 @@
         <form id="employee-form">
             <fieldset class="border p-2">
                 <legend class="w-auto">Employee Information</legend>
+                <div id="error-message" class="error-message" style="color: red;"></div>
                 <div class="two-column">
                     <div class="form-group">
                         <label for="empFirstName">First Name</label>
@@ -117,7 +110,7 @@
                         data-bs-toggle="tooltip"
                         data-bs-placement="right"
                         title="Enter the employee's first name."></i>
-                        <input type="text" id="empFirstName" name="firstName">
+                        <input type="text" id="empFirstName" name="firstName" placeholder="e.g. John">
                     </div>
                     <div class="form-group">
                         <label for="empLastName">Last Name</label>
@@ -125,7 +118,7 @@
                         data-bs-toggle="tooltip"
                         data-bs-placement="right"
                         title="Enter the employee's last name."></i>
-                        <input type="text" id="empLastName" name="lastName">
+                        <input type="text" id="empLastName" name="lastName" placeholder="e.g. Doe">
                     </div>
                 </div>
                 <div class="two-column">
@@ -135,15 +128,15 @@
                             data-bs-toggle="tooltip"
                             data-bs-placement="right"
                             title="Provide a valid email address for the employee."></i>
-                        <input type="text" id="empEmail" name="email">
+                        <input type="text" id="empEmail" name="email" placeholder="johndoe@example.com">
                     </div>
                     <div class="form-group">
                         <label for="empPhone">Phone</label>
                         <i class="bi bi-question-circle text-primary"
                         data-bs-toggle="tooltip"
                         data-bs-placement="right"
-                        title="Enter the employee's phone number, including the area code."></i>
-                        <input type="text" id="empPhone" name="phone">
+                        title="Enter the employee's phone number, not including spaces or dashes"></i>
+                        <input type="text" id="empPhone" name="phone" placeholder="123456789">
                     </div>
                 </div>
                 <div class="form-group">
@@ -160,7 +153,12 @@
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
                     title="Set a secure password for the employee."></i>
-                    <input type="text" id="empPassword" name="password">
+                    <div class="input-group">
+                        <input type="password" id="empPassword" name="password" class="form-control">
+                        <button type="button" id="togglePassword" class="btn btn-outline-secondary">
+                            <i class="bi bi-eye-slash" id="eyeIcon"></i>
+                        </button>
+                    </div>
                 </div>
             </fieldset>
 
@@ -174,7 +172,6 @@
                         data-bs-placement="right"
                         title="Select the employee's position from the dropdown menu."></i>
                         <select id="position">
-
                         </select>
                     </div>
                 </div>
@@ -199,6 +196,23 @@
             new bootstrap.Tooltip(tooltipTriggerEl);
         });
     });
+
+    document.getElementById('togglePassword').addEventListener('click', function() {
+    const passwordInput = document.getElementById('empPassword');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        eyeIcon.classList.remove("bi-eye-slash");
+        eyeIcon.classList.add("bi-eye");
+    } else {
+        passwordInput.type = "password";
+        eyeIcon.classList.remove("bi-eye");
+        eyeIcon.classList.add("bi-eye-slash");
+    }
+});
+
+
 </script>
 <script src="../assets/js/main/inject-notification-modal.js"></script>
 <script src="../assets/js/main/notification-handling.js"></script>

@@ -40,6 +40,38 @@ body {
   width: 225px;
 }
 
+/* Loading Spinner*/
+.loading-spinner-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 1); 
+  display: none; 
+  z-index: 9999; 
+  justify-content: center;
+  align-items: center;
+  opacity: 0; 
+  pointer-events: none;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* */
+
 .logo-content .logo img {
   height: 100%; 
   max-height: 180px; 
@@ -131,7 +163,13 @@ body {
 
 .error {
   box-shadow: 0 0 5px 2px rgba(255, 0, 0, 0.5);
+  outline:none;
   border: 1px solid #d9534f;
+}
+
+textarea#description-item, div#process-applicable, textarea#description-defect, div#nonconforming-div,
+#empPassword {
+  border-color: rgb(221, 221, 221);
 }
 
 /*NOTIFICATION/ NOTIFICATION BELL STYLING*/
@@ -194,7 +232,6 @@ body {
   padding: 4px 8px;
   font-size: 0.9em;
 }
-
 
 .custom-header {
   background-color: #173451;
@@ -394,10 +431,6 @@ body {
   width: 100%;
 }
 
-::placeholder {
-  color: #eee;
-}
-
 .sidebar ul li .bi-search {
   color: #eee;
   position: absolute;
@@ -507,6 +540,11 @@ body {
 .table.table-striped.table-hover a {
   color: black;
   text-decoration: none;
+}
+
+::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+  font-weight:400;
 }
 
 .breadcrumb {
@@ -621,6 +659,25 @@ input[type="checkbox"],
 input[type="radio"],
 input[type="file"] {
   margin-right: 10px;
+}
+
+#error-message {
+  color: red;
+  font-size: 1.3rem; 
+  margin-top: 10px;
+}
+
+.invalid-field {
+  border: 2px solid red;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;  
+}
+
+.input-group button {
+  border-radius: 0;  
 }
 
 textarea {
@@ -957,22 +1014,24 @@ canvas {
   width: 40%; 
 }
 
-/* Center-align the action buttons */
 #ncrRecentTable td.action-buttons-td {
   text-align: center;
 }
 
-/* Ensure the table fits well within the layout */
 #ncrRecentTable {
   table-layout: fixed; 
   width: 100%; 
 }
 
-/* Improve spacing for action buttons */
 #ncrRecentTable td.action-buttons-td button {
   margin: 0 5px; 
   padding: 8px; 
   font-size: 1.2em; 
+}
+
+#togglePassword{
+  margin: 0 auto;
+  border-radius:5px;
 }
 
 /* Media Query for split screen */

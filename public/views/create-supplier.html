@@ -29,19 +29,11 @@
       <div class="logo-content">
         <div class="logo">
           <a href="index.html">
-            <!-- <i class='bx bxs-hot'></i>
-                  <div class="logo-name">CrossFire Niagara</div> -->
             <img src="/assets/images/crossfire_logo_edited.png" alt="">
           </a>
         </div>
         <i class="bi bi-list" id="btn-close"></i>
       </div>
-      <!-- <div class="notification-container">
-        <button id="notificationBell" class="btn" data-bs-toggle="modal" data-bs-target="#notificationModal">
-            <i class="bi bi-bell"></i> 
-            <span id="notificationCount" class="badge bg-danger"></span>
-        </button>
-    </div> -->
       <ul class="nav-list">
         <li>
             <a href="index.html"  data-bs-toggle="tooltip" title="Dashboard">
@@ -126,40 +118,46 @@
             <div class="top-flex">
               <h2>New Supplier</h2>
             </div>
-            <form id="supplier-form" action="#" method="post">
+            <form id="supplier-form">
               <fieldset class="border p-2">
                 <legend class="w-auto">Supplier</legend>
+                <div id="error-message" class="error-message" style="color: red;"></div> <!-- Error message container -->
                 <div class="">
                   <div class="form-group">
-                    <label for="supName">Supplier Name</label>
+                    <label for="supName" class="required">Supplier Name</label>
                     <input
                       type="text"
                       id="supName"
                       name="products-supplied"
+                      aria-required="true"
+                      placeholder="Supplier Name or Company"
                     >
                   </div>
                   <div class="two-column">
                     <div class="form-group">
-                      <label for="supContactName">Contact Name</label>
+                      <label for="supContactName" class="required">Contact Name</label>
                       <input
                         type="text"
                         id="supContactName"
+                        aria-required="true"
                         name="supplier-code"
                       >
                     </div>
                     <div class="form-group">
-                      <label for="supContactEmail">Email</label>
+                      <label for="supContactEmail" class="required">Email</label>
                       <input
                         type="text"
                         id="supContactEmail"
+                        aria-required="true"
                         name="supplier-email"
                       >
                     </div>
                     <div class="form-group">
-                      <label for="supContactPhone">Phone</label>
+                      <label for="supContactPhone" class="required">Phone</label>
                       <input
                         type="text"
                         id="supContactPhone"
+                        aria-required="true"
                         name="supplier-phone"
                       >
                     </div>
@@ -167,26 +165,29 @@
                 </div>
                 
                 <div class="form-group">
-                  <label for="supAddress">Address</label>
+                  <label for="supAddress" class="required">Address</label>
                   <input
                         type="text"
                         id="supAddress"
+                        aria-required="true"
                         name="supplier-address"
                       >
                 </div>
                 <div class="form-group">
-                  <label for="supCity">City</label>
+                  <label for="supCity" class="required">City</label>
                   <input
                         type="text"
                         id="supCity"
+                        aria-required="true"
                         name="supplier-city"
                       >
                 </div>
                 <div class="form-group">
-                  <label for="supCountry">Country</label>
+                  <label for="supCountry" class="required">Country</label>
                   <input
                         type="text"
                         id="supCountry"
+                        aria-required="true"
                         name="supplier-country"
                       >
                 </div>
@@ -206,4 +207,25 @@
     <script src="../assets/js/main/inject-notification-modal.js"></script>
     <script src="../assets/js/main/notification-handling.js"></script>
   </body>
+
+  <!-- Error Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="errorModalLabel">Validation Errors</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul id="errorList">
+
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </html>

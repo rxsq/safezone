@@ -1,4 +1,3 @@
-// Function to fetch positions and populate the select dropdown
 async function populatePositionSelect() {
     try {
         const response = await fetch('/api/positions');
@@ -12,11 +11,19 @@ async function populatePositionSelect() {
         // Clear existing options
         positionSelect.innerHTML = '';
 
+        // Add default option
+        const defaultOption = document.createElement('option');
+        defaultOption.value = ''; 
+        defaultOption.textContent = 'Select a Position'; 
+        defaultOption.selected = true; 
+        defaultOption.disabled = true; 
+        positionSelect.appendChild(defaultOption);
+
         // Populate the select dropdown with positions
         positions.forEach(position => {
             const option = document.createElement('option');
-            option.value = position.posID; // Use posID as the value
-            option.textContent = position.posDescription; // Display the title
+            option.value = position.posID; 
+            option.textContent = position.posDescription; 
             positionSelect.appendChild(option);
         });
     } catch (error) {

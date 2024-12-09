@@ -53,33 +53,30 @@ function paginatedResults(model){
 // GET all NCR forms
 router.get('/', (req, res, next) => {
     try {
-        const data = readJsonFile(filename); // Reading the data file
+        const data = readJsonFile(filename); 
 
-        // If no query parameters are present, return all records
         if (Object.keys(req.query).length === 0) {
             return res.json({
                 status: 'success',
                 totalRecords: data.length,
-                totalPages: Math.ceil(data.length / 10), // Assuming a default limit of 10 per page
-                currentPage: 1, // Since we're returning all records, it's page 1
+                totalPages: Math.ceil(data.length / 10),
+                currentPage: 1, 
                 items: data,
             });
         }
 
-        // Otherwise, apply pagination middleware
-        res.locals.data = data; // Save data to res.locals to use later in the response handler
+        res.locals.data = data; 
         paginatedResults(data)(req, res, next);
     } catch (error) {
         res.status(500).json({ status: 'error', message: 'Failed to read JSON file' });
     }
 }, (req, res) => {
-    const data = res.locals.data; // Access data from res.locals
+    const data = res.locals.data; 
     const totalRecords = data.length;
-    const limit = parseInt(req.query.limit) || 10; // Default limit if not provided
+    const limit = parseInt(req.query.limit) || 10; 
     const totalPages = Math.ceil(totalRecords / limit);
     const currentPage = parseInt(req.query.page) || 1;
 
-    // Send paginated results with additional metadata
     res.json({
         status: 'success',
         totalRecords: totalRecords,
@@ -118,13 +115,22 @@ router.post('/', (req, res) => {
     fs.readFile(filename, 'utf8', (err, data) => {
         if (err) return res.status(500).json({ message: 'Error reading data file' });
 
-        let ncrForms = JSON.parse(data);
-        ncrForms.push(newNCRForm); // Add new form to array
+        const ncrForms = JSON.parse(data);
+
+        // Generate ncrFormID based on the length of the current data
+        const newNcrFormID = ncrForms.length > 0 ? ncrForms[ncrForms.length - 1].ncrFormID + 1 : 1;
+        newNCRForm.ncrFormID = newNcrFormID; // Assign the new ID
+
+        // Add new form to the array
+        ncrForms.push(newNCRForm);
 
         // Write updated data back to file
         fs.writeFile(filename, JSON.stringify(ncrForms, null, 2), (err) => {
             if (err) return res.status(500).json({ message: 'Error writing to data file' });
-            res.status(201).json({ message: 'NCR form created successfully' });
+            res.status(201).json({
+                message: 'NCR form created successfully',
+                ncrForm: newNCRForm, // Return the newly created form as part of the response
+            });
         });
     });
 });

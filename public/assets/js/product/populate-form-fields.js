@@ -14,7 +14,7 @@ async function populateSupplierSelect() {
         supplierSelect.innerHTML = '<option value="">Select a Supplier</option>'; // Placeholder option
 
         // Populate the select dropdown with suppliers
-        suppliers.forEach(supplier => {
+        suppliers.items.forEach(supplier => {
             const option = document.createElement('option');
             option.value = supplier.supID; 
             option.textContent = supplier.supName; 
