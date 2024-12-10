@@ -55,12 +55,12 @@ router.post('/', (req, res) => {
         let purchasingForms = JSON.parse(data);
 
         // Generate a new ID for the new form
-        const newPurFormID = purchasingForms.length ? purchasingForms[purchasingForms.length - 1].purFormID + 1 : 1; // Increments last ID or sets 1 if no forms exist
+        const newPurFormID = purchasingForms.length ? purchasingForms[purchasingForms.length - 1].purFormID + 1 : 1; 
 
         // Add the new ID to the new form data
         newPurchasingForm.purFormID = newPurFormID;
 
-        purchasingForms.push(newPurchasingForm); // Add new form to array
+        purchasingForms.push(newPurchasingForm); 
 
         fs.writeFile(filename, JSON.stringify(purchasingForms, null, 2), (err) => {
             if (err) return res.status(500).json({ message: 'Error writing to data file' });

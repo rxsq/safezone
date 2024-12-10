@@ -13,7 +13,7 @@ function fetchNcrForms() {
     })
     .then((data) => {
       updateMetrics(data.items);
-      renderBarChart(data.items); // Render chart with the fetched data
+      renderBarChart(data.items); 
       renderSupplierChart(data.items);
       renderStagesChart(data.items);
       //renderProductChart(data.items);

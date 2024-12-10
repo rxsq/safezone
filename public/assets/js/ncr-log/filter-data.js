@@ -15,7 +15,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const savedOpenStatus = urlParams.get('openStatus');
     const savedIssueDate = urlParams.get('issueDate');
 
-    console.log(savedOpenStatus);
+    const [navigationEntry] = performance.getEntriesByType("navigation");
+
+    if (navigationEntry && navigationEntry.type === "reload") {
+        resetBtn.click(); 
+    }
 
     // Set the filter selections based on the URL parameters
     if (savedSupplier) {
@@ -39,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         // Clear any existing options before adding new ones
-        supplierSelect.innerHTML = '<option value="-1">Select Supplier</option>'; // Default option
+        supplierSelect.innerHTML = '<option value="-1">Select Supplier</option>'; 
 
         suppliers.forEach(supplier => {
             const option = document.createElement('option');
@@ -109,8 +113,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 return response.json();
             })
             .then(async ncrData => {
-                let filteredData = ncrData.items; 
-
+                let filteredData = ncrData.items;
+            
                 if (selectedSupplierValue > 0) {
                     // Fetch products and filter by selected supplier
                     await fetch(`/api/products`)
@@ -128,20 +132,29 @@ document.addEventListener("DOMContentLoaded", function() {
                         })
                         .catch(error => console.error('Error fetching products:', error));
                 }
-
+                        
+                let closedRecords = false;
+                let archivedRecords = false;
+            
                 if (selectedStageValue) {
                     filteredData = filteredData.filter(ncr => ncr.ncrStage === selectedStageValue);
+                    if (filteredData.some(ncr => ncr.ncrStage === "ARC")) {
+                        archivedRecords = true;
+                    }
                 }
-
-                if(selectedOpenStatusValue){
-                    filteredData = filteredData.filter(ncr => ncr.ncrStatusID === parseInt(selectedOpenStatusValue));
+                      
+                if (selectedOpenStatusValue !== "" && selectedOpenStatusValue !== null) {
+                    filteredData = filteredData.filter(ncr => ncr.ncrStatusID === Number(selectedOpenStatusValue));
+                    if(filteredData.some(ncr => ncr.ncrStatusID === 2)){
+                        closedRecords = true;
+                    }
                 }
-
+            
                 if (selectedIssueDateValue) {
                     filteredData = filteredData.filter(ncr => ncr.ncrIssueDate === selectedIssueDateValue);
                 }
-
-                populateRecentNcrTable(filteredData);
+            
+                populateRecentNcrTable(filteredData, closedRecords, archivedRecords);  
             })
             .catch(error => console.error('Error fetching NCR forms:', error));
     });
@@ -205,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             return issueDate >= customStartDate && issueDate <= customEndDate;
                         });
 
-                        populateRecentNcrTable(filteredData);
+                        populateRecentNcrTable(filteredData, true);
                         tooltip();
                     })
                     .catch(error => console.error('Error fetching NCR forms:', error));
@@ -234,3 +247,5 @@ document.addEventListener("DOMContentLoaded", function() {
             .catch(error => console.log('Error fetching NCR forms: ', error));
     });
 });
+
+

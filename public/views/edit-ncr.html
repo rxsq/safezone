@@ -21,19 +21,11 @@
         <div class="logo-content">
             <div class="logo">
                 <a href="index.html">
-                    <!-- <i class='bx bxs-hot'></i>
-                        <div class="logo-name">CrossFire Niagara</div> -->
                     <img src="/assets/images/crossfire_logo_edited.png" alt="CrossFire Niagara Logo">
                 </a>
             </div>
             <i class="bi bi-list" id="btn-close"></i>
         </div>
-        <!-- <div class="notification-container">
-            <button id="notificationBell" class="btn" data-bs-toggle="modal" data-bs-target="#notificationModal">
-                <i class="bi bi-bell"></i> 
-                <span id="notificationCount" class="badge bg-danger"></span>
-            </button>
-        </div> -->
         <ul class="nav-list">
             <li>
                 <a href="index.html"  data-bs-toggle="tooltip" title="Dashboard">
@@ -131,6 +123,7 @@
 
             <fieldset class="border p-2" id="quality-fieldset">
                 <legend class="w-auto collapsible" id="legend-quality">Quality Representative</legend>
+                <div id="error-message-quality" class="error-message" style="color: red;"></div>
                 <div id="section-quality">
                     <div class="two-column">
                         <div class="form-group">
@@ -229,8 +222,14 @@
                         <div class="form-group">
                             <label>Upload Documents</label>
                             <div class="two-column">
-                                <label><input id="file" type="file" name="file"></label>
-                            </div>
+                                <label>
+                                    <input id="qualityDocuments" type="file" name="file">
+                                </label>
+                                <a id="imageDownloadLink" href="#" download style="display:none;">
+                                    <img id="imagePreview" src="" style="display:none; width: 100px; height: auto;">
+                                    <span id="fileName" style="margin-left: 10px;"></span>
+                                </a>
+                            </div>                            
                         </div>
                         <div class="form-group">
                             <label class="required" data-bs-toggle="tooltip" title="Required">Item Marked
@@ -258,17 +257,19 @@
 
                     <div class="form-group submit-btn-container">
                         <button type="button" class="btn btn-secondary button-gap" id="sample-data-btn-quality">Sample Data</button>
+                        <button type="button" class="btn btn-secondary button-gap" id="save-changes-qua-draft">Save Draft</button> 
                         <button type="submit" class="submit-btn" id="submit-quality-btn">Create New NCR</button>
                     </div>
                 </div>
             </fieldset>
             <fieldset class="border p-2" id="engineering-fieldset">
                 <legend class="w-auto collapsible" id="legend-engineering">Engineering</legend>
+                <div id="error-message-engineering" class="error-message" style="color: red;"></div>
                 <div id="section-engineering">
                     <section class="bordered">
                         <h2 style="display: none;">Engineering Top Info</h2>
                         <div class="two-column">
-                            <div class="form-group">
+                            <div class="form-group" id="review-engineering-div">
                                 <label class="required" data-bs-toggle="tooltip" title="Required">Review by Chief
                                     Engineering</label>
                                     <i class="bi bi-question-circle text-primary" 
@@ -284,13 +285,13 @@
                                     <label><input type="radio" name="review-by-engineer" value="Scrap">Scrap</label>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label>Does Customer require notification of NCR</label>
+                            <div class="form-group" id="notification-div">
+                                <label class="Required">Does Customer require notification of NCR</label>
                                 <p>If "Yes" then raise message to customer detail issues</p>
                                 <div class="two-column">
                                     <label><input type="radio" name="require-notification" value="1">
                                         Yes</label>
-                                    <label><input type="radio" name="require-notification" value="0"> No</label>
+                                    <label><input type="radio" name="require-notification" value="0" checked> No</label>
                                 </div>
                             </div>
                         </div>
@@ -361,6 +362,7 @@
 
                     <div class="form-group submit-btn-container">
                         <button type="button" class="btn btn-secondary button-gap" id="sample-data-btn-engineering">Sample Data</button>
+                        <button type="button" class="btn btn-secondary button-gap" id="save-changes-eng-draft">Save Draft</button>
                         <button type="submit" class="submit-btn" id="submit-engineering-btn">Create Engineering Form</button>
                     </div>
                 </div>
@@ -368,10 +370,11 @@
 
             <fieldset class="border p-2" id="purchasing-fieldset">
                 <legend class="w-auto collapsible" id="legend-purchasing">Purchasing</legend>
+                <div id="error-message-purchasing" class="error-message" style="color: red;"></div>
                 <div id="section-purchasing">
                     <h2 style="display: none;">Purchasing Top Info</h2>
                     <div class="four-column">
-                        <div class="form-group">
+                        <div class="form-group" id="preliminary-decision-div">
                             <label class="required" data-bs-toggle="tooltip" title="Required">Purchasing's Preliminary
                                 Decision</label>
                                 <i class="bi bi-question-circle text-primary" 
@@ -449,9 +452,9 @@
                         </div>
                     </div>
 
-
                     <div class="form-group submit-btn-container">
                         <button type="button" class="btn btn-secondary button-gap" id="sample-data-btn-purchasing">Sample Data</button>
+                        <button type="button" class="btn btn-secondary button-gap" id="save-changes-pur-draft">Save Draft</button>
                         <button type="submit" class="submit-btn" id="submit-purchasing-btn">Create Purchasing Form</button>
                     </div>
 

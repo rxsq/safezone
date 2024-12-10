@@ -3,27 +3,27 @@ var createModal = new bootstrap.Modal(document.getElementById('createSupplierMod
 document.addEventListener("DOMContentLoaded", () => {
     // Show the modal when clicking the 'new-suppliers-btn'
     document.getElementById('new-suppliers-btn').addEventListener('click', function(event) {
-        event.preventDefault();  // Prevent any default behavior if necessary
-        createModal.show();  // Show the modal
+        event.preventDefault();  
+        createModal.show();  
     });
 
     // Clear all input fields when the modal is opened
     document.getElementById('createSupplierModal').addEventListener('shown.bs.modal', function() {
         const inputs = document.querySelectorAll('#createSupplierModal input');
         inputs.forEach(input => {
-            input.value = '';  // Clear the value of each input field
-            input.classList.remove('error');  // Remove any error styles
+            input.value = '';  
+            input.classList.remove('error');  
         });
 
         const errorMessage = document.getElementById('error-message');
         if (errorMessage) {
-            errorMessage.style.display = 'none';  // Hide any previous error messages
+            errorMessage.style.display = 'none';  
         }
     });
 
     // Handle the form submission for saving a new supplier
     document.getElementById('saveSupplierBtn').addEventListener('click', function(event) {
-        event.preventDefault();  // Prevent default form submission
+        event.preventDefault();  
 
         // Validate the form using the existing validation logic
         if (validateInputs()) {
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(data => {
                 if (data.status === "success") {
                     alert('Supplier saved successfully!');
-                    createModal.hide();  // Close the modal
+                    createModal.hide();  
                 } else {
                     alert('Failed to save supplier.');
                 }
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to validate inputs (same as your existing validation logic)
     function validateInputs() {
-        const errorMessage = document.getElementById('error-message'); // The container for the general error message
+        const errorMessage = document.getElementById('error-message');
         const errorList = []; // Reset error list
         let isValid = true; // Flag to track form validity
         let isAnyFieldEmpty = false; // To track if any required field is empty

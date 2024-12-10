@@ -11,7 +11,7 @@ async function populateSupplierSelect() {
         const suppliers = await response.json();
 
         // Clear existing options
-        supplierSelect.innerHTML = '<option value="">Select a Supplier</option>'; // Placeholder option
+        supplierSelect.innerHTML = '<option value="">Select a Supplier</option>';
 
         // Populate the select dropdown with suppliers
         suppliers.items.forEach(supplier => {
@@ -22,7 +22,6 @@ async function populateSupplierSelect() {
         });
     } catch (error) {
         console.error(error);
-        //showErrorModal(error.message); // Display error message if fetching fails
     }
 }
 

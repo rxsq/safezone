@@ -39,7 +39,7 @@ router.get('/:engFormID', (req, res) => {
             return res.status(404).json({ status: 'error', message: 'Engineering form not found' });
         }
 
-        res.json(form); // Return the specific engineering form
+        res.json(form);
     } catch (error) {
         res.status(500).json({ status: 'error', message: 'Failed to read JSON file' });
     }
@@ -49,7 +49,6 @@ router.get('/:engFormID', (req, res) => {
 router.post('/', (req, res) => {
     const newEngineerForm = req.body;
 
-    // Step 1: Read the existing forms from the data file
     fs.readFile(filename, 'utf8', (err, data) => {
         if (err) return res.status(500).json({ message: 'Error reading data file' });
 
@@ -61,7 +60,6 @@ router.post('/', (req, res) => {
 
         engineerForms.push(newEngineerForm);
 
-        // Step 5: Write the updated array back to the file
         fs.writeFile(filename, JSON.stringify(engineerForms, null, 2), (err) => {
             if (err) return res.status(500).json({ message: 'Error writing to data file' });
 

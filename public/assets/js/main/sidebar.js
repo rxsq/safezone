@@ -1,33 +1,3 @@
-// if sidebar is collapsed, it adds a new class to it called 'collapsed' which alters how it looks through css
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     const sidebar = document.getElementById('sidebar');
-//     const toggleBtn = document.getElementById('btn-close');
-//     const homeContent = document.querySelector('.home-content');
-
-//     if (localStorage.getItem('sidebarCollapsed') === 'true') {
-//         sidebar.classList.add('collapsed');
-//         homeContent.classList.add('expanded');
-//     } else {
-//         sidebar.classList.remove('collapsed');
-//         homeContent.classList.remove('expanded');
-//     }
-
-//     // event listener for toggle button (hamburger icon)
-//     toggleBtn.addEventListener('click', function() {
-//         sidebar.classList.toggle('collapsed');
-//         homeContent.classList.toggle('expanded');
-
-//         const isCollapsed = sidebar.classList.contains('collapsed');
-//         localStorage.setItem('sidebarCollapsed', isCollapsed);
-//     });
-// });
-
-// document.getElementById('createNCRLink').addEventListener('click', function(event) {
-//     event.preventDefault();
-//     window.location.href = 'non-conformance-report.html?' + new URLSearchParams({ mode: 'create' }).toString();
-// });
-
 document.addEventListener('DOMContentLoaded', function () {
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('btn-close');
@@ -65,8 +35,8 @@ document.addEventListener('DOMContentLoaded', function () {
         tooltipElements.forEach((el) => {
             const title = el.getAttribute('data-title') || el.getAttribute('title');
             if (title) {
-                el.setAttribute('data-title', title); // Store in data-title
-                el.setAttribute('title', title); // Restore title for Bootstrap tooltips
+                el.setAttribute('data-title', title); 
+                el.setAttribute('title', title); 
             }
         });
 
@@ -76,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Disable tooltips for expanded sidebar
     function disableTooltips() {
         tooltipInstances.forEach((tooltip) => {
-            // Explicitly hide tooltips before disposing
             if (tooltip._element) {
                 tooltip.hide();
             }
@@ -88,8 +57,8 @@ document.addEventListener('DOMContentLoaded', function () {
         tooltipElements.forEach((el) => {
             const title = el.getAttribute('title');
             if (title) {
-                el.setAttribute('data-title', title); // Store in data-title
-                el.removeAttribute('title'); // Prevent native browser tooltips
+                el.setAttribute('data-title', title); 
+                el.removeAttribute('title'); 
             }
         });
     }

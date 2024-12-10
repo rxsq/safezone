@@ -31,12 +31,6 @@
             </div>
             <i class="bi bi-list" id="btn-close"></i>
         </div>
-        <!-- <div class="notification-container">
-            <button id="notificationBell" class="btn" data-bs-toggle="modal" data-bs-target="#notificationModal">
-                <i class="bi bi-bell"></i> 
-                <span id="notificationCount" class="badge bg-danger"></span>
-            </button>
-        </div> -->
         <ul class="nav-list">
             <li>
                 <a href="index.html" data-bs-toggle="tooltip" title="Dashboard">
@@ -110,7 +104,7 @@
             </ol>
         </nav>
 
-        <form id="ncr-form">
+        <form id="qualityForm" enctype="multipart/form-data">
             <fieldset class="border p-2" id="ncr-section">
                 <legend class="w-auto">Non-Conformance Report</legend>
                 <div class="two-column">
@@ -134,7 +128,7 @@
             </fieldset>
 
             <fieldset class="border p-2">
-                <legend class="w-auto collapsible" id="legend-quality">QC Report</legend>
+                <legend class="w-auto collapsible" id="legend-quality">Quality Representative</legend>
                 <div id="error-message" class="error-message" style="color: red;"></div>
                 <div id="section-quality">
                     <div class="two-column">
@@ -234,7 +228,7 @@
                         <div class="form-group">
                             <label>Upload Documents</label>
                             <div class="two-column">
-                                <label><input id="file" type="file" name="file"></label>
+                                <label><input id="file" type="file" name="qualityFile"></label>
                             </div>
                         </div>
                         <div class="form-group" id="nonconforming-div">
@@ -263,6 +257,7 @@
 
                     <div class="form-group submit-btn-container">
                         <button type="button" class="btn btn-secondary button-gap" id="sample-data-btn-quality">Sample Data</button>
+                        <button type="button" class="btn btn-secondary button-gap" id="save-changes-btn">Save Draft</button>
                         <button type="submit" class="submit-btn" id="submit-quality-btn">Create New NCR</button>
                     </div>
                 </div>
@@ -387,7 +382,8 @@
     <script src="../assets/js/main/user-role-handling.js"></script>
     <script src="../assets/js/ncr/collapsible-sections.js"></script>
     <script src="../assets/js/main/tooltip.js"></script>
-    <script src="../assets/js/ncr/create-scripts/create-quality-form.js"></script>
+    <script src="../assets/js/ncr/create-scripts/create-new-form.js"></script>
+    <script src="../assets/js/ncr/save-qua-changes.js"></script>
     <script src="../assets/js/ncr/mode-handler.js"></script>
     <script src="../assets/js/ncr/sample-data.js"></script>
     <script src="../assets/js/ncr/create-scripts/new-supplier-modal.js"></script>

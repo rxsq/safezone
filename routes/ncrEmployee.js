@@ -30,7 +30,7 @@ router.get("/", (req, res) => {
 
 // GET an NCR employee by ncrEmpID
 router.get("/:ncrEmpID", (req, res) => {
-  const value = Number(req.params.ncrEmpID); // Convert to number
+  const value = Number(req.params.ncrEmpID); 
 
   if (isNaN(value)) {
     return res

@@ -1,6 +1,6 @@
-const express = require("express");
-const path = require("path");
-const fs = require("fs");
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
 const dotenv = require('dotenv');
 
 // Import Routes
@@ -25,21 +25,26 @@ const app = express();
 // Set port
 const PORT = process.env.PORT || 3000;
 
-// Serve static files from public folder
+// Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, "public")));
+
+// Serve the uploaded files from the "uploads" directory
+const uploadDir = path.join(__dirname, 'public/assets/data/uploads');
+app.use('/assets/data/uploads', express.static(uploadDir));
 
 // JSON middleware to parse JSON bodies
 app.use(express.json());
 
-app.use("/api/ncrForms", ncrFormsRoutes); // Route for NCR Forms
-app.use("/api/products", productsRoutes); // Route for Products
-app.use("/api/suppliers", suppliersRoutes); // Route for Suppliers
-app.use("/api/employees", employeesRoutes); // Route for Employees
-app.use("/api/positions", positionsRoutes); // Route for Positions
-app.use("/api/qualityForms", qualityFormsRoutes); // Route for Quality Forms
-app.use("/api/engineerForms", engineerFormsRoutes); // Route for Engineer Forms
-app.use("/api/purchasingForms", purchasingFormsRoutes); // Route for Purchasing Forms
-app.use("/api/status", statusRoutes); // Route for Status
+// Route Setup
+app.use("/api/ncrForms", ncrFormsRoutes);
+app.use("/api/products", productsRoutes);
+app.use("/api/suppliers", suppliersRoutes);
+app.use("/api/employees", employeesRoutes);
+app.use("/api/positions", positionsRoutes);
+app.use("/api/qualityForms", qualityFormsRoutes);
+app.use("/api/engineerForms", engineerFormsRoutes);
+app.use("/api/purchasingForms", purchasingFormsRoutes);
+app.use("/api/status", statusRoutes);
 app.use("/api/email", emailRoutes);
 app.use("/api/ncrPdfRoute", pdfRoutes);
 app.use("/api/notifications", notificationsRoutes);

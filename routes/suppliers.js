@@ -50,52 +50,47 @@ function paginatedResults(model){
 // Utility function to get the next supID
 const getNextSupID = (existingData) => {
     const ids = existingData.map(item => item.supID);
-    return ids.length > 0 ? Math.max(...ids) + 1 : 1; // Start from 1 if there are no suppliers
+    return ids.length > 0 ? Math.max(...ids) + 1 : 1; 
 };
 
 // GET all suppliers
 router.get('/', (req, res, next) => {
     try {
-        const data = readJsonFile(filename); // Read the JSON file
-
-        // Check if there are no query parameters
+        const data = readJsonFile(filename); 
         if (Object.keys(req.query).length === 0) {
-            // Return all data if no query parameters are provided
             return res.json({
                 status: 'success',
                 totalRecords: data.length,
-                items: data, // All items returned without pagination
+                items: data, 
             });
         }
 
-        // Otherwise, apply pagination
-        res.locals.data = data; // Store the data for pagination
-        paginatedResults(data)(req, res, next); // Invoke paginated results middleware
+        res.locals.data = data; 
+        paginatedResults(data)(req, res, next);
     } catch (error) {
         res.status(500).json({ status: 'error', message: 'Failed to read JSON file' });
     }
 }, (req, res) => {
-    // This middleware handles paginated results
-    const data = res.locals.data; // Get the original data
-    const totalRecords = data.length; // Total records count
-    const limit = parseInt(req.query.limit) || 10; // Default limit of 10
-    const totalPages = Math.ceil(totalRecords / limit); // Total pages based on limit
-    const currentPage = parseInt(req.query.page) || 1; // Current page, default 1
+    const data = res.locals.data; 
+    const totalRecords = data.length; 
+    const limit = parseInt(req.query.limit) || 10;
+    const totalPages = Math.ceil(totalRecords / limit); 
+    const currentPage = parseInt(req.query.page) || 1; 
 
     res.json({
         status: 'success',
         totalRecords: totalRecords,
         totalPages: totalPages,
         currentPage: currentPage,
-        items: res.paginatedResults.results, // Paginated results
-        next: res.paginatedResults.next, // Next page info
-        previous: res.paginatedResults.previous // Previous page info
+        items: res.paginatedResults.results, 
+        next: res.paginatedResults.next,
+        previous: res.paginatedResults.previous
     });
 });
 
 // GET a supplier by supID
 router.get('/:supID', (req, res) => {
-    const value = Number(req.params.supID); // Convert to number
+    const value = Number(req.params.supID); 
 
     if (isNaN(value)) {
         return res.status(400).json({ status: 'error', message: 'Supplier ID not provided or invalid' });
@@ -103,7 +98,7 @@ router.get('/:supID', (req, res) => {
 
     try {
         const existingData = readJsonFile(filename);
-        const supplier = existingData.find(item => item.supID === value); // Compare as a number
+        const supplier = existingData.find(item => item.supID === value);
 
         if (!supplier) {
             return res.status(404).json({ status: 'error', message: 'Supplier not found' });
@@ -122,7 +117,7 @@ router.post('/', (req, res) => {
 
     try {
         const existingData = readJsonFile(filename);
-        newSupplier.supID = getNextSupID(existingData); // Assign the next supID
+        newSupplier.supID = getNextSupID(existingData); 
         existingData.push(newSupplier);
         writeJsonFile(filename, existingData);
         res.status(201).json({ status: 'success', message: 'Supplier added successfully', supplier: newSupplier });
@@ -134,7 +129,7 @@ router.post('/', (req, res) => {
 
 // DELETE a supplier by supID
 router.delete('/:supID', (req, res) => {
-    const value = Number(req.params.supID); // Convert to number
+    const value = Number(req.params.supID); 
 
     if (isNaN(value)) {
         return res.status(400).json({ status: 'error', message: 'Supplier ID not provided or invalid' });

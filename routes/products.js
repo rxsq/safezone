@@ -51,47 +51,43 @@ function paginatedResults(model){
 // GET all products
 router.get('/', (req, res, next) => {
     try {
-        const data = readJsonFile(filename); // Read the JSON file
+        const data = readJsonFile(filename); 
 
-        // Check if there are no query parameters
         if (Object.keys(req.query).length === 0) {
-            // Return all data if no query parameters are provided
             return res.json({
                 status: 'success',
                 totalRecords: data.length,
-                items: data, // All items returned without pagination
+                items: data, 
             });
         }
 
-        // Otherwise, apply pagination
-        res.locals.data = data; // Store the data for pagination
-        paginatedResults(data)(req, res, next); // Invoke paginated results middleware
+        res.locals.data = data; 
+        paginatedResults(data)(req, res, next); 
     } catch (error) {
         res.status(500).json({ status: 'error', message: 'Failed to read JSON file' });
     }
 }, (req, res) => {
-    // This middleware handles paginated results
-    const data = res.locals.data; // Get the original data
-    const totalRecords = data.length; // Total records count
-    const limit = parseInt(req.query.limit) || 10; // Default limit of 10
-    const totalPages = Math.ceil(totalRecords / limit); // Total pages based on limit
-    const currentPage = parseInt(req.query.page) || 1; // Current page, default 1
+    const data = res.locals.data;
+    const totalRecords = data.length; 
+    const limit = parseInt(req.query.limit) || 10;
+    const totalPages = Math.ceil(totalRecords / limit); 
+    const currentPage = parseInt(req.query.page) || 1; 
 
     res.json({
         status: 'success',
         totalRecords: totalRecords,
         totalPages: totalPages,
         currentPage: currentPage,
-        items: res.paginatedResults.results, // Paginated results
-        next: res.paginatedResults.next, // Next page info
-        previous: res.paginatedResults.previous // Previous page info
+        items: res.paginatedResults.results, 
+        next: res.paginatedResults.next, 
+        previous: res.paginatedResults.previous 
     });
 });
 
 
 // GET a product by prodID
 router.get('/:prodID', (req, res) => {
-    const value = Number(req.params.prodID); // Convert to number
+    const value = Number(req.params.prodID); 
 
     if (isNaN(value)) {
         return res.status(400).json({ status: 'error', message: 'Product ID not provided or invalid' });
@@ -99,7 +95,7 @@ router.get('/:prodID', (req, res) => {
 
     try {
         const existingData = readJsonFile(filename);
-        const product = existingData.find(item => item.prodID === value); // Compare as a number
+        const product = existingData.find(item => item.prodID === value);
 
         if (!product) {
             return res.status(404).json({ status: 'error', message: 'Product not found' });
@@ -114,7 +110,7 @@ router.get('/:prodID', (req, res) => {
 
 // POST a new product
 router.post('/', (req, res) => {
-    const newData = req.body; // Assuming data comes in the body
+    const newData = req.body; 
 
     // Basic validation for required fields
     if (!newData.prodName || !newData.prodCategory || !newData.supID) {
@@ -130,7 +126,7 @@ router.post('/', (req, res) => {
         // Assign the new prodID
         newData.prodID = newProdID;
 
-        existingData.push(newData); // Add new data
+        existingData.push(newData); 
         writeJsonFile(filename, existingData);
         res.status(201).json({ status: 'success', message: 'Product added successfully', productId: newProdID });
     } catch (error) {
@@ -141,7 +137,7 @@ router.post('/', (req, res) => {
 
 // DELETE a product by prodID
 router.delete('/:prodID', (req, res) => {
-    const value = Number(req.params.prodID); // Convert to number
+    const value = Number(req.params.prodID); 
 
     if (isNaN(value)) {
         return res.status(400).json({ status: 'error', message: 'Product ID not provided or invalid' });

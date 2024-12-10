@@ -6,10 +6,7 @@ sessionStorage.setItem('currentNCRStage', "QUA")
 let errorList;
 // Function which creates quality form
 async function createQualityForm() {
-
-    errorList = [];
-
-    // Collect data from form fields
+    const errorList = [];
     const qualityFormData = {
         qualFormID: await getQualityFormID(),
         qualFormProcessApplicable: getProcess(),
@@ -18,9 +15,9 @@ async function createQualityForm() {
         qualItemID: parseInt(document.getElementById('po-prod-no')?.value?.trim(), 10) || null, 
         qualImageFileName: null, 
         qualSalesOrderNo: parseInt(document.getElementById('sales-order-no')?.value?.trim(), 10) || null,
-        qualQtyReceived: parseFloat(document.getElementById('quantity-received')?.value?.trim()) || null, 
-        qualQtyDefective: parseFloat(document.getElementById('quantity-defective')?.value?.trim()) || null, 
-        qualItemNonConforming: parseInt(document.querySelector('input[name="item-nonconforming"]:checked')?.value, 10) || 0, 
+        qualQtyReceived: Number(document.getElementById('quantity-received').value) || null, 
+        qualQtyDefective: Number(document.getElementById('quantity-defective').value) || null, 
+        qualItemNonConforming: parseInt(document.querySelector('input[name="item-nonconforming"]:checked')?.value, 10) || null, 
         qualRepID: parseInt(sessionStorage.getItem('empID'), 10) || null, 
         qualDate: document.getElementById('quality-rep-date')?.value?.trim() || ''
     };
@@ -75,7 +72,7 @@ async function createQualityForm() {
     });
 
     if(isAnyFieldEmpty){
-        errorList.push('Please fill out all the fields.')
+        errorList.push('Please fill out all the fields.');
     }
 
     // Validate if Sales Order, Quantity Received, and Quantity Defective are valid numbers
@@ -107,20 +104,25 @@ async function createQualityForm() {
         document.getElementById('quantity-defective').classList.add('error');
     }
 
-    //console.log('Form valid status:', formIsValid);
-
     if (!formIsValid) {
         document.getElementById('error-message').innerHTML = `<ul>${errorList.map(item => `<li>${item}</li>`).join('')}</ul>`;
         return;
     }
 
+    // Check if the file is provided
+    const fileInput = document.getElementById('file');
+    let formData = new FormData();
+
+    formData.append('qualityFormData', JSON.stringify(qualityFormData));
+
+    if (fileInput && fileInput.files[0]) {
+        formData.append('file', fileInput.files[0]); 
+    }
+
     try {
         const response = await fetch('/api/qualityForms', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(qualityFormData)
+            body: formData 
         });
 
         if (!response.ok) {
@@ -129,13 +131,14 @@ async function createQualityForm() {
 
         const result = await response.json();
         qualFormID = await getQualityFormID() - 1; 
-        await createNCR();
+        await createNCR(); 
 
     } catch (error) {
         console.error('Error creating quality form:', error);
         alert('Failed to create quality form. Please try again');
     }
 }
+
 
 
 // Function which generates quality form ID
@@ -160,7 +163,11 @@ async function getQualityFormID(){
 function getProcess(){
     if(document.getElementById('recInsp').checked){
         return "SUP";
-    } else return "WIP";
+    } 
+    else if(document.getElementById('wip').checked){
+        return "WIP";   
+    }
+    else return "";
 }
 
 // Function to create new NCR in "ncr_form.json"
@@ -280,7 +287,7 @@ document.querySelectorAll('input[name="process-applicable"]').forEach(checkbox =
 // EventListener code for submit button
 document.addEventListener('DOMContentLoaded', function() {
     // EventListener for submit button
-    document.getElementById("ncr-form").addEventListener("submit", function(event) {
+    document.getElementById("qualityForm").addEventListener("submit", function(event) {
         event.preventDefault();
 
         removeErrorClasses();
@@ -350,7 +357,7 @@ Please review and proceed with the necessary actions at your earliest convenienc
         body: JSON.stringify({
             user_id: empID, 
             message: notificationMessage,
-            ncrFormID: mostRecentNCRFormID  // Ensure you are passing the fetched NCRForm ID here
+            ncrFormID: mostRecentNCRFormID  
         }),
     });
 

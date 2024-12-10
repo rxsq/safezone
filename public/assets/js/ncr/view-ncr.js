@@ -54,15 +54,12 @@ function fetchQualityForm(qualFormID) {
         .then(response => response.json())
         .then(products => {
 
-            // Call populateProductDropDownLists here, passing the proper parameters
-            populateProductDropDownLists(products.items, productData.supID); // use prodData here since it is still valid
+            populateProductDropDownLists(products.items, productData.supID); 
 
-            // Set the product order number (po-prod-no) from NCR data
             document.getElementById('po-prod-no').value = nonconformingData.prodID;
         })
         .catch(error => {
             console.error('Error fetching data:', error);
-            //alert('Failed to load data.');
         });
 }
 

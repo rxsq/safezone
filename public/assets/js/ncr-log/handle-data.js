@@ -1,5 +1,6 @@
 const pageSize = 6;
 let currentPage = 1;
+const userRole = sessionStorage.getItem('userRole');
 
 function resetProductSelect() {
     const productSelect = document.getElementById('editProduct');
@@ -51,7 +52,7 @@ function fetchNcrForms(page = 1, pagelimitSize = pageSize) {
                 
                 populateRecentNcrTable(data.items);
 
-                renderPaginationControls(data); // Modified to handle URL params
+                renderPaginationControls(data); 
             } else {
                 console.error('Failed fetching data for pagination');
             }
@@ -148,59 +149,105 @@ function updateMetrics(data) {
 }
 
 // Function to populate recent NCR table with data
-async function populateRecentNcrTable(data) {
+async function populateRecentNcrTable(data, closedRecords = false, archivedRecords = false) {
+    console.log(data);
+
     const tableBody = document.getElementById('tbodyRecentNCR');
-    tableBody.innerHTML = '';
+    if (!tableBody) {
+        console.error("Table body not found");
+        return;
+    }
+
+    tableBody.innerHTML = ''; // Clear existing rows
 
     let openRecords = 0;
 
     for (let i = 0; i < data.length; i++) {
         let ncr = data[i];
 
-        const row = document.createElement('tr'); 
+        // Skip closed records if `closedRecords` is false
+        if (!closedRecords && ncr.ncrStatusID !== 1) {
+            continue;
+        }
 
-        let ncrStatus;
+        // Skip archived records if `archivedRecords` is false
+        if (!archivedRecords && ncr.ncrStage === "ARC") {
+            continue;
+        }
+
+        // Increment open records counter for open NCRs
         if (ncr.ncrStatusID === 1) {
-            ncrStatus = "Open";
             openRecords++;
-        } else continue;
+        }
 
-        const productResponse = await fetch(`/api/products/${ncr.prodID}`);
-        const productData = await productResponse.json();
+        // Create table row
+        const row = document.createElement('tr');
 
-        const supplierResponse = await fetch(`/api/suppliers/${productData.supID}`);
-        const supplierData = await supplierResponse.json();
+        try {
+            const productResponse = await fetch(`/api/products/${ncr.prodID}`);
+            if (!productResponse.ok) throw new Error('Failed to fetch product');
+            const productData = await productResponse.json();
 
-        const supplierName = supplierData.supName;
+            const supplierResponse = await fetch(`/api/suppliers/${productData.supID}`);
+            if (!supplierResponse.ok) throw new Error('Failed to fetch supplier');
+            const supplierData = await supplierResponse.json();
+            const supplierName = supplierData.supName;
 
-        row.innerHTML = `
-            <td>${ncr.ncrFormNo}</td>
-            <td>${supplierName}</td>
-            <td>${ncr.ncrIssueDate.substring(0, 10)}</td>
-            <td>${ncr.ncrStage}</td>
-            <td class="action-buttons-td">
-                <button class="action-btn" onclick="viewNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View NCR">
-                    <i class="bi bi-eye"></i>
-                </button>
-                <button class="action-btn" onclick="editNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Edit NCR">
-                    <i class="bi bi-pencil"></i>
-                </button>
-                <button class="action-btn" onclick="archiveNCR('${ncr.ncrFormID}', '${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
-                    <i class="bi bi-archive"></i>
-                </button>
-                <button class="action-btn" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
-                    <i class="bi bi-filetype-pdf"></i>
-                </button>
-            </td>
-        `;
-        tableBody.appendChild(row);
-        initializeTooltips();
+            switch (userRole) {
+                case "Administrator":
+                    row.innerHTML = `
+                    <td>${ncr.ncrFormNo}</td>
+                    <td>${supplierName}</td>
+                    <td>${ncr.ncrIssueDate.substring(0, 10)}</td>
+                    <td>${ncr.ncrStage}</td>
+                    <td class="action-buttons-td">
+                        <button class="action-btn view-btn" onclick="viewNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View NCR">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="action-btn edit-btn" onclick="editNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Edit NCR">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="action-btn archive-btn" onclick="archiveNCR('${ncr.ncrFormID}', '${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
+                            <i class="bi bi-archive"></i>
+                        </button>
+                        <button class="action-btn pdf-btn" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
+                            <i class="bi bi-filetype-pdf"></i>
+                        </button>
+                    </td>
+                `;
+                    break;
+                default:
+                    row.innerHTML = `
+                    <td>${ncr.ncrFormNo}</td>
+                    <td>${supplierName}</td>
+                    <td>${ncr.ncrIssueDate.substring(0, 10)}</td>
+                    <td>${ncr.ncrStage}</td>
+                    <td class="action-buttons-td">
+                        <button class="action-btn view-btn" onclick="viewNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View NCR">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="action-btn edit-btn" onclick="editNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Edit NCR">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="action-btn pdf-btn" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
+                            <i class="bi bi-filetype-pdf"></i>
+                        </button>
+                    </td>
+                `;
+                    break;
+            }
+
+            tableBody.appendChild(row);
+            initializeTooltips();
+        } catch (error) {
+            console.error('Error fetching related data:', error);
+        }
     }
 }
 
 function viewNCR(ncrFormID) {
     sessionStorage.setItem("mode", "view");
-    window.location.href = `non-conformance-report.html?ncrFormID=${ncrFormID}`;
+    window.location.href = `edit-ncr.html?ncrFormID=${ncrFormID}`;
 }
 
 function editNCR(ncrFormID) {
@@ -226,10 +273,10 @@ function printNCR(ncrFormID) {
             if (!ncrData || typeof ncrData !== 'object') throw new Error('Invalid NCR data received');
 
             // Fetch related data
-            const productFetch = fetch(`/api/products/${ncrData.prodID}`).then(res => res.json()); // Fetch product details
-            const qualityFetch = fetch(`/api/qualityForms/${ncrData.qualFormID}`).then(res => res.json()); // Fetch quality form data
-            const engineeringFetch = ncrData.engFormID ? fetch(`/api/engineerForms/${ncrData.engFormID}`).then(res => res.json()) : Promise.resolve(null); // Fetch engineering data if available
-            const purchasingFetch = ncrData.purFormID ? fetch(`/api/purchasingForms/${ncrData.purFormID}`).then(res => res.json()) : Promise.resolve(null);  // Fetch purchasing data if available
+            const productFetch = fetch(`/api/products/${ncrData.prodID}`).then(res => res.json()); 
+            const qualityFetch = fetch(`/api/qualityForms/${ncrData.qualFormID}`).then(res => res.json());
+            const engineeringFetch = ncrData.engFormID ? fetch(`/api/engineerForms/${ncrData.engFormID}`).then(res => res.json()) : Promise.resolve(null);
+            const purchasingFetch = ncrData.purFormID ? fetch(`/api/purchasingForms/${ncrData.purFormID}`).then(res => res.json()) : Promise.resolve(null); 
 
             return Promise.all([ncrData, productFetch, qualityFetch, engineeringFetch, purchasingFetch]);
         })
@@ -240,7 +287,7 @@ function printNCR(ncrFormID) {
             return Promise.all([
                 Promise.resolve(ncrData),
                 Promise.resolve(productData),
-                fetch(`/api/suppliers/${productData.supID}`).then(res => res.json()), // Fetch supplier data
+                fetch(`/api/suppliers/${productData.supID}`).then(res => res.json()), 
                 Promise.resolve(qualityData),
                 Promise.resolve(engineeringData),
                 Promise.resolve(purchasingData),

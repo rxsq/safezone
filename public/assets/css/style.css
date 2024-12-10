@@ -40,7 +40,11 @@ body {
   width: 225px;
 }
 
-/* Loading Spinner*/
+#save-changes-btn{
+  margin-right: 10px;
+}
+
+/* Loading Spinner */
 .loading-spinner-wrapper {
   position: fixed;
   top: 0;
@@ -52,8 +56,9 @@ body {
   z-index: 9999; 
   justify-content: center;
   align-items: center;
-  opacity: 0; 
+  opacity: 1;
   pointer-events: none;
+  transition: opacity 0.5s ease; 
 }
 
 .spinner {
@@ -792,6 +797,13 @@ button:hover {
   border-radius: 5px;
   font-size: 1em;
   padding: 8px;
+}
+
+.fieldset-disabled {
+  background-color: #f0f0f0;
+  opacity: 0.6; 
+  pointer-events: none; 
+  border: 1px solid #ccc; 
 }
 
 .key-metrics {

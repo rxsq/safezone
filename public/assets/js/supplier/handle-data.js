@@ -1,19 +1,26 @@
 import { formatPhoneNumber } from '../utils/generalUtils.js';
+const userRole = sessionStorage.getItem('userRole');
 
-// Function to show loading spinner
+//Function to show loading spinner
 function showLoadingSpinner() {
     const spinnerWrapper = document.getElementById('loading-spinner-wrapper');
-    spinnerWrapper.style.opacity = '1';
-    spinnerWrapper.style.display = 'flex';
+    spinnerWrapper.style.display = 'flex'; 
+    requestAnimationFrame(() => {
+        spinnerWrapper.style.opacity = '1'; 
+        spinnerWrapper.style.pointerEvents = 'auto'; 
+    });
 }
 
 // Function to hide loading spinner
 function hideLoadingSpinner() {
     const spinnerWrapper = document.getElementById('loading-spinner-wrapper');
+    if (!spinnerWrapper || spinnerWrapper.style.display === 'none') return; 
+
     spinnerWrapper.style.opacity = '0';
+    spinnerWrapper.style.pointerEvents = 'none'; 
 
     setTimeout(() => {
-        spinnerWrapper.style.display = 'none';
+        spinnerWrapper.style.display = 'none'; 
     });  
 }
 
@@ -142,7 +149,9 @@ function populateSupplierTable(data) {
 
     data.forEach(supplier => {
         const row = document.createElement('tr');
-        row.innerHTML = `
+        switch(userRole){
+            case "Administrator":
+                row.innerHTML = `
             <td>${supplier.supName}</td>
             <td>${supplier.supContactName}</td>
             <td>${supplier.supContactEmail}</td>
@@ -158,7 +167,25 @@ function populateSupplierTable(data) {
                     <i class="bi bi-trash"></i>
                 </button>
             </td>
-        `;
+            `;
+            break;
+            default:
+                row.innerHTML = `
+            <td>${supplier.supName}</td>
+            <td>${supplier.supContactName}</td>
+            <td>${supplier.supContactEmail}</td>
+            <td>${formatPhoneNumber(supplier.supContactPhone)}</td>
+            <td class="text-center action-buttons-td">
+                <button class="action-btn view-btn" data-id="${supplier.supID}" data-bs-toggle="tooltip" title="View Supplier"> 
+                    <i class="bi bi-eye"></i>
+                </button>
+                <button class="action-btn edit-btn" data-id="${supplier.supID}" data-bs-toggle="tooltip" title="Edit Supplier">
+                    <i class="bi bi-pencil"></i>
+                </button>
+            </td>
+            `;     break;           
+        }
+        
         tableBody.appendChild(row);
     });
 

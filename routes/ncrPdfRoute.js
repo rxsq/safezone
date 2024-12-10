@@ -37,7 +37,7 @@ router.post('/generate-ncr-report', async (req, res) => {
         const options = {
             format: 'A4',
             border: '10mm',
-            base: `file://${path.join(__dirname, '..', 'public')}/`, // Base URL for loading local resources (if any)
+            base: `file://${path.join(__dirname, '..', 'public')}/`, 
         };
 
         // Generate PDF from template

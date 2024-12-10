@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById('supplier-form');
-    const errorMessage = document.getElementById('error-message'); // The container for the general error message
+    const errorMessage = document.getElementById('error-message'); 
 
     form.addEventListener('submit', async function (event) {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault(); 
         console.log('Form submitted!');
         if (await createSupplier()) {
             console.log('Supplier created successfully!');
@@ -14,12 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function createSupplier() {
         // Clear previous error messages and reset field highlights
-        errorMessage.innerHTML = '';  // Clear the previous error message
+        errorMessage.innerHTML = '';  
         clearFieldHighlights();
 
         if (!validateInputs()) {
-            errorMessage.style.display = 'block';  // Ensure the error message container is visible
-            return false;  // Stop if validation fails
+            errorMessage.style.display = 'block';  
+            return false;  
         }
 
         const supplierData = {
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const result = await response.json();
             alert('Supplier created successfully!');
-            window.location.href = "supplier.html"; // Redirect after success
+            window.location.href = "supplier.html"; 
             return true;
         } catch (error) {
             console.error('Error creating supplier:', error);
@@ -57,9 +57,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function validateInputs() {
-        const errorList = []; // Reset error list
-        let isValid = true; // Flag to track form validity
-        let isAnyFieldEmpty = false; // To track if any required field is empty
+        const errorList = []; 
+        let isValid = true; 
+        let isAnyFieldEmpty = false; 
 
         const fields = [
             { id: 'supContactName', name: 'Contact Name' },
@@ -77,10 +77,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!value) {
                 isValid = false;
-                isAnyFieldEmpty = true; // Mark that at least one required field is empty
-                input?.classList.add('error'); // Highlight invalid field
+                isAnyFieldEmpty = true; 
+                input?.classList.add('error'); 
             } else {
-                input?.classList.remove('error'); // Remove highlight if valid
+                input?.classList.remove('error'); 
             }
         });
 

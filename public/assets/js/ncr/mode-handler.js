@@ -96,13 +96,17 @@ function disableAllInputs() {
 }
 
 function disableEngineeringForm() {
-    if(mode != "create")
-        document.getElementById('engineering-fieldset').style.display = "none";
+    const engineeringFieldset = document.getElementById('engineering-fieldset');
+    if (engineeringFieldset && mode !== "create") {
+        engineeringFieldset.style.display = "none";
+    }
 }
 
 function disablePurchasingForm() {
-    if(mode != "create")
-        document.getElementById('purchasing-fieldset').style.display = "none";
+    const purchasingFieldset = document.getElementById('purchasing-fieldset');
+    if (purchasingFieldset && mode !== "create") {
+        purchasingFieldset.style.display = "none";
+    }
 }
 
 // Helper function to enable specific section inputs

@@ -216,7 +216,7 @@ document.getElementById('btnSaveEmployeeChanges').onclick = function () {
     })
     .then(response => {
         if (response.ok) {
-            fetchEmployees(); // Refresh the employee list
+            fetchEmployees(); 
             const editModal = bootstrap.Modal.getInstance(document.getElementById('editEmployeeModal'));
             editModal.hide();
         } else {
@@ -236,7 +236,7 @@ function deleteEmployee(empID, empName) {
         })
         .then(response => {
             if (response.ok) {
-                fetchEmployees(); // Refresh the employee list
+                fetchEmployees();
                 const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
                 modal.hide();
             } else {

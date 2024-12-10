@@ -7,7 +7,29 @@
     "purFollowUpReq": 0,
     "purFollowUpType": null,
     "purFollowUpDate": null,
-    "purInspectorID": 3,
+    "purInspectorID": 5,
     "purNCRClosingDate": "2024-12-09"
+  },
+  {
+    "purDescription": "Return to Supplier for either rework or replacement",
+    "purCarRaised": 0,
+    "purCarNo": null,
+    "purFollowUpReq": 0,
+    "purFollowUpType": null,
+    "purFollowUpDate": null,
+    "purInspectorID": 5,
+    "purNCRClosingDate": "2024-12-10",
+    "purFormID": 2
+  },
+  {
+    "purDescription": "Return to Supplier for either rework or replacement",
+    "purCarRaised": 0,
+    "purCarNo": null,
+    "purFollowUpReq": 0,
+    "purFollowUpType": null,
+    "purFollowUpDate": null,
+    "purInspectorID": 3,
+    "purNCRClosingDate": "2024-12-10",
+    "purFormID": 3
   }
 ]

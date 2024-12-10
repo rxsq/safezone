@@ -1,9 +1,8 @@
-
 function handleUserRole(userRole) {
     console.log(userRole);
     switch (userRole) {
         case "Administrator": adminAccess(); break;
-        case "Quality": defaultAccess(); break;
+        case "Quality": qualityAccess(); break;
         case "Engineering": defaultAccess(); break;
         case "Purchasing": defaultAccess(); break;
     }
@@ -19,16 +18,17 @@ document.addEventListener('DOMContentLoaded', function() {
     handleUserRole(sessionStorage.getItem("userRole"));
 });
 
-function disableDeleteButtons(){
+
+function disableArchiveButton(){
     setTimeout(() => {
-        const buttons = document.querySelectorAll('button.action-btn.delete-btn');
+        const buttons = document.querySelectorAll('button.action-btn.archive-btn');
 
         if (buttons.length > 0) {
             buttons.forEach(button => {
                 button.style.display = 'none';
             });
         }
-    }, 30); 
+    }, 200); 
 }
 
 function disableEditButtons(){
@@ -51,10 +51,10 @@ function disableCreateButton(){
     document.getElementById('new-suppliers-btn').style.display = "none";
 }
 
-function qualityAccess(){ disableDeleteButtons(); }; 
+function qualityAccess(){ disableArchiveButton(); }; 
 
 function defaultAccess(){
     disableDeleteButtons();
     disableEditButtons();
-    //disableCreateButton();
+    disableCreateButton();
 }

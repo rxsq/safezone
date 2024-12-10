@@ -1,3 +1,4 @@
+const userRole = sessionStorage.getItem('userRole');
 
 // Bootstrap toggle for tooltips
 function initializeTooltips() {
@@ -57,7 +58,7 @@ async function populateRecentNcrTable(data){
 
         let ncr = data[i];
 
-        const row = document.createElement('tr'); // Create new row element to be used in the table
+        const row = document.createElement('tr'); 
 
         //Only show necessary forms to user
         if(userRole === "Quality" && ncr.ncrStage != "QUA"){
@@ -86,27 +87,47 @@ async function populateRecentNcrTable(data){
 
         const supplierName = supplierData.supName;
 
-        // Generating table row
-        row.innerHTML = `
+        switch(userRole){
+            case "Administrator":         
+            row.innerHTML = `
             <td>${ncr.ncrFormNo}</td>
             <td>${supplierName}</td>
             <td>${ncr.ncrIssueDate.substring(0, 10)}</td>
             <td>${ncr.ncrStage}</td>
             <td class="action-buttons-td">
-                <button class="action-btn" onclick="viewNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View NCR">
+                <button class="action-btn view-btn" onclick="viewNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View NCR">
                     <i class="bi bi-eye"></i>
                 </button>
-                <button class="action-btn" onclick="editNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Edit NCR">
+                <button class="action-btn edit-btn" onclick="editNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Edit NCR">
                     <i class="bi bi-pencil"></i>
                 </button>
-                <button class="action-btn" onclick="archiveNCR('${ncr.ncrFormID}', '${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
+                <button class="action-btn archive-btn" onclick="archiveNCR('${ncr.ncrFormID}', '${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
                     <i class="bi bi-archive"></i>
                 </button>
-                <button class="action-btn" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
+                <button class="action-btn pdf-btn" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
                     <i class="bi bi-filetype-pdf"></i>
                 </button>
             </td>
-        `;
+            `; break;
+            default: 
+            row.innerHTML = `
+            <td>${ncr.ncrFormNo}</td>
+            <td>${supplierName}</td>
+            <td>${ncr.ncrIssueDate.substring(0, 10)}</td>
+            <td>${ncr.ncrStage}</td>
+            <td class="action-buttons-td">
+                <button class="action-btn view-btn" onclick="viewNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View NCR">
+                    <i class="bi bi-eye"></i>
+                </button>
+                <button class="action-btn edit-btn" onclick="editNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Edit NCR">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="action-btn pdf-btn" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
+                    <i class="bi bi-filetype-pdf"></i>
+                </button>
+            </td>
+            `; break;
+        }
         tableBody.appendChild(row);
         initializeTooltips();
     }
@@ -294,7 +315,7 @@ async function renderSupplierChart(data) {
 function viewNCR(ncrFormID){
     const mode = 'view';
     sessionStorage.setItem("mode", "view");
-    window.location.href = `non-conformance-report.html?ncrFormID=${ncrFormID}`;
+    window.location.href = `edit-ncr.html?ncrFormID=${ncrFormID}`;
 }
 
 // Editing NCR's

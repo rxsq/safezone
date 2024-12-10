@@ -126,7 +126,7 @@ router.post('/', (req, res) => {
             empPhone: newData.empPhone,
             empUsername: newData.empUsername,
             empPassword: newData.empPassword,
-            posID: Number(newData.posID) // Ensure posID is a number
+            posID: Number(newData.posID) 
         };
 
         existingData.push(newEmployee);
@@ -140,7 +140,7 @@ router.post('/', (req, res) => {
 
 // PUT (update) an employee by empID
 router.put('/:empID', (req, res) => {
-    const empID = Number(req.params.empID); // Convert to number
+    const empID = Number(req.params.empID); 
     const updatedData = req.body;
 
     if (isNaN(empID)) {
@@ -155,9 +155,8 @@ router.put('/:empID', (req, res) => {
             return res.status(404).json({ status: 'error', message: 'Employee not found' });
         }
 
-        // Ensure updated data types are correct before updating
         existingData[employeeIndex] = {
-            empID, // Keep the empID as is
+            empID, 
             empFirst: updatedData.empFirst || existingData[employeeIndex].empFirst,
             empLast: updatedData.empLast || existingData[employeeIndex].empLast,
             empEmail: updatedData.empEmail || existingData[employeeIndex].empEmail,
@@ -185,7 +184,7 @@ router.delete('/:empID', (req, res) => {
 
     try {
         const existingData = readJsonFile(filename);
-        const updatedData = existingData.filter(item => item.empID !== Number(value)); // Compare as a number
+        const updatedData = existingData.filter(item => item.empID !== Number(value)); 
         writeJsonFile(filename, updatedData);
         res.json({ status: 'success', message: 'Employee deleted successfully' });
     } catch (error) {

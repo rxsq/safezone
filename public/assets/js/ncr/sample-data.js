@@ -1,6 +1,7 @@
 // Function to check if the current page matches a specific path
 function isCurrentPage(path) {
-    return window.location.pathname === path;
+    const currentPath = window.location.pathname.replace(/\/$/, ''); // Remove trailing slash if any
+    return currentPath === path;
 }
 
 // Add event listeners conditionally
@@ -20,7 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Check if on the /edit-ncr page
-    if (isCurrentPage('/edit-ncr')) {
+    if (isCurrentPage('/edit-ncr.html')) {
+
+        console.log('on edit page in case');
+
         // Sample data for engineering
         document.getElementById('sample-data-btn-engineering').addEventListener('click', function () {
             document.querySelector('input[name="review-by-engineer"][value="Repair"]').checked = true;

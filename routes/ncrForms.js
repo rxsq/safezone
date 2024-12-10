@@ -117,19 +117,16 @@ router.post('/', (req, res) => {
 
         const ncrForms = JSON.parse(data);
 
-        // Generate ncrFormID based on the length of the current data
         const newNcrFormID = ncrForms.length > 0 ? ncrForms[ncrForms.length - 1].ncrFormID + 1 : 1;
-        newNCRForm.ncrFormID = newNcrFormID; // Assign the new ID
+        newNCRForm.ncrFormID = newNcrFormID; 
 
-        // Add new form to the array
         ncrForms.push(newNCRForm);
 
-        // Write updated data back to file
         fs.writeFile(filename, JSON.stringify(ncrForms, null, 2), (err) => {
             if (err) return res.status(500).json({ message: 'Error writing to data file' });
             res.status(201).json({
                 message: 'NCR form created successfully',
-                ncrForm: newNCRForm, // Return the newly created form as part of the response
+                ncrForm: newNCRForm, 
             });
         });
     });
@@ -137,10 +134,9 @@ router.post('/', (req, res) => {
 
 // PUT (Update) an NCR form by ncrFormID
 router.put('/:ncrFormID', (req, res) => {
-    const ncrFormID = parseInt(req.params.ncrFormID, 10); // Get ncrFormID from the route parameters
-    const updatedData = req.body; // Get the updated data from the request body
+    const ncrFormID = parseInt(req.params.ncrFormID, 10); 
+    const updatedData = req.body; 
 
-    // Validation: Ensure the required fields exist in the updatedData
     if (!updatedData || Object.keys(updatedData).length === 0) {
         return res.status(400).json({ status: 'error', message: 'No data provided to update' });
     }
@@ -150,19 +146,16 @@ router.put('/:ncrFormID', (req, res) => {
         const index = existingData.findIndex(item => item.ncrFormID === ncrFormID);
 
         if (index === -1) {
-            // If the NCR form does not exist, return 404
             return res.status(404).json({ status: 'error', message: 'NCR form not found' });
         }
 
-        // Update the existing record with new data
         existingData[index] = { ...existingData[index], ...updatedData };
 
-        // Ensure that data is written back to the file
         writeJsonFile(filename, existingData);
         res.json({ status: 'success', message: 'NCR form updated successfully' });
 
     } catch (error) {
-        console.error(error);  // Log the error for debugging
+        console.error(error);  
         res.status(500).json({ status: 'error', message: 'Server error' });
     }
 });

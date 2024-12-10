@@ -1,3 +1,5 @@
+const userRole = sessionStorage.getItem('userRole');
+
 const pageSize = 6;
 let currentPage = 1;
 
@@ -30,7 +32,7 @@ function renderPaginationControls(data) {
     for (let i = startPage; i <= endPage; i++) {
         const pageButton = document.createElement('button');
         pageButton.textContent = i;
-        pageButton.onclick = () => fetchNcrForms(i);
+        pageButton.onclick = () => fetchProducts(i);
         pageButton.disabled = i === currentPage;
         paginationContainer.appendChild(pageButton);
     }
@@ -143,7 +145,28 @@ function populateProductTable(data) {
     data.forEach(product => {
         const row = document.createElement('tr');
         
-        row.innerHTML = `
+        switch(userRole){
+            case "Administrator":
+                row.innerHTML = `
+                <td>${product.prodID}</td>
+                <td>${product.prodName}</td>
+                <td>${product.prodCategory}</td>
+                <td id="supplier-${product.prodID}">Loading...</td>
+                <td class="text-center action-buttons-td">
+                    <button class="action-btn" onclick="viewProduct('${product.prodID}')"
+                       data-bs-toggle="tooltip" title="View Product"> <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="action-btn" onclick="editProduct('${product.prodID}')"
+                        data-bs-toggle="tooltip" title="Edit Product"> <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="action-btn" onclick="deleteProduct('${product.prodID}', '${product.prodName}')"
+                       data-bs-toggle="tooltip" title="Delete Product"> <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+                
+            `; break;
+            default:       
+            row.innerHTML = `
             <td>${product.prodID}</td>
             <td>${product.prodName}</td>
             <td>${product.prodCategory}</td>
@@ -155,12 +178,10 @@ function populateProductTable(data) {
                 <button class="action-btn" onclick="editProduct('${product.prodID}')"
                     data-bs-toggle="tooltip" title="Edit Product"> <i class="bi bi-pencil"></i>
                 </button>
-                <button class="action-btn" onclick="deleteProduct('${product.prodID}', '${product.prodName}')"
-                   data-bs-toggle="tooltip" title="Delete Product"> <i class="bi bi-trash"></i>
-                </button>
-            </td>
-            
-        `;
+            </td>      
+        `; break;
+        }
+
         
         tableBody.appendChild(row);
 
@@ -204,7 +225,7 @@ function editProduct(productID) {
             document.getElementById('editProductCategory').value = product.prodCategory;
 
             const supplierDropdown = document.getElementById('editSupplier');
-            supplierDropdown.value = product.supID; // Set the selected supplier based on product supID
+            supplierDropdown.value = product.supID; 
 
             const editModal = new bootstrap.Modal(document.getElementById('editModal'));
             editModal.show();

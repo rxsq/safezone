@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fetch('../assets/data/products.json')
         .then(response => response.json())
         .then(data => {
-            window.products = data;  // Store products globally
+            window.products = data;  
         })
         .catch(error => console.error('Failed to load products:', error));
 });
@@ -92,7 +92,7 @@ function setSupplierAndTriggerChange(supplierID) {
 
         // Manually trigger the change event
         const changeEvent = new Event('change');
-        supplierDropDown.dispatchEvent(changeEvent);  // Trigger the change event to update the products dropdown
+        supplierDropDown.dispatchEvent(changeEvent);  
     } else {
         console.error('Products data is not available');
     }
