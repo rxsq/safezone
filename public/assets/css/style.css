@@ -1090,7 +1090,7 @@ canvas {
 
 
 
-/* Mobile screens (768px and below) */
+/* Mobile screens (328px and below) */
 @media (max-width: 328px) {
   body {
       margin: 0;
@@ -1215,6 +1215,10 @@ canvas {
   .sidebar .nav-list li a i {
       font-size: 18px; /* Icon size */
       margin-bottom: 5px;
+  }
+
+  .sidebar.collapsed{
+    width: 70px;
   }
 
   /* Main content adjustment */
