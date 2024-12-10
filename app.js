@@ -1,6 +1,9 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
+const dotenv = require('dotenv');
+
+// Import Routes
 const ncrFormsRoutes = require("./routes/ncrForms");
 const productsRoutes = require("./routes/products");
 const suppliersRoutes = require("./routes/suppliers");
@@ -14,6 +17,8 @@ const emailRoutes = require("./routes/emailRoutes");
 const pdfRoutes = require("./routes/ncrPdfRoute.js");
 const notificationsRoutes = require("./routes/notifications");
 const ncrEmployeeRoutes = require("./routes/ncrEmployee");
+
+dotenv.config();
 
 const app = express();
 
@@ -34,17 +39,11 @@ app.use("/api/positions", positionsRoutes); // Route for Positions
 app.use("/api/qualityForms", qualityFormsRoutes); // Route for Quality Forms
 app.use("/api/engineerForms", engineerFormsRoutes); // Route for Engineer Forms
 app.use("/api/purchasingForms", purchasingFormsRoutes); // Route for Purchasing Forms
-app.use("/api/status", statusRoutes); // Route for Stanpm tus
+app.use("/api/status", statusRoutes); // Route for Status
 app.use("/api/email", emailRoutes);
 app.use("/api/ncrPdfRoute", pdfRoutes);
 app.use("/api/notifications", notificationsRoutes);
-
 app.use("/api/ncrEmployee", ncrEmployeeRoutes);
-
-// Serve the HTML page for NCR Forms
-// app.get('/ncrForms', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public/views/index.html'));
-// });
 
 // Dynamic route to render other HTML pages
 app.get("*", (req, res) => {

@@ -1,3 +1,4 @@
+
 // Bootstrap toggle for tooltips
 function initializeTooltips() {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
@@ -469,11 +470,3 @@ document.addEventListener('DOMContentLoaded', function(){
     const empID = sessionStorage.getItem('empID');
     loadNotifications(empID); 
 });
-
-// Show the modal when the notification bell is clicked
-document.getElementById('notificationBell').addEventListener('click', () => {
-    const empID = sessionStorage.getItem('empID');
-    loadNotifications(empID); // Fetch and load notifications
-});
-
-

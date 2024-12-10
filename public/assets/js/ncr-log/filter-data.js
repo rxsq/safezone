@@ -1,17 +1,21 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const headerDateSelector = document.getElementById("date-range-selector");
+    const headerDateSelector = document.getElementById("filterIssueDate");
     const customRangeContainer = document.getElementById("custom-range-container");
     const filterBtn = document.getElementById('filter-btn');
     const resetBtn = document.getElementById('reset-filter-btn');
     const supplierSelect = document.getElementById('supplier-name');
     const stageSelect = document.getElementById('status');
+    const statusSelect = document.getElementById('openStatus');
     const issueDatePicker = document.getElementById('filterIssueDate');
 
     // Read URL parameters on page load
     const urlParams = new URLSearchParams(window.location.search);
     const savedSupplier = urlParams.get('supplier');
     const savedStage = urlParams.get('stage');
+    const savedOpenStatus = urlParams.get('openStatus');
     const savedIssueDate = urlParams.get('issueDate');
+
+    console.log(savedOpenStatus);
 
     // Set the filter selections based on the URL parameters
     if (savedSupplier) {
@@ -19,6 +23,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     if (savedStage) {
         stageSelect.value = savedStage;
+    }
+    if(savedOpenStatus){
+        statusSelect.value = savedOpenStatus;
     }
     if (savedIssueDate) {
         issueDatePicker.value = savedIssueDate;
@@ -51,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return response.json();
         })
         .then(data => {
-            populateSupplierDropDownLists(data);
+            populateSupplierDropDownLists(data.items);
         })
         .catch(error => {
             console.error('Error fetching supplier data:', error);
@@ -63,9 +70,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const supplier = supplierSelect.value;
         const stage = stageSelect.value;
+        const status = statusSelect.value;
         const issueDate = issueDatePicker.value;
 
         if (supplier && supplier !== "-1") params.set('supplier', supplier);
+        if(status) params.set ('openStatus', status);
         if (stage) params.set('stage', stage);
         if (issueDate) params.set('issueDate', issueDate);
 
@@ -77,12 +86,13 @@ document.addEventListener("DOMContentLoaded", function() {
     filterBtn.addEventListener('click', function() {
         const selectedSupplierValue = supplierSelect.value;
         const selectedStageValue = stageSelect.value;
+        const selectedOpenStatusValue = statusSelect.value;
         const selectedIssueDateValue = issueDatePicker.value;
 
         // Update URL with selected filters
         updateUrlParams();
 
-        if(selectedSupplierValue<0 && selectedStageValue == "" && selectedIssueDateValue == ""){
+        if(selectedSupplierValue<0 && selectedStageValue == "" && selectedIssueDateValue == "" && selectedOpenStatusValue == ""){
             //document.getElementById("pagination-controls").style.display = "none";
             return;
         }
@@ -112,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         })
                         .then(productsData => {
                             // Filter products by supplier
-                            const filteredProdData = productsData.filter(product => Number(product.supID) === Number(selectedSupplierValue));
+                            const filteredProdData = productsData.items.filter(product => Number(product.supID) === Number(selectedSupplierValue));
                             const filteredProductIDs = filteredProdData.map(product => product.prodID);
                             filteredData = filteredData.filter(ncr => filteredProductIDs.includes(ncr.prodID));
                         })
@@ -123,12 +133,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     filteredData = filteredData.filter(ncr => ncr.ncrStage === selectedStageValue);
                 }
 
+                if(selectedOpenStatusValue){
+                    filteredData = filteredData.filter(ncr => ncr.ncrStatusID === parseInt(selectedOpenStatusValue));
+                }
+
                 if (selectedIssueDateValue) {
                     filteredData = filteredData.filter(ncr => ncr.ncrIssueDate === selectedIssueDateValue);
                 }
 
                 populateRecentNcrTable(filteredData);
-                tooltip();
             })
             .catch(error => console.error('Error fetching NCR forms:', error));
     });
@@ -138,6 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Reset select values
         supplierSelect.value = "-1";
         stageSelect.value = "";
+        statusSelect.value = "";
         issueDatePicker.value = "";
 
         // Remove all URL parameters

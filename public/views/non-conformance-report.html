@@ -17,6 +17,11 @@
 </head>
 
 <body>
+    <a href="#ncr-section" class="skip-link" role="button">Skip to NCR Section</a>
+    <a href="#quality-fieldset" class="skip-link" role="button">Skip to Quality Inspector Section</a>
+    <a href="#engineering-fieldset" class="skip-link" role="button">Skip to Engineering Section</a>
+    <a href="#purchasing-fieldset" class="skip-link" role="button">Skip to Purchasing Section</a>
+
     <div class="sidebar" id="sidebar">
         <div class="logo-content">
             <div class="logo">
@@ -26,12 +31,12 @@
             </div>
             <i class="bi bi-list" id="btn-close"></i>
         </div>
-        <div class="notification-container">
+        <!-- <div class="notification-container">
             <button id="notificationBell" class="btn" data-bs-toggle="modal" data-bs-target="#notificationModal">
                 <i class="bi bi-bell"></i> 
                 <span id="notificationCount" class="badge bg-danger"></span>
             </button>
-        </div>
+        </div> -->
         <ul class="nav-list">
             <li>
                 <a href="index.html" data-bs-toggle="tooltip" title="Dashboard">
@@ -76,6 +81,14 @@
                 </a>
             </li>
         </ul>
+
+        <div class="notification-container">
+            <a href="#" class="notification-link" data-bs-toggle="modal" data-bs-target="#notificationModal">
+                <i class="bi bi-bell"></i>
+                <span class="notification-label">Notifications</span>
+                <span id="notificationCount" class="badge bg-danger"></span>
+            </a>
+        </div>
         <div class="profile-content">
             <div class="profile">
                 <div class="profile-details">
@@ -98,7 +111,7 @@
         </nav>
 
         <form id="ncr-form">
-            <fieldset class="border p-2">
+            <fieldset class="border p-2" id="ncr-section">
                 <legend class="w-auto">Non-Conformance Report</legend>
                 <div class="two-column">
                     <div class="form-group">
@@ -121,7 +134,8 @@
             </fieldset>
 
             <fieldset class="border p-2">
-                <legend class="w-auto collapsible" id="legend-quality">Quality Representative</legend>
+                <legend class="w-auto collapsible" id="legend-quality">QC Report</legend>
+                <div id="error-message" class="error-message" style="color: red;"></div>
                 <div id="section-quality">
                     <div class="two-column">
                         <div class="form-group">
@@ -136,7 +150,7 @@
                         </div>
                         <div class="form-group">
                             <button class="new-suppliers-btn" data-bs-toggle="tooltip" title="Add New Supplier"
-                                id="new-suppliers-btn" onclick="window.location.href='create-supplier.html'">
+                                id="new-suppliers-btn">
                                 <i class="bi bi-plus-circle"></i>
                             </button>
                         </div>
@@ -223,7 +237,7 @@
                                 <label><input id="file" type="file" name="file"></label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="nonconforming-div">
                             <label class="required" data-bs-toggle="tooltip" title="Required">Item Marked
                                 Nonconforming</label>
                                 <i class="bi bi-question-circle text-primary"
@@ -253,222 +267,100 @@
                     </div>
                 </div>
             </fieldset>
-            <fieldset class="border p-2" id="engineering-fieldset">
-                <legend class="w-auto collapsible" id="legend-engineering">Engineering</legend>
-                <div id="section-engineering">
-                    <section class="bordered">
-                        <h2 style="display: none;">Engineering Top Info</h2>
-                        <div class="two-column">
-                            <div class="form-group">
-                                <label class="required" data-bs-toggle="tooltip" title="Required">Review by Chief
-                                    Engineering</label>
-                                    <i class="bi bi-question-circle text-primary" 
-                                    data-bs-toggle="tooltip" 
-                                    data-bs-placement="right" 
-                                    title="Choose if it Use As is, Repair, Rework or Scrap"></i>
-                                <p>Indicate disposition by "checking" one of the following</p>
-                                <div class="four-column">
-                                    <label><input type="radio" name="review-by-engineer" value="Use As Is">Use As
-                                        Is</label>
-                                    <label><input type="radio" name="review-by-engineer" value="Repair">Repair</label>
-                                    <label><input type="radio" name="review-by-engineer" value="Rework">Rework</label>
-                                    <label><input type="radio" name="review-by-engineer" value="Scrap">Scrap</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Does Customer require notification of NCR</label>
-                                <p>If "Yes" then raise message to customer detail issues</p>
-                                <div class="two-column">
-                                    <label><input type="radio" name="require-notification" value="1">
-                                        Yes</label>
-                                    <label><input type="radio" name="require-notification" value="0"> No</label>
-                                </div>
-                            </div>
-                        </div>
-
-                    </section>
-                    <section class="no-border">
-                        <h2 style="display: none;">Engineering bottom info</h2>
-                        <div class="form-group">
-                            <label for="disposition" class="required">Disposition</label>
-                            <i class="bi bi-question-circle text-primary" 
-                                    data-bs-toggle="tooltip" 
-                                    data-bs-placement="right" 
-                                    title="Provide a detailed disposition of the Engineering"></i>
-                            <textarea id="disposition" name="disposition" rows="3" class="full-width"
-                                data-bs-toggle="tooltip" title="Required"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Does the drawing require updating</label>
-                            <i class="bi bi-question-circle text-primary" 
-                                    data-bs-toggle="tooltip" 
-                                    data-bs-placement="right" 
-                                    title="Choose Yes Or No if the drawing require updating"></i>
-                            <p>Sequence of work steps required when "repair" or "rework" indicated</p>
-                            <div class="four-column">
-                                <label><input type="radio" name="require-updating" value="1" id="require-updating-yes"> Yes</label>
-                                <label><input type="radio" name="require-updating" value="0" id="require-updating-no" checked> No</label>
-                            </div>
-                        </div>
-                        <div class="four-column" id="revision-info" style="display: none;">
-                            <div class="form-group" id="updated-revision-info">
-                                <label for="original-rev-number">Original Revision Number</label>
-                                <i class="bi bi-question-circle text-primary" 
-                                    data-bs-toggle="tooltip" 
-                                    data-bs-placement="right" 
-                                    title="Provide an Original Revision Number."></i>
-                                <input type="text" id="original-rev-number" name="original-rev-number">
-                            </div>
-                            <div class="form-group">
-                                <label for="updated-rev-number">Updated Revision Number</label>
-                                <i class="bi bi-question-circle text-primary" 
-                                    data-bs-toggle="tooltip" 
-                                    data-bs-placement="right" 
-                                    title="Provide an Updated Revision Number."></i>
-                                <input type="text" id="updated-rev-number" name="updated-rev-number">
-                            </div>
-                            <div class="form-group">
-                                <label for="revision-date">Revision Date</label>
-                                <i class="bi bi-question-circle text-primary" 
-                                    data-bs-toggle="tooltip" 
-                                    data-bs-placement="right" 
-                                    title="The Revision Dtae is Update."></i>
-                                <input type="date" id="revision-date" name="revision-date">
-                            </div>
-                        </div>
-                        <div class="two-column">
-                            <div class="form-group">
-                                <label for="engineering" class="required">Engineer</label>
-                                <input type="text" id="engineering" name="engineering" data-bs-toggle="tooltip"
-                                    title="Required">
-                            </div>
-                            <div class="form-group">
-                                <label for="engineer-date" class="required">Date</label>
-                                <input type="date" id="engineer-date" name="engineeer-date" data-bs-toggle="tooltip"
-                                    title="Required" readonly>
-                            </div>
-                        </div>
-                    </section>
-
-                    <div class="form-group submit-btn-container">
-                        <button type="button" class="btn btn-secondary button-gap" id="sample-data-btn-engineering">Sample Data</button>
-                        <button type="submit" class="submit-btn" id="submit-engineering-btn">Create Engineering Form</button>
-                    </div>
-                </div>
-            </fieldset>
-
-            <fieldset class="border p-2" id="purchasing-fieldset">
-                <legend class="w-auto collapsible" id="legend-purchasing">Purchasing</legend>
-                <div id="section-purchasing">
-                    <h2 style="display: none;">Purchasing Top Info</h2>
-                    <div class="four-column">
-                        <div class="form-group">
-                            <label class="required" data-bs-toggle="tooltip" title="Required">Purchasing's Preliminary
-                                Decision</label>
-                                <i class="bi bi-question-circle text-primary" 
-                                    data-bs-toggle="tooltip" 
-                                    data-bs-placement="right" 
-                                    title="Choose an option if it Return to Supplier for either rework or replacement, Rework In-House, Scrap In-House, Defer for HBC Engineering Review"></i>
-                            <div class="four-column">
-                                <label><input type="radio" name="preliminary-decision"
-                                        value="Return to Supplier for either rework or replacement">Return to Supplier
-                                    for either rework or replacement</label>
-                                <label><input type="radio" name="preliminary-decision" value="Rework In-House">Rework In-House</label>
-                                <label><input type="radio" name="preliminary-decision" value="Scrap In-House">Scrap In-House</label>
-                                <label><input type="radio" name="preliminary-decision" value="Defer for HBC Engineering Review">Defer for
-                                    HBC Engineering Review</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="four-column">
-                        <div class="form-group">
-                            <label class="required" data-bs-toggle="tooltip" title="Required">Was a CAR raised?</label>
-                            <i class="bi bi-question-circle text-primary" 
-                            data-bs-toggle="tooltip" 
-                            data-bs-placement="right" 
-                             title="Choose Yes or No if a car was raised."></i>
-                            <div class="four-column">
-                                <label><input type="radio" name="car-raised" value="1">Yes</label>
-                                <label><input type="radio" name="car-raised" value="0">No</label>
-                            </div>
-                            <div class="four-column">
-                                <label style="margin-top: 15px;">If "Yes" indicate CAR Number<input type="text" id="car-number" name="car-number"
-                                        data-bs-toggle="tooltip" title="Required"></label>
-                                        <i class="bi bi-question-circle text-primary"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="right"
-                                        title="Provide the Corrective Action Request (CAR) number if applicable."></i>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="required" data-bs-toggle="tooltip" title="Required">Follow-up
-                                Required?</label>
-                                <i class="bi bi-question-circle text-primary"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="right"
-                                title="Specify whether follow-up actions are needed to address this issue."></i>
-      
-                            <div class="four-column">
-                                <label><input type="radio" name="follow-up-required" value="1">Yes</label>
-                                <label><input type="radio" name="follow-up-required" value="0">No</label>
-                            </div>
-                            <div class="four-column">
-                                <label style="margin-top: 15px;">If "Yes" indicate type & expected date<input type="text" id="purchasing-followup"
-                                        name="purchasing-followup" data-bs-toggle="tooltip" title="Required"></label>
-                                <label style="margin-top: 15px;">Follow up date<input type="date" id="purchasing-followup-date"
-                                        name="purchasing-followup" data-bs-toggle="tooltip" title="Required"></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="two-column">
-                        <div class="form-group">
-                            <label for="purchasing" class="required">Operations Manager</label>
-                            <i class="bi bi-question-circle text-primary"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="right"
-                            title="Enter the name of the Operations Manager responsible for this decision."></i>
-                            <input type="text" id="purchasing" name="purchasing" data-bs-toggle="tooltip"
-                                title="Required">
-                        </div>
-                        <div class="form-group">
-                            <label for="purchasing-date" class="required">Date</label>
-                            <i class="bi bi-question-circle text-primary"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="right"
-                            title="The date is fixed to the exact date of purchase."></i>
-                            <input type="date" id="purchasing-date" name="purchasing-date" readonly>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group submit-btn-container">
-                        <button type="button" class="btn btn-secondary button-gap" id="sample-data-btn-purchasing">Sample Data</button>
-                        <button type="submit" class="submit-btn" id="submit-purchasing-btn">Create Purchasing Form</button>
-                    </div>
-
-                </div>
-            </fieldset>
-
         </form>
     </div>
 
-    <!-- Error Modal -->
-    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="errorModalLabel">Erorr</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="errorModalBody">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
+<!-- Modal to Load Create Supplier Form -->
+<div class="modal fade" id="createSupplierModal" tabindex="-1" aria-labelledby="createSupplierModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createSupplierModalLabel">Add New Supplier</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body" id="modal-body-content">
+            <form id="supplier-form">
+                  <div id="error-message" class="error-message" style="color: red;"></div> <!-- Error message container -->
+                  <div class="">
+                    <div class="form-group">
+                      <label for="supName" class="required">Supplier Name</label>
+                      <input
+                        type="text"
+                        id="supName"
+                        name="products-supplied"
+                        aria-required="true"
+                        placeholder="Supplier Name or Company"
+                      >
+                    </div>
+                    <div class="two-column">
+                      <div class="form-group">
+                        <label for="supContactName" class="required">Contact Name</label>
+                        <input
+                          type="text"
+                          id="supContactName"
+                          aria-required="true"
+                          name="supplier-code"
+                        >
+                      </div>
+                      <div class="form-group">
+                        <label for="supContactEmail" class="required">Email</label>
+                        <input
+                          type="text"
+                          id="supContactEmail"
+                          aria-required="true"
+                          name="supplier-email"
+                        >
+                      </div>
+                      <div class="form-group">
+                        <label for="supContactPhone" class="required">Phone</label>
+                        <input
+                          type="text"
+                          id="supContactPhone"
+                          aria-required="true"
+                          name="supplier-phone"
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="supAddress" class="required">Address</label>
+                    <input
+                          type="text"
+                          id="supAddress"
+                          aria-required="true"
+                          name="supplier-address"
+                        >
+                  </div>
+                  <div class="form-group">
+                    <label for="supCity" class="required">City</label>
+                    <input
+                          type="text"
+                          id="supCity"
+                          aria-required="true"
+                          name="supplier-city"
+                        >
+                  </div>
+                  <div class="form-group">
+                    <label for="supCountry" class="required">Country</label>
+                    <input
+                          type="text"
+                          id="supCountry"
+                          aria-required="true"
+                          name="supplier-country"
+                        >
+                  </div>
+                <div class="form-group submit-btn-container">
+                </div>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="saveSupplierBtn">Save Supplier</button>
+        </div>
+      </div>
     </div>
+  </div>
 
     <!-- Success Modal -->
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
@@ -496,9 +388,9 @@
     <script src="../assets/js/ncr/collapsible-sections.js"></script>
     <script src="../assets/js/main/tooltip.js"></script>
     <script src="../assets/js/ncr/create-scripts/create-quality-form.js"></script>
-    <script src="../assets/js/ncr/create-scripts/create-engineering-form.js"></script>
     <script src="../assets/js/ncr/mode-handler.js"></script>
     <script src="../assets/js/ncr/sample-data.js"></script>
+    <script src="../assets/js/ncr/create-scripts/new-supplier-modal.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script>

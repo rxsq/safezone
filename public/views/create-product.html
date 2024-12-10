@@ -36,12 +36,12 @@
         </div>
         <i class="bi bi-list" id="btn-close"></i>
       </div>
-      <div class="notification-container">
+      <!-- <div class="notification-container">
         <button id="notificationBell" class="btn" data-bs-toggle="modal" data-bs-target="#notificationModal">
             <i class="bi bi-bell"></i> 
             <span id="notificationCount" class="badge bg-danger"></span>
         </button>
-    </div>
+    </div> -->
       <ul class="nav-list">
         <li>
             <a href="index.html"  data-bs-toggle="tooltip" title="Dashboard">
@@ -86,6 +86,13 @@
             </a>
         </li>
     </ul>
+    <div class="notification-container">
+      <a href="#" class="notification-link" data-bs-toggle="modal" data-bs-target="#notificationModal">
+          <i class="bi bi-bell"></i>
+          <span class="notification-label">Notifications</span>
+          <span id="notificationCount" class="badge bg-danger"></span>
+      </a>
+  </div>
       <div class="profile-content">
         <div class="profile">
           <div class="profile-details">
@@ -122,6 +129,7 @@
             <form id="supplier-form">
               <fieldset class="border p-2">
                 <legend class="w-auto">Product Information</legend>
+                <div id="error-message" class="error-message" style="color: red;"></div>
                 <div class="">
                   <div class="form-group">
                     <label for="product-name">Product Name</label>
@@ -171,6 +179,43 @@
         </div>
       </div>
     </div>
+
+      <!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalLabel">Success</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="successModalBody">
+        <!-- Success message will be injected here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="btnDismiss">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Error Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="errorModalLabel">Error</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="errorModalBody">
+        <!-- Error message will be injected here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     <script src="../assets/js/product/create-product.js"></script>
     <script src="../assets/js/main/sidebar.js"></script>
     <script src="../assets/js/main/user-role-handling.js"></script>

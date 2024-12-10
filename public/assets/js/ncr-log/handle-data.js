@@ -1,4 +1,4 @@
-const pageSize = 10;
+const pageSize = 6;
 let currentPage = 1;
 
 function resetProductSelect() {
@@ -62,13 +62,13 @@ function fetchNcrForms(page = 1, pagelimitSize = pageSize) {
 // Function to render pagination controls
 function renderPaginationControls(data) {
     const paginationContainer = document.getElementById('pagination-controls');
-    paginationContainer.innerHTML = ''; // Clear previous pagination buttons
+    paginationContainer.innerHTML = ''; 
 
     const currentPage = data.currentPage;
     const totalPages = data.totalPages;
 
-    const maxButtons = 3; // Maximum number of page buttons to show at once
-    const pagesToShow = Math.min(maxButtons, totalPages); // Make sure we don't exceed total pages
+    const maxButtons = 3; 
+    const pagesToShow = Math.min(maxButtons, totalPages); 
     
     let startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
     let endPage = Math.min(totalPages, startPage + pagesToShow - 1);
@@ -77,20 +77,17 @@ function renderPaginationControls(data) {
         startPage = Math.max(1, totalPages - pagesToShow + 1);
     }
 
-    // Create 'First' and 'Prev' buttons
     createNavigationButton(paginationContainer, 'First', 1, currentPage === 1);
     createNavigationButton(paginationContainer, 'Prev', currentPage - 1, currentPage === 1);
 
-    // Create page number buttons
     for (let i = startPage; i <= endPage; i++) {
         const pageButton = document.createElement('button');
         pageButton.textContent = i;
         pageButton.onclick = () => fetchNcrForms(i);
-        pageButton.disabled = i === currentPage; // Disable the current page button
+        pageButton.disabled = i === currentPage;
         paginationContainer.appendChild(pageButton);
     }
 
-    // Show "..." button if there are more pages after the last displayed page
     if (endPage < totalPages) {
         const ellipsisButton = document.createElement('button');
         ellipsisButton.textContent = '...';
@@ -98,7 +95,6 @@ function renderPaginationControls(data) {
         paginationContainer.appendChild(ellipsisButton);
     }
 
-    // Create 'Next' and 'Last' buttons
     createNavigationButton(paginationContainer, 'Next', currentPage + 1, currentPage === totalPages);
     createNavigationButton(paginationContainer, 'Last', totalPages, currentPage === totalPages);
 }
@@ -116,7 +112,6 @@ function createNavigationButton(container, text, page, isDisabled) {
 function showPageInput(currentPage, totalPages) {
     const paginationContainer = document.getElementById('pagination-controls');
 
-    // Input field
     const pageInput = document.createElement('input');
     pageInput.type = 'number';
     pageInput.value = currentPage;
@@ -124,7 +119,6 @@ function showPageInput(currentPage, totalPages) {
     pageInput.max = totalPages;
     pageInput.classList.add('page-input');
 
-    // Create the submit button
     const submitButton = document.createElement('button');
     submitButton.textContent = 'Go';
     submitButton.onclick = () => {
@@ -136,11 +130,10 @@ function showPageInput(currentPage, totalPages) {
         }
     };
 
-    // Clear pagination and show the input field
     paginationContainer.innerHTML = '';
     paginationContainer.appendChild(pageInput);
     paginationContainer.appendChild(submitButton);
-    pageInput.style.display = 'inline-block'; // Show the input
+    pageInput.style.display = 'inline-block'; 
 }
 
 
@@ -291,21 +284,6 @@ function printNCR(ncrFormID) {
             console.error('Error:', error);
             alert('There was an error generating the NCR report. Please try again.');
         });
-}
-
-
-function changePage(direction) {
-    if (direction === 'next') {
-        currentPage++;
-    } else if (direction === 'prev') {
-        currentPage--;
-    } else if (direction === 'first') {
-        currentPage = 1;
-    } else if (direction === 'last') {
-        currentPage = totalPages;
-    }
-
-    fetchNcrForms(currentPage);
 }
 
 fetchNcrForms(); 

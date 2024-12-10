@@ -16,10 +16,9 @@ function fetchNcrForms() {
       renderBarChart(data.items); // Render chart with the fetched data
       renderSupplierChart(data.items);
       renderStagesChart(data.items);
-      renderProductChart(data.items);
+      //renderProductChart(data.items);
       renderProductCategoryChart(data.items);
       renderIssueDayofWeekChart(data.items);
-      renderDepartmentChart(data.items);
     })
     .catch((error) => console.error("Error fetching NCR forms:", error));
 }
@@ -310,7 +309,7 @@ async function renderProductChart(data) {
   const productData = await productResponse.json();
 
   //Get only product names that have their IDs in the productCounts object
-  const productNames = productData.filter(
+  const productNames = productData.items.filter(
     (product) => productCounts[product.prodID]
   );
 
@@ -374,7 +373,7 @@ async function groupByProductCategory(data) {
 
   const categoryCounts = {};
   data.forEach((ncr) => {
-    const category = productData.find(
+    const category = productData.items.find(
       (prod) => prod.prodID === ncr.prodID
     ).prodCategory;
     categoryCounts[category] = (categoryCounts[category] || 0) + 1;
@@ -507,96 +506,6 @@ function renderIssueDayofWeekChart(data) {
           },
           ticks: {
             stepSize: 1,
-          },
-        },
-      },
-      responsive: true,
-      plugins: {
-        legend: {
-          display: true,
-          position: "top",
-        },
-      },
-    },
-  });
-}
-
-// CHART:  NCR by Department
-
-//Pre-Processing Functions
-
-async function groupByDepartment(data) {
-  const ncrEmployeeData = await (await fetch("/api/ncrEmployee")).json();
-  const employeeData = await (await fetch("/api/employees")).json();
-  const employeeDepartments = await (await fetch("/api/positions")).json();
-
-  // Create sets for quick lookup
-  const validEmpIDs = new Set(employeeData.map((emp) => emp.empID));
-
-  // Create Department Mapping
-  const departmentMapping = Object.fromEntries(
-    employeeData.map((emp) => [
-      emp.empID,
-      employeeDepartments.find((dep) => dep.posID === emp.posID).posDescription,
-    ])
-  );
-
-  // Group NCRs by Department
-  const departmentCounts = ncrEmployeeData
-    .filter((ncrEmp) => validEmpIDs.has(ncrEmp.empID))
-    .reduce((counts, ncrEmp) => {
-      const department = departmentMapping[ncrEmp.empID];
-      counts[department] = (counts[department] || 0) + 1;
-      return counts;
-    }, {});
-
-  return departmentCounts;
-}
-
-//Render function
-async function renderDepartmentChart(data) {
-  const ctx = document.getElementById("departmentChart").getContext("2d");
-
-  // Group NCRs by department using groupByDepartment function
-  const departmentCounts = await groupByDepartment(data);
-  const labels = Object.keys(departmentCounts);
-  const values = Object.values(departmentCounts);
-
-  new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: "NCR's per Department",
-          data: values,
-          backgroundColor: "#173451",
-          borderColor: "rgba(255, 171, 0, 1)",
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: "Department",
-          },
-          ticks: {
-            autoSkip: false, // Display all department names on the x-axis
-          },
-        },
-        y: {
-          beginAtZero: true,
-          max: Math.max(...values) + 1, // Set max one point higher to make it more visible
-          suggestedMax: Math.max(...values) + 1, // Ensure the axis extends
-          title: {
-            display: true,
-            text: "Number of NCR",
-          },
-          ticks: {
-            stepSize: 1, // Use whole numbers for NCR count
           },
         },
       },

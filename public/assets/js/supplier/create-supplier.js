@@ -1,92 +1,195 @@
-let errorList = [];
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById('supplier-form');
+    const errorMessage = document.getElementById('error-message'); // The container for the general error message
 
+    form.addEventListener('submit', async function (event) {
+        event.preventDefault(); // Prevent default form submission
+        console.log('Form submitted!');
+        if (await createSupplier()) {
+            console.log('Supplier created successfully!');
+        } else {
+            console.log('Validation failed or error occurred.');
+        }
+    });
 
- //Define modals
- var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+    async function createSupplier() {
+        // Clear previous error messages and reset field highlights
+        errorMessage.innerHTML = '';  // Clear the previous error message
+        clearFieldHighlights();
 
- var successModal = new bootstrap.Modal(document.getElementById('successModal'));
-
-function validateInputs(){
-    errorList = [];
-
-    const contactName = document.getElementById('supContactName').value.trim();
-    const contactEmail = document.getElementById('supContactEmail').value.trim();
-    let phone = document.getElementById('supContactPhone').value.trim();
-    const name = document.getElementById('supName').value.trim();
-    const address = document.getElementById('supAddress').value.trim();
-    const city = document.getElementById('supCity').value.trim();
-    const country = document.getElementById('supCountry').value.trim();
-
-    let isValid = true;
-
-    if (!contactName || !contactEmail || !phone || !name || !address || !city || !country) {
-        errorList.push("Please make sure all the fields are filled out");
-        isValid = false;
-    }
-
-    phone = phone.replace(/\D/g, ""); // Remove any non-numeric characters
-    if (phone.length !== 10) {
-        errorList.push("Phone entry is in the incorrect format. Please check entry and try again.");
-        isValid = false;
-    }
-
-    if(isValid){
-        createSupplier();    
-    }
-    else{
-        const errorMessages = errorList.join('\n');
-        //alert(`Validation Errors:\n${errorMessages}`) //Temp alert for testing
-        document.getElementById('errorModalBody').innerText = `Validation Errors:\n${errorMessages}`;
-        errorModal.show();
-    }
-}
-
-// Function to create a new supplier
-async function createSupplier() {
-    const supplierData = {
-        supContactName: document.getElementById('supContactName').value,
-        supContactEmail: document.getElementById('supContactEmail').value,
-        supContactPhone: document.getElementById('supContactPhone').value,
-        supName: document.getElementById('supName').value,
-        supAddress: document.getElementById('supAddress').value,
-        supCity: document.getElementById('supCity').value,
-        supCountry: document.getElementById('supCountry').value,
-    };
-
-    try {
-        const response = await fetch('/api/suppliers', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(supplierData)
-        });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+        if (!validateInputs()) {
+            errorMessage.style.display = 'block';  // Ensure the error message container is visible
+            return false;  // Stop if validation fails
         }
 
-        const result = await response.json();
+        const supplierData = {
+            supContactName: document.getElementById('supContactName').value.trim(),
+            supContactEmail: document.getElementById('supContactEmail').value.trim(),
+            supContactPhone: document.getElementById('supContactPhone').value.trim(),
+            supName: document.getElementById('supName').value.trim(),
+            supAddress: document.getElementById('supAddress').value.trim(),
+            supCity: document.getElementById('supCity').value.trim(),
+            supCountry: document.getElementById('supCountry').value.trim(),
+        };
 
-        document.getElementById('successModalBody').innerText = 'Supplier created successfully!';
-        successModal.show();
-        
-        const successClick = document.getElementById('btnDismiss');
-        successClick.addEventListener('click', e => {
-            e.preventDefault();
-            window.location.href = "supplier.html";
-        })
+        try {
+            const response = await fetch('/api/suppliers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(supplierData),
+            });
 
-        // Clear the form or redirect as needed
-        //document.getElementById('supplier-form').reset();
-    } catch (error) {
-        console.error('Error creating supplier:', error);
-        alert('Failed to create supplier. Please try again.');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const result = await response.json();
+            alert('Supplier created successfully!');
+            window.location.href = "supplier.html"; // Redirect after success
+            return true;
+        } catch (error) {
+            console.error('Error creating supplier:', error);
+            alert('Failed to create supplier. Please try again.');
+            return false;
+        }
     }
-}
 
-// Add event listener to the form submission
-document.getElementById('supplier-form').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent default form submission
-    validateInputs();
+    function validateInputs() {
+        const errorList = []; // Reset error list
+        let isValid = true; // Flag to track form validity
+        let isAnyFieldEmpty = false; // To track if any required field is empty
+
+        const fields = [
+            { id: 'supContactName', name: 'Contact Name' },
+            { id: 'supContactEmail', name: 'Contact Email' },
+            { id: 'supContactPhone', name: 'Contact Phone' },
+            { id: 'supName', name: 'Supplier Name' },
+            { id: 'supAddress', name: 'Address' },
+            { id: 'supCity', name: 'City' },
+            { id: 'supCountry', name: 'Country' },
+        ];
+
+        fields.forEach(field => {
+            const input = document.getElementById(field.id);
+            const value = input?.value.trim();
+
+            if (!value) {
+                isValid = false;
+                isAnyFieldEmpty = true; // Mark that at least one required field is empty
+                input?.classList.add('error'); // Highlight invalid field
+            } else {
+                input?.classList.remove('error'); // Remove highlight if valid
+            }
+        });
+
+        // Additional validation for email and phone
+        const emailInput = document.getElementById('supContactEmail');
+        const emailValue = emailInput?.value.trim();
+        if (emailValue && !validateEmail(emailValue)) {
+            isValid = false;
+            emailInput?.classList.add('error');
+            errorList.push('Please enter a valid email format.');
+        }
+
+        const phoneInput = document.getElementById('supContactPhone');
+        const phoneValue = phoneInput?.value.trim();
+        if (phoneValue && !validatePhone(phoneValue)) {
+            isValid = false;
+            phoneInput?.classList.add('error');
+            errorList.push('Please enter a valid phone number format.');
+        }
+
+        // If any required field is empty, show the general message
+        if (isAnyFieldEmpty) {
+            errorList.unshift('Please fill out all highlighted fields.');
+        }
+
+        // If there are any errors, display them
+        if (errorList.length > 0) {
+            errorMessage.innerHTML = '<ul>' + errorList.map(error => `<li>${error}</li>`).join('') + '</ul>';
+        }
+
+        return isValid;
+    }
+
+    function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    function validatePhone(phone) {
+        const phoneRegex = /^[0-9]{10,15}$/;
+        return phoneRegex.test(phone);
+    }
+
+    function clearFieldHighlights() {
+        const fields = document.querySelectorAll('.error');
+        fields.forEach(field => {
+            field.classList.remove('error');
+        });
+    }
+});
+
+document.getElementById('supName').addEventListener("input", function() {
+    if (this.value && this.value !== "") {
+        this.classList.remove("error");
+    }
+});
+
+document.getElementById('supContactEmail').addEventListener("input", function() {
+    const emailInput = this;
+    const emailValue = emailInput.value.trim();
+
+    // If email is valid, remove error class, else add error class
+    if (emailValue) {
+        if (validateEmail(emailValue)) {
+            emailInput.classList.remove("error");
+        } else {
+            emailInput.classList.add("error");
+        }
+    } else {
+        emailInput.classList.remove("error");
+    }
+});
+
+document.getElementById('supContactPhone').addEventListener("input", function() {
+    const phoneInput = this;
+    const phoneValue = phoneInput.value.trim();
+
+    // If phone is valid, remove error class, else add error class
+    if (phoneValue) {
+        if (validatePhone(phoneValue)) {
+            phoneInput.classList.remove("error");
+        } else {
+            phoneInput.classList.add("error");
+        }
+    } else {
+        phoneInput.classList.remove("error");
+    }
+});
+
+document.getElementById('supAddress').addEventListener("input", function() {
+    if (this.value && this.value !== "") {
+        this.classList.remove("error");
+    }
+});
+
+document.getElementById('supCity').addEventListener("input", function() {
+    if (this.value && this.value !== "") {
+        this.classList.remove("error");
+    }
+});
+
+document.getElementById('supCountry').addEventListener("input", function() {
+    if (this.value && this.value !== "") {
+        this.classList.remove("error");
+    }
+});
+
+document.getElementById('supContactName').addEventListener("input", function() {
+    if (this.value && this.value !== "") {
+        this.classList.remove("error");
+    }
 });

@@ -17,6 +17,36 @@ const writeJsonFile = (file, data) => {
     fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
 };
 
+function paginatedResults(model){
+    return(req, res, next) => {
+        const page = parseInt(req.query.page);
+        const limit = parseInt(req.query.limit);
+
+        const startIndex = (page -1) * limit;
+        const endIndex = page * limit;
+
+        const results = {};
+
+        if(endIndex < model.lengt){
+            results.next = {
+                page: page + 1,
+                limit: limit
+            }
+        }
+
+        if(startIndex > 0){
+            results.previous = {
+                page: page -1,
+                limit: limit
+            }
+        }
+
+        results.results = model.slice(startIndex, endIndex);
+
+        res.paginatedResults = results;
+        next();
+    }
+}
 // Utility function to get the next supID
 const getNextSupID = (existingData) => {
     const ids = existingData.map(item => item.supID);
@@ -24,14 +54,43 @@ const getNextSupID = (existingData) => {
 };
 
 // GET all suppliers
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
     try {
-        const data = readJsonFile(filename);
-        res.json(data);
+        const data = readJsonFile(filename); // Read the JSON file
+
+        // Check if there are no query parameters
+        if (Object.keys(req.query).length === 0) {
+            // Return all data if no query parameters are provided
+            return res.json({
+                status: 'success',
+                totalRecords: data.length,
+                items: data, // All items returned without pagination
+            });
+        }
+
+        // Otherwise, apply pagination
+        res.locals.data = data; // Store the data for pagination
+        paginatedResults(data)(req, res, next); // Invoke paginated results middleware
     } catch (error) {
-        console.error(error);
         res.status(500).json({ status: 'error', message: 'Failed to read JSON file' });
     }
+}, (req, res) => {
+    // This middleware handles paginated results
+    const data = res.locals.data; // Get the original data
+    const totalRecords = data.length; // Total records count
+    const limit = parseInt(req.query.limit) || 10; // Default limit of 10
+    const totalPages = Math.ceil(totalRecords / limit); // Total pages based on limit
+    const currentPage = parseInt(req.query.page) || 1; // Current page, default 1
+
+    res.json({
+        status: 'success',
+        totalRecords: totalRecords,
+        totalPages: totalPages,
+        currentPage: currentPage,
+        items: res.paginatedResults.results, // Paginated results
+        next: res.paginatedResults.next, // Next page info
+        previous: res.paginatedResults.previous // Previous page info
+    });
 });
 
 // GET a supplier by supID

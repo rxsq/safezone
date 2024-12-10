@@ -40,10 +40,44 @@ body {
   width: 225px;
 }
 
-.logo-content .logo img {
-  height: 100%;
-  object-fit: cover;
+/* Loading Spinner*/
+.loading-spinner-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 1); 
+  display: none; 
+  z-index: 9999; 
+  justify-content: center;
+  align-items: center;
+  opacity: 0; 
+  pointer-events: none;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* */
+
+.logo-content .logo img {
+  height: 100%; 
+  max-height: 180px; 
+  width: auto; 
+  max-width: 100%; 
+  object-fit: contain; 
 }
 
 /* PAGINATION STYLING*/
@@ -129,27 +163,49 @@ body {
 
 .error {
   box-shadow: 0 0 5px 2px rgba(255, 0, 0, 0.5);
+  outline:none;
   border: 1px solid #d9534f;
 }
 
-/*NOTIFICATION/ NOTIFICATION BELL STYLING*/
 .notification-container {
+  margin-top: 10px; 
+  padding: 0;
+  width: 100%;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  bottom: 70px;
   position: absolute;
-  top: 60px;
-  right: 10px;
+  left: 0;
 }
 
-.notification-bell {
-  background: none;
-  border: none;
+.notification-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #111;
+  font-size: 17px;
+  font-weight: 600;
+  padding: 10px 14px;
+  transition: all 0.3s ease;
+}
+
+.notification-link:hover {
+  background: #d0d0d0;
+  border-radius: 12px;
+}
+
+.notification-link .bi {
   font-size: 24px;
-  position: relative;
+  margin-right: 25px;
 }
 
-.badge {
-  position: absolute;
-  top: -5px;
-  right: -5px;
+.notification-link .badge {
+  margin-left: 45px;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  padding: 4px 8px;
+  font-size: 0.9em;
 }
 
 .custom-header {
@@ -208,12 +264,12 @@ body {
 }
 
 .sidebar.collapsed #log-out {
-  left: 70%; 
+  left: 50%; 
   transform: translateX(-55%); 
 }
 
 .sidebar.collapsed {
-  width: 70px;
+  width: 80px;
 }
 
 .sidebar.collapsed .nav-list .links-name{
@@ -225,20 +281,88 @@ body {
   width:100%;
 }
 
+.sidebar.collapsed .notification-container {
+  text-align: center;
+}
+
+.sidebar.collapsed .notification-container .notification-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; 
+  padding: 0;
+}
+
+.sidebar.collapsed .notification-container .notification-link .bi {
+  margin: 0; 
+  font-size: 24px; 
+  position: relative;
+}
+
+.sidebar.collapsed .notification-container .notification-link .badge {
+  position: absolute;
+  top: -10px; 
+  right: -10px; 
+  margin: 0; 
+  transform: translate(-50%, 50%); 
+  font-size: 12px; 
+  line-height: 1;
+}
+
+.sidebar.collapsed .notification-container .notification-link .notification-label{
+  display: none;
+}
+
 .sidebar.collapsed img, .sidebar.collapsed .search-box, .sidebar.collapsed .name-job .name {
   display:none;
 }
 
-.sidebar.collapsed .name-job .job{
-  transform: translateY(3.5vh);
+
+.sidebar.collapsed .profile-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  left: 70%;
+}
+
+.sidebar.collapsed .profile-content .profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.sidebar.collapsed .profile-content .profile .profile-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar.collapsed .profile-content .profile .name-job {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 50px; 
+}
+
+.sidebar.collapsed .profile-content .profile .name-job .job {
+  font-size: 0.6em;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .sidebar:not(.collapsed) [data-bs-toggle="tooltip"]::after,
 .sidebar:not(.collapsed) [data-bs-toggle="tooltip"]::before {
     display: none !important;
 }
+
 /**/
 
 .sidebar .nav-list {
@@ -274,10 +398,6 @@ body {
   position: absolute;
   top: 0;
   width: 100%;
-}
-
-::placeholder {
-  color: #eee;
 }
 
 .sidebar ul li .bi-search {
@@ -372,6 +492,11 @@ body {
 }
 
 /***** NCR FORM *****/
+.skip-link {
+  position: absolute;
+  top: -1340px;
+  left: 0;
+}
 .home-content {
   height: 100vh;
   left: 300px;
@@ -391,6 +516,11 @@ body {
   text-decoration: none;
 }
 
+::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+  font-weight:400;
+}
+
 .breadcrumb {
   margin: 10px 0;
   text-decoration: none;
@@ -402,14 +532,12 @@ body {
 
 h1 {
   color: #173451;
-  /* margin-left: 32px; */
   text-align: left;
 }
 
 form {
   background: #ffffff;
   border-radius: 10px;
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); */
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -435,17 +563,18 @@ p {
 }
 
 .form-group {
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 }
 
 .form-group button {
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 fieldset {
   border: 1px solid rgba(128, 128, 128, 0.4);
   border-radius: 12px;
   margin: 0;
+  margin-bottom: 50px;
 }
 
 legend {
@@ -505,6 +634,25 @@ input[type="file"] {
   margin-right: 10px;
 }
 
+#error-message {
+  color: red;
+  font-size: 1.3rem; 
+  margin-top: 10px;
+}
+
+.invalid-field {
+  border: 2px solid red;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;  
+}
+
+.input-group button {
+  border-radius: 0;  
+}
+
 textarea {
   resize: vertical;
 }
@@ -556,7 +704,7 @@ textarea {
 }
 
 .reset-btn {
-  background-color: grey;
+  background-color: #B81414;
 }
 
 .view-more-btn-container {
@@ -569,6 +717,10 @@ textarea {
 .new-suppliers-btn,
 .new-employee-btn {
   margin-bottom: 25px;
+}
+
+.form-group .new-suppliers-btn {
+  margin-top: 25px;
 }
 
 .action-buttons-td button {
@@ -590,6 +742,10 @@ textarea {
 
 .cancel-btn:hover {
   background-color: #d0d0d0;
+}
+
+.reset-btn:hover {
+  background-color: rgb(255, 0, 0);
 }
 
 header {
@@ -835,22 +991,24 @@ canvas {
   width: 40%; 
 }
 
-/* Center-align the action buttons */
 #ncrRecentTable td.action-buttons-td {
   text-align: center;
 }
 
-/* Ensure the table fits well within the layout */
 #ncrRecentTable {
   table-layout: fixed; 
   width: 100%; 
 }
 
-/* Improve spacing for action buttons */
 #ncrRecentTable td.action-buttons-td button {
   margin: 0 5px; 
   padding: 8px; 
   font-size: 1.2em; 
+}
+
+#togglePassword{
+  margin: 0 auto;
+  border-radius:5px;
 }
 
 /* Media Query for split screen */

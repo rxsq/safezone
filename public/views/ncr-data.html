@@ -39,17 +39,6 @@
         </div>
         <i class="bi bi-list" id="btn-close"></i>
       </div>
-      <div class="notification-container">
-        <button
-          id="notificationBell"
-          class="btn"
-          data-bs-toggle="modal"
-          data-bs-target="#notificationModal"
-        >
-          <i class="bi bi-bell"></i>
-          <span id="notificationCount" class="badge bg-danger"></span>
-        </button>
-      </div>
       <ul class="nav-list">
         <li>
           <a href="index.html" data-bs-toggle="tooltip" title="Dashboard">
@@ -99,6 +88,13 @@
           </a>
         </li>
       </ul>
+      <div class="notification-container">
+        <a href="#" class="notification-link" data-bs-toggle="modal" data-bs-target="#notificationModal">
+            <i class="bi bi-bell"></i>
+            <span class="notification-label">Notifications</span>
+            <span id="notificationCount" class="badge bg-danger"></span>
+        </a>
+    </div>
       <div class="profile-content">
         <div class="profile">
           <div class="profile-details">
@@ -186,12 +182,12 @@
         </section>
 
         <!-- Product Chart -->
-        <section class="ncr-trends">
+        <!-- <section class="ncr-trends">
           <h2>NCR's per Product</h2>
           <div class="chart">
             <canvas id="productChart"></canvas>
           </div>
-        </section>
+        </section> -->
 
         <!-- Product Category Chart -->
         <section class="ncr-trends">
@@ -208,16 +204,6 @@
             <canvas id="dailyIssueDateChart"></canvas>
           </div>
         </section>
-
-        <!-- NCR by Department Chart -->
-        <section class="ncr-trends">
-          <h2>NCR's per Department</h2>
-          <div class="chart">
-            <canvas id="departmentChart"></canvas>
-          </div>
-        </section>
-
-        <!-- End NCR Charts -->
       </div>
     </div>
 
@@ -227,7 +213,6 @@
     <script src="../assets/js/ncr-data/handle-data.js"></script>
     <script src="../assets/js/main/user-role-handling.js"></script>
     <script src="../assets/js/main/tooltip.js"></script>
-    <script defer src="../assets/js/ncr/populate-form-fields.js"></script>
     <script src="../assets/js/main/inject-notification-modal.js"></script>
     <script src="../assets/js/main/notification-handling.js"></script>
   </body>

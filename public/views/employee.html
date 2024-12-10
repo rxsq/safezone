@@ -26,12 +26,12 @@
       </div>
       <i class="bi bi-list" id="btn-close"></i>
     </div>
-    <div class="notification-container">
+    <!-- <div class="notification-container">
       <button id="notificationBell" class="btn" data-bs-toggle="modal" data-bs-target="#notificationModal">
           <i class="bi bi-bell"></i> 
           <span id="notificationCount" class="badge bg-danger"></span>
       </button>
-  </div>
+  </div> -->
    <ul class="nav-list">
             <li>
                 <a href="index.html"  data-bs-toggle="tooltip" title="Dashboard">
@@ -76,6 +76,13 @@
                 </a>
             </li>
         </ul>
+        <div class="notification-container">
+          <a href="#" class="notification-link" data-bs-toggle="modal" data-bs-target="#notificationModal">
+              <i class="bi bi-bell"></i>
+              <span class="notification-label">Notifications</span>
+              <span id="notificationCount" class="badge bg-danger"></span>
+          </a>
+      </div>
     <div class="profile-content">
       <div class="profile">
         <div class="profile-details">
@@ -105,7 +112,7 @@
         <section class="ncr-trends">
           <div class="top-flex">
             <h2>Employees</h2>
-            <button class="new-employee-btn" onclick="location.href='create-employee.html'">+ New Employee</button>
+            <button class="new-employee-btn" id="new-employee-btn" onclick="location.href='create-employee.html'">+ New Employee</button>
           </div>
           <table class="table table-striped table-hover">
             <thead>
@@ -123,14 +130,11 @@
             </tbody>
           </table>
         </section>
-        <div class="pagination">
-          <a href="#">Back</a>
-          <a href="#">1</a>
-          <a href="#">2</a>
-          <a href="#">3</a>
+        <div id="pagination-controls" class="pagination-container">
 
-          <a href="#">Next</a>
         </div>
+        
+        <div id="page-number" class="page-number"></div>
       </div>
     </div>
   </div>
@@ -229,8 +233,8 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
+          <input type="hidden" id="viewEmpID">
           <div id="viewEmployeeModalContent">
-            <p><strong>Employee ID:</strong> <span id="viewEmpID"></span></p>
             <p><strong>First Name:</strong> <span id="viewEmpFirstName"></span></p>
             <p><strong>Last Name:</strong> <span id="viewEmpLastName"></span></p>
             <p><strong>Email:</strong> <span id="viewEmpEmail"></span></p>
@@ -245,6 +249,7 @@
     </div>
   </div>
   <script defer src="../assets/js/employee/handle-data.js"></script>
+  <script src="../assets/js/employee/user-restriction-handling.js"></script>
   <script src="../assets/js/main/user-role-handling.js"></script>
   <script defer src="../assets/js/main/sidebar.js"></script>
   <script src="../assets/js/main/inject-notification-modal.js"></script>

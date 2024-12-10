@@ -418,5 +418,33 @@
     "qualItemNonConforming": 1,
     "qualRepID": 2,
     "qualDate": "2022-09-20"
+  },
+  {
+    "qualFormID": 31,
+    "qualFormProcessApplicable": "SUP",
+    "qualItemDesc": "Alternator for truck",
+    "qualIssueDesc": "Box is damaged",
+    "qualItemID": 31,
+    "qualImageFileName": null,
+    "qualSalesOrderNo": 9030,
+    "qualQtyReceived": 100,
+    "qualQtyDefective": 5,
+    "qualItemNonConforming": 1,
+    "qualRepID": 1,
+    "qualDate": "2024-12-05"
+  },
+  {
+    "qualFormID": 32,
+    "qualFormProcessApplicable": "SUP",
+    "qualItemDesc": "1 gallon container of paint coating",
+    "qualIssueDesc": "Paint container has rust on lid and edges",
+    "qualItemID": 1,
+    "qualImageFileName": null,
+    "qualSalesOrderNo": 54321,
+    "qualQtyReceived": 100,
+    "qualQtyDefective": 5,
+    "qualItemNonConforming": 1,
+    "qualRepID": null,
+    "qualDate": "2024-12-09"
   }
 ]

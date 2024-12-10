@@ -1,9 +1,6 @@
-let errorList = [];
+let errorList;
 
-const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-
-function validateInputs(event){
+function validateInputs(event) {
     event.preventDefault();
 
     errorList = [];
@@ -12,29 +9,42 @@ function validateInputs(event){
     const category = document.getElementById('product-category').value.trim();
     const supplier = document.getElementById('supplier-name').value;
 
+    // Clear previous error highlights
+    clearErrorHighlights();
+
     let isValid = true;
 
-    if(!name || !category || !supplier){
-        errorList.push('Please make sure all the fields are filled out.');
+    // Check if any fields are empty
+    if (!name || !category || !supplier) {
+        errorList.push('Please fill out all fields.');
+
+        // Highlight the invalid fields
+        if (!name) {
+            document.getElementById('product-name').classList.add('error');
+        }
+        if (!category) {
+            document.getElementById('product-category').classList.add('error');
+        }
+        if (!supplier) {
+            document.getElementById('supplier-name').classList.add('error');
+        }
         isValid = false;
     }
 
-    if(isValid){
+    if (isValid) {
+        // Proceed with product creation
         createProduct();
-        document.getElementById('successModalBody').innerText = 'New product created successfully!';
-        successModal.show();
-        const successClick = document.getElementById('btnDismiss');
-        successClick.addEventListener('click', e => {
-            e.preventDefault();
-            window.location.href = "product.html";
-        })
+    } else {
+        // Display the error messages
+        document.getElementById('error-message').innerHTML = `<ul>${errorList.map(item => `<li>${item}</li>`).join('')}</ul>`;
     }
-    else{
-        const errorMessages = errorList.join('\n');
-        //alert(`Validation Errors:\n${errorMessages}`) //Temp alert for testing
-        document.getElementById('errorModalBody').innerText = `Validation Errors:\n${errorMessages}`;
-        errorModal.show();
-    }
+}
+
+function clearErrorHighlights() {
+    // Remove error class from all input fields
+    document.getElementById('product-name').classList.remove('error');
+    document.getElementById('product-category').classList.remove('error');
+    document.getElementById('supplier-name').classList.remove('error');
 }
 
 async function createProduct() {
@@ -46,8 +56,8 @@ async function createProduct() {
 
     // Basic validation
     if (!productName || !productCategory || !supplierId) {
-        // Display error modal for empty fields
-        showErrorModal('Please fill in all fields.');
+        // Display error message if fields are empty
+        showErrorMessage('Please fill out all fields.');
         return;
     }
 
@@ -71,11 +81,35 @@ async function createProduct() {
             throw new Error(errorResponse.message || 'Failed to create product');
         }
 
+        alert('success creating product');
+        window.location.href='product.html';
         
     } catch (error) {
-        
+        showErrorMessage('There was an error creating the product. Please try again.');
     }
+}
+
+function showErrorMessage(message) {
+    document.getElementById('error-message').innerHTML = `<ul><li>${message}</li></ul>`;
 }
 
 // Set up event listener for the submit button
 document.getElementById('btnSubmit').addEventListener('click', validateInputs);
+
+document.getElementById('product-name').addEventListener("input", function() {
+    if (this.value && this.value !== "") {
+        this.classList.remove("error");
+    }
+});
+
+document.getElementById('product-category').addEventListener("input", function() {
+    if (this.value && this.value !== "") {
+        this.classList.remove("error");
+    }
+});
+
+document.getElementById('supplier-name').addEventListener("input", function() {
+    if (this.value && this.value !== "") {
+        this.classList.remove("error");
+    }
+});

@@ -36,12 +36,12 @@
         </div>
         <i class="bi bi-list" id="btn-close"></i>
       </div>
-      <div class="notification-container">
+      <!-- <div class="notification-container">
         <button id="notificationBell" class="btn" data-bs-toggle="modal" data-bs-target="#notificationModal">
             <i class="bi bi-bell"></i> 
             <span id="notificationCount" class="badge bg-danger"></span>
         </button>
-    </div>
+    </div> -->
       <ul class="nav-list">
             <li>
                 <a href="index.html"  data-bs-toggle="tooltip" title="Dashboard">
@@ -86,6 +86,13 @@
                 </a>
             </li>
         </ul>
+        <div class="notification-container">
+          <a href="#" class="notification-link" data-bs-toggle="modal" data-bs-target="#notificationModal">
+              <i class="bi bi-bell"></i>
+              <span class="notification-label">Notifications</span>
+              <span id="notificationCount" class="badge bg-danger"></span>
+          </a>
+      </div>
       <div class="profile-content">
         <div class="profile">
           <div class="profile-details">

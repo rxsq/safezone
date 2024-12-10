@@ -3,9 +3,12 @@
 let qualFormID;
 const submitBtn = document.getElementById('submit-quality-btn');
 sessionStorage.setItem('currentNCRStage', "QUA")
-
+let errorList;
 // Function which creates quality form
 async function createQualityForm() {
+
+    errorList = [];
+
     // Collect data from form fields
     const qualityFormData = {
         qualFormID: await getQualityFormID(),
@@ -25,6 +28,7 @@ async function createQualityForm() {
     const requiredFields = [
         'supplier-name', 
         'po-prod-no', 
+        'process-applicable',
         'sales-order-no', 
         'quantity-received', 
         'quantity-defective', 
@@ -35,31 +39,44 @@ async function createQualityForm() {
     ];
 
     let formIsValid = true;
+    let isAnyFieldEmpty = false;
 
     // Check for empty required fields and add invalid class
     requiredFields.forEach(field => {
         const input = document.getElementById(field);
-        console.log(`Checking field ${field}:`, input); 
 
         if (field === 'item-nonconforming') {
             const nonConformingValue = document.querySelector('input[name="item-nonconforming"]:checked');
             if (!nonConformingValue) {
                 formIsValid = false;
-                document.getElementById(field)?.classList.add('invalid-field');
-                console.log(`${field} is invalid (no option selected)`);
+                isAnyFieldEmpty = true;
+                document.getElementById(field)?.classList.add('error');
             } else {
-                document.getElementById(field)?.classList.remove('invalid-field');
-                console.log(`${field} is valid`);
+                document.getElementById(field)?.classList.remove('error');
             }
-        } else if (!input || !input.value?.trim()) {
+        } 
+        else if(field === 'process-applicable'){
+            const processApplicable = document.querySelector('input[name="process-applicable"]:checked');
+            if (!processApplicable) {
+                formIsValid = false;
+                isAnyFieldEmpty = true;
+                document.getElementById(field)?.classList.add('error');
+            } else {
+                document.getElementById(field)?.classList.remove('error');
+            }
+        }
+        else if (!input || !input.value?.trim()) {
             formIsValid = false;
-            input?.classList.add('invalid-field');
-            console.log(`${field} is invalid (empty or whitespace)`);
+            isAnyFieldEmpty = true;
+            input?.classList.add('error');
         } else {
-            input?.classList.remove('invalid-field');
-            console.log(`${field} is valid`);
+            input?.classList.remove('error');
         }
     });
+
+    if(isAnyFieldEmpty){
+        errorList.push('Please fill out all the fields.')
+    }
 
     // Validate if Sales Order, Quantity Received, and Quantity Defective are valid numbers
     const salesOrderNo = parseFloat(qualityFormData.qualSalesOrderNo);
@@ -68,30 +85,32 @@ async function createQualityForm() {
 
     if (isNaN(salesOrderNo) || isNaN(qtyReceived) || isNaN(qtyDefective)) {
         formIsValid = false;
-        alert('Please enter valid numbers for Sales Order Number, Quantity Received, and Quantity Defective.');
-        
+
         if (isNaN(salesOrderNo)) {
-            document.getElementById('sales-order-no').classList.add('invalid-field');
+            errorList.push('Please enter a valid numeric value for the sales order number.');
+            document.getElementById('sales-order-no').classList.add('error');
         }
         if (isNaN(qtyReceived)) {
-            document.getElementById('quantity-received').classList.add('invalid-field');
+            errorList.push('Please enter a valid numeric value for the quantity received.');
+            document.getElementById('quantity-received').classList.add('error');
         }
         if (isNaN(qtyDefective)) {
-            document.getElementById('quantity-defective').classList.add('invalid-field');
+            errorList.push('Please enter a valid numeric value for the quantity defective.');
+            document.getElementById('quantity-defective').classList.add('error');
         }
     }
 
     if (qtyReceived < qtyDefective) {
         formIsValid = false;
-        alert('Quantity Received cannot be less than Quantity Defective.');
-        document.getElementById('quantity-received').classList.add('invalid-field');
-        document.getElementById('quantity-defective').classList.add('invalid-field');
+        errorList.push('Quantity Received cannot be less than Quantity Defective.');
+        document.getElementById('quantity-received').classList.add('error');
+        document.getElementById('quantity-defective').classList.add('error');
     }
 
-    console.log('Form valid status:', formIsValid);
+    //console.log('Form valid status:', formIsValid);
 
     if (!formIsValid) {
-        alert('Please fill out all required fields correctly.');
+        document.getElementById('error-message').innerHTML = `<ul>${errorList.map(item => `<li>${item}</li>`).join('')}</ul>`;
         return;
     }
 
@@ -148,13 +167,11 @@ function getProcess(){
 // Function is called after quality form is created
 async function createNCR(){
     const ncrFormNo = currentYear + await getNCRCode();
-    const ncrFormID = await getNCRFormID();
-    
+
     // Stage changed bc quality form should already be created once this is called
     sessionStorage.setItem("currentNCRStage", "ENG"); 
 
     const ncrData = {
-        ncrFormID: Number(ncrFormID),
         ncrFormNo: Number(ncrFormNo),
         qualFormID: Number(qualFormID),
         engFormID: null, //NULL since no eng form has been yet created
@@ -188,6 +205,8 @@ async function createNCR(){
         console.error('Error creating new NCR report:', error);
         alert('Failed to create NCR. Please try again.');
     }
+
+
 
 }
 
@@ -266,85 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         removeErrorClasses();
 
-        let hasError = false;
-
-        // Validate Supplier
-        const supplierName = document.getElementById("supplier-name");
-        if (!supplierName.value || supplierName.value === "") {
-            supplierName.classList.add("error");
-            hasError = true;
-        }
-
-        // Validate Product
-        const poProdNo = document.getElementById("po-prod-no");
-        if (!poProdNo.value || poProdNo.value === "") {
-            poProdNo.classList.add("error");
-            hasError = true;
-        }
-
-        // Validate Sales Order Number
-        const salesOrderNo = document.getElementById("sales-order-no");
-        if (isNaN(salesOrderNo.value) || salesOrderNo.value.trim() === "") {
-            salesOrderNo.classList.add("error");
-            hasError = true;
-        }
-
-        // Validate Quantity Received
-        const quantityReceived = document.getElementById("quantity-received");
-        if (!quantityReceived.value || isNaN(quantityReceived.value)) {
-            quantityReceived.classList.add("error");
-            hasError = true;
-        }
-
-        // Validate Quantity Defective
-        const quantityDefective = document.getElementById("quantity-defective");
-        if (!quantityDefective.value || isNaN(quantityDefective.value)) {
-            quantityDefective.classList.add("error");
-            hasError = true;
-        }
-
-        // Validate Description of Item
-        const descriptionItem = document.getElementById("description-item");
-        if (!descriptionItem.value || descriptionItem.value.trim() === "") {
-            descriptionItem.classList.add("error");
-            hasError = true;
-        }
-
-        // Validate Description of Defect
-        const descriptionDefect = document.getElementById("description-defect");
-        if (!descriptionDefect.value || descriptionDefect.value.trim() === "") {
-            descriptionDefect.classList.add("error");
-            hasError = true;
-        }
-
-        // Validate Item Marked Nonconforming (Radio Button)
-        const itemNonconforming = document.querySelector('input[name="item-nonconforming"]:checked');
-        if (!itemNonconforming) {
-            const radioButtons = document.querySelectorAll('input[name="item-nonconforming"]');
-            radioButtons.forEach(button => {
-                button.closest('.form-group').classList.add("error");
-            });
-            hasError = true;
-        }
-
-        // Validate Checkbox Group for Process Applicable
-        const checkboxGroup = document.querySelectorAll('input[name="process-applicable"]:checked');
-        const processApplicableGroup = document.getElementById('process-applicable');
-        if (checkboxGroup.length === 0) {
-            processApplicableGroup.classList.add("error");
-            hasError = true;
-        } else {
-            processApplicableGroup.classList.remove("error");
-        }
-
-        // If there are any validation errors, prevent form submission
-        if (hasError) {
-            document.getElementById("errorModalBody").innerText = "Please fill in all required fields correctly.";
-            new bootstrap.Modal(document.getElementById('errorModal')).show();
-        } else {
-            // If no errors, proceed with form submission
-            createQualityForm();
-        }
+        createQualityForm();
     });
 });
 
@@ -387,5 +328,60 @@ Please review and proceed with the necessary actions at your earliest convenienc
         }
     } catch (error) {
         console.error('An unexpected error occurred:', error);
+    }
+    
+    const notificationMessage = `NCR Form ${ncrFormNo} in the ${department} department requires your attention.`;
+    
+    let empID;
+    switch(department){
+        case "Engineering": empID = 2; break;
+        case "Purchasing": empID = 3; break;
+    }
+
+    // Await the response from getMostRecentNCRForm to make sure the ID is fetched before making the notification request
+    const mostRecentNCRFormID = await getMostRecentNCRForm();
+    
+    // Add a new notification for the employee
+    const notificationResponse = await fetch('/api/notifications/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            user_id: empID, 
+            message: notificationMessage,
+            ncrFormID: mostRecentNCRFormID  // Ensure you are passing the fetched NCRForm ID here
+        }),
+    });
+
+    const notificationResult = await notificationResponse.json();
+    if (notificationResponse.ok) {
+        console.log('Notification added successfully:', notificationResult);
+    } else {
+        console.error('Error adding notification:', notificationResult.error);
+    }
+}
+
+async function getMostRecentNCRForm() {
+    try {
+        const response = await fetch("/api/ncrForms");
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch NCR forms data.');
+        }
+        
+        const data = await response.json();
+        
+        if (data.items && data.items.length > 0) {
+            const mostRecentNCRForm = data.items[data.items.length - 1];  
+            const ncrFormID = mostRecentNCRForm.ncrFormID; 
+
+            console.log('Most Recent NCRForm ID:', ncrFormID);
+            return ncrFormID;
+        } else {
+            throw new Error('No NCR forms found.');
+        }
+    } catch (error) {
+        console.error('Error fetching NCR form:', error);
     }
 }

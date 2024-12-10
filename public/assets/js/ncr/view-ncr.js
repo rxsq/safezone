@@ -8,7 +8,7 @@ function fetchQualityForm(qualFormID) {
         .then(response => response.json())
         .then(qualityFormData => {
             if (qualityFormData.qualFormSupplierProcess !== null) {
-                document.getElementById('rfecInsp').checked = true;
+                document.getElementById('recInsp').checked = true;
             }
             if (qualityFormData.qualFormProductionProcess !== null) {
                 document.getElementById('wip').checked = true;
@@ -55,7 +55,7 @@ function fetchQualityForm(qualFormID) {
         .then(products => {
 
             // Call populateProductDropDownLists here, passing the proper parameters
-            populateProductDropDownLists(products, productData.supID); // use prodData here since it is still valid
+            populateProductDropDownLists(products.items, productData.supID); // use prodData here since it is still valid
 
             // Set the product order number (po-prod-no) from NCR data
             document.getElementById('po-prod-no').value = nonconformingData.prodID;
