@@ -73,7 +73,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     // Set NCR No and Stage
-    document.getElementById('ncr-no').value = currentYear + "-" + await getNCRCode();
+    if(!isEditView()) document.getElementById('ncr-no').value = currentYear + "-" + await getNCRCode();
+    
     switch (sessionStorage.getItem('currentNCRStage')) {
         case "QUA":
             document.getElementById('stage').value = "Quality";

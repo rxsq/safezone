@@ -9,18 +9,17 @@ document.getElementById('save-changes-btn').addEventListener('click', async func
 
 async function saveQualityForm() {
     errorList = [];
-
-    // Get the file input element and check if a file is selected
-    const fileInput = document.getElementById('image-upload');
-    const qualImageFileName = fileInput?.files?.length > 0 ? fileInput.files[0].name : null;
-
+    const qualityFormID = await getQualityFormID();
+    console.log('NEW QUA ID: ' + qualityFormID);
+    // Collect form data without image
     const qualityFormData = {
-        qualFormID: await getQualityFormID(),
+        qualFormID: qualityFormID,
         qualFormProcessApplicable: getProcess(),
         qualItemDesc: document.getElementById('description-item')?.value?.trim() || '',
         qualIssueDesc: document.getElementById('description-defect')?.value?.trim() || '',
+        qualImageFileName: null,
         qualItemID: parseInt(document.getElementById('po-prod-no')?.value?.trim(), 10) || 0,
-        qualImageFileName: qualImageFileName,  // Set the filename or null if no file is selected
+        qualImageFileName: null,
         qualSalesOrderNo: parseInt(document.getElementById('sales-order-no')?.value?.trim(), 10) || 0,
         qualQtyReceived: parseFloat(document.getElementById('quantity-received')?.value?.trim()) || 0,
         qualQtyDefective: parseFloat(document.getElementById('quantity-defective')?.value?.trim()) || 0,

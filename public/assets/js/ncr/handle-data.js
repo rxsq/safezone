@@ -40,45 +40,46 @@ function updateMetrics(data){
 }
 
 // Function to populate recent NCR table
-async function populateRecentNcrTable(data){
+async function populateRecentNcrTable(data) {
     // Get tablebody element & clear innerHTML
     const tableBody = document.getElementById('tbodyRecentNCR');
     tableBody.innerHTML = '';
 
-    data.sort((a,b) => new Date(b.ncrIssueDate) - new Date(a.ncrIssueDate));
+    // Sort data from newest to oldest based on ncrIssueDate
+    data.sort((a, b) => new Date(b.ncrIssueDate) - new Date(a.ncrIssueDate));
 
-    let openRecords = 0; 
+    let openRecords = 0;
 
     let userRole = sessionStorage.getItem('userRole');
 
     // Loop which iterates over all items in data array
-    for(let i = 0; i < data.length; i ++){
+    for (let i = 0; i < data.length; i++) {
         // If 5 open records are showing, then break out of loop
-        if(openRecords === 5) break;
+        if (openRecords === 5) break;
 
         let ncr = data[i];
 
-        const row = document.createElement('tr'); 
+        const row = document.createElement('tr');
 
-        //Only show necessary forms to user
-        if(userRole === "Quality" && ncr.ncrStage != "QUA"){
+        // Only show necessary forms to user
+        if (userRole === "Quality" && ncr.ncrStage != "QUA") {
             continue;
         }
-        if(userRole === "Engineering" && ncr.ncrStage != "ENG"){
+        if (userRole === "Engineering" && ncr.ncrStage != "ENG") {
             continue;
         }
-        if(userRole === "Purchasing" && ncr.ncrStage != "PUR"){
+        if (userRole === "Purchasing" && ncr.ncrStage != "PUR") {
             continue;
-        }  
+        }
 
         let ncrStatus;
-        // If status is open, incriment openRecords
-        if(ncr.ncrStatusID === 1){
+        // If status is open, increment openRecords
+        if (ncr.ncrStatusID === 1) {
             ncrStatus = "Open";
             openRecords++;
         } else continue;
 
-        // Fetch supplier name 
+        // Fetch supplier name
         const productResponse = await fetch(`/api/products/${ncr.prodID}`);
         const productData = await productResponse.json();
 
@@ -87,46 +88,48 @@ async function populateRecentNcrTable(data){
 
         const supplierName = supplierData.supName;
 
-        switch(userRole){
-            case "Administrator":         
-            row.innerHTML = `
-            <td>${ncr.ncrFormNo}</td>
-            <td>${supplierName}</td>
-            <td>${ncr.ncrIssueDate.substring(0, 10)}</td>
-            <td>${ncr.ncrStage}</td>
-            <td class="action-buttons-td">
-                <button class="action-btn view-btn" onclick="viewNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View NCR">
-                    <i class="bi bi-eye"></i>
-                </button>
-                <button class="action-btn edit-btn" onclick="editNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Edit NCR">
-                    <i class="bi bi-pencil"></i>
-                </button>
-                <button class="action-btn archive-btn" onclick="archiveNCR('${ncr.ncrFormID}', '${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
-                    <i class="bi bi-archive"></i>
-                </button>
-                <button class="action-btn pdf-btn" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
-                    <i class="bi bi-filetype-pdf"></i>
-                </button>
-            </td>
-            `; break;
-            default: 
-            row.innerHTML = `
-            <td>${ncr.ncrFormNo}</td>
-            <td>${supplierName}</td>
-            <td>${ncr.ncrIssueDate.substring(0, 10)}</td>
-            <td>${ncr.ncrStage}</td>
-            <td class="action-buttons-td">
-                <button class="action-btn view-btn" onclick="viewNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View NCR">
-                    <i class="bi bi-eye"></i>
-                </button>
-                <button class="action-btn edit-btn" onclick="editNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Edit NCR">
-                    <i class="bi bi-pencil"></i>
-                </button>
-                <button class="action-btn pdf-btn" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
-                    <i class="bi bi-filetype-pdf"></i>
-                </button>
-            </td>
-            `; break;
+        switch (userRole) {
+            case "Administrator":
+                row.innerHTML = `
+                    <td>${ncr.ncrFormNo}</td>
+                    <td>${supplierName}</td>
+                    <td>${ncr.ncrIssueDate.substring(0, 10)}</td>
+                    <td>${ncr.ncrStage}</td>
+                    <td class="action-buttons-td">
+                        <button class="action-btn view-btn" onclick="viewNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View NCR">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="action-btn edit-btn" onclick="editNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Edit NCR">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="action-btn archive-btn" onclick="archiveNCR('${ncr.ncrFormID}', '${ncr.ncrFormNo}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Archive NCR">
+                            <i class="bi bi-archive"></i>
+                        </button>
+                        <button class="action-btn pdf-btn" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
+                            <i class="bi bi-filetype-pdf"></i>
+                        </button>
+                    </td>
+                `;
+                break;
+            default:
+                row.innerHTML = `
+                    <td>${ncr.ncrFormNo}</td>
+                    <td>${supplierName}</td>
+                    <td>${ncr.ncrIssueDate.substring(0, 10)}</td>
+                    <td>${ncr.ncrStage}</td>
+                    <td class="action-buttons-td">
+                        <button class="action-btn view-btn" onclick="viewNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="View NCR">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="action-btn edit-btn" onclick="editNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Edit NCR">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="action-btn pdf-btn" onclick="printNCR('${ncr.ncrFormID}', '${encodeURIComponent(JSON.stringify(ncr))}')" data-bs-toggle="tooltip" title="Print PDF">
+                            <i class="bi bi-filetype-pdf"></i>
+                        </button>
+                    </td>
+                `;
+                break;
         }
         tableBody.appendChild(row);
         initializeTooltips();

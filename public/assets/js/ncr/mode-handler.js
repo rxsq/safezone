@@ -4,11 +4,21 @@ const mode = sessionStorage.getItem("mode");
 document.addEventListener('DOMContentLoaded', () => {
     handleUserAccess();
     reDisableInaccessibleInputs();
+    modalHandling();
 
     if (mode === 'edit') {
         navigateToUserForm();
     }
 });
+
+function modalHandling(){
+    const inputs = document.querySelectorAll('#supplier-form input');
+
+    inputs.forEach(input => {
+        input.removeAttribute('readonly');
+        input.removeAttribute('disabled');
+    });
+}
 
 function handleUserAccess() {
     if (mode === 'view') {

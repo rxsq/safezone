@@ -4,6 +4,7 @@ let qualFormID;
 const submitBtn = document.getElementById('submit-quality-btn');
 sessionStorage.setItem('currentNCRStage', "QUA")
 let errorList;
+
 // Function which creates quality form
 async function createQualityForm() {
     const errorList = [];
@@ -109,20 +110,13 @@ async function createQualityForm() {
         return;
     }
 
-    // Check if the file is provided
-    const fileInput = document.getElementById('file');
-    let formData = new FormData();
-
-    formData.append('qualityFormData', JSON.stringify(qualityFormData));
-
-    if (fileInput && fileInput.files[0]) {
-        formData.append('file', fileInput.files[0]); 
-    }
-
     try {
         const response = await fetch('/api/qualityForms', {
             method: 'POST',
-            body: formData 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(qualityFormData) // Send form data without file
         });
 
         if (!response.ok) {
@@ -138,8 +132,6 @@ async function createQualityForm() {
         alert('Failed to create quality form. Please try again');
     }
 }
-
-
 
 // Function which generates quality form ID
 async function getQualityFormID(){
@@ -174,15 +166,16 @@ function getProcess(){
 // Function is called after quality form is created
 async function createNCR(){
     const ncrFormNo = currentYear + await getNCRCode();
+    
 
-    // Stage changed bc quality form should already be created once this is called
+    // Stage changed because quality form should already be created once this is called
     sessionStorage.setItem("currentNCRStage", "ENG"); 
 
     const ncrData = {
         ncrFormNo: Number(ncrFormNo),
         qualFormID: Number(qualFormID),
         engFormID: null, //NULL since no eng form has been yet created
-        purFormID: null, //NULL sine no pur form has been yet created
+        purFormID: null, //NULL since no pur form has been yet created
         prodID: Number(document.getElementById('po-prod-no').value),
         ncrStatusID: 1, // 1: Open, 2: Closed
         ncrStage: sessionStorage.getItem("currentNCRStage"),
@@ -204,17 +197,14 @@ async function createNCR(){
 
         const result = await response.json();
         
-        alert('Success creating NCR and Quality Assuance Form. Engineering department has been notified');
-    
+        alert('Success creating NCR and Quality Assurance Form. Engineering department has been notified');
+        
         await notifyDepartmentManager(ncrFormNo, "Engineering");
     }
     catch(error){
         console.error('Error creating new NCR report:', error);
         alert('Failed to create NCR. Please try again.');
     }
-
-
-
 }
 
 // EventListener code for submit button
@@ -295,7 +285,6 @@ document.addEventListener('DOMContentLoaded', function() {
         createQualityForm();
     });
 });
-
 
 // Function to remove error classes 
 function removeErrorClasses() {

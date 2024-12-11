@@ -474,33 +474,5 @@
     "qualItemNonConforming": 1,
     "qualRepID": 5,
     "qualDate": "2024-12-10"
-  },
-  {
-    "qualFormID": 35,
-    "qualFormProcessApplicable": "WIP",
-    "qualItemDesc": "Nuts and bolts",
-    "qualIssueDesc": "Stripped nuts",
-    "qualItemID": 20,
-    "qualImageFileName": null,
-    "qualSalesOrderNo": 3232,
-    "qualQtyReceived": 323,
-    "qualQtyDefective": 33,
-    "qualItemNonConforming": 1,
-    "qualRepID": 1,
-    "qualDate": "2024-12-10"
-  },
-  {
-    "qualFormID": 36,
-    "qualFormProcessApplicable": "SUP",
-    "qualItemDesc": "1 gallon container of paint coating",
-    "qualIssueDesc": "Paint container has rust on lid and edges",
-    "qualItemID": 1,
-    "qualImageFileName": null,
-    "qualSalesOrderNo": 54321,
-    "qualQtyReceived": 100,
-    "qualQtyDefective": 5,
-    "qualItemNonConforming": 1,
-    "qualRepID": 5,
-    "qualDate": "2024-12-10"
   }
 ]

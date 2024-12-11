@@ -372,27 +372,5 @@
     "ncrStage": "ENG",
     "ncrIssueDate": "2024-12-10",
     "ncrFormID": 34
-  },
-  {
-    "ncrFormNo": 2024005,
-    "qualFormID": 35,
-    "engFormID": 14,
-    "purFormID": null,
-    "prodID": 20,
-    "ncrStatusID": 1,
-    "ncrStage": "ENG",
-    "ncrIssueDate": "2024-12-10",
-    "ncrFormID": 35
-  },
-  {
-    "ncrFormNo": 2024006,
-    "qualFormID": 36,
-    "engFormID": null,
-    "purFormID": null,
-    "prodID": 1,
-    "ncrStatusID": 1,
-    "ncrStage": "QUA",
-    "ncrIssueDate": "2024-12-10",
-    "ncrFormID": 36
   }
 ]
