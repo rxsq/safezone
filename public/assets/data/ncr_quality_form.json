@@ -474,5 +474,17 @@
     "qualItemNonConforming": 1,
     "qualRepID": 5,
     "qualDate": "2024-12-10"
+  },
+  {
+    "qualFormID": 35,
+    "qualItemDesc": "1 gallon container of paint coating",
+    "qualIssueDesc": "Paint container has rust on lid and edges",
+    "qualItemID": 1,
+    "qualSalesOrderNo": 54321,
+    "qualQtyReceived": 100,
+    "qualQtyDefective": 5,
+    "qualItemNonConforming": 1,
+    "qualRepID": 1,
+    "qualDate": "2024-12-11"
   }
 ]
