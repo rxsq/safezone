@@ -1102,90 +1102,10 @@ canvas {
 
 
 
-/* Mobile screens (328px and below) */
-@media (max-width: 328px) {
-  body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-  }
-
-  /* Adjust sidebar to be a bottom navigation bar */
-  .sidebar {
-      width: 100%;
-      height: auto;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-around;
-      background: #ffffff;
-      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-      padding: 10px 0;
-      z-index: 1000;
-  }
-
-  .sidebar .nav-list {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      width: 100%;
-  }
-
-  .sidebar .nav-list li {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 10px; /* Smaller font for icons */
-  }
-
-  .sidebar .nav-list li a {
-      text-align: center;
-      font-size: 12px;
-      color: #000;
-  }
-
-  /* Adjust main content */
-  .home-content {
-      margin-bottom: 70px; /* Reserve space for the fixed bottom bar */
-      padding: 10px;
-  }
-
-  /* Key Metrics section */
-  .key-metrics {
-      display: flex;
-      flex-direction: column;
-  }
-
-  /* Analytics section */
-  .ncr-trends .two-column {
-      display: flex;
-      flex-direction: column;
-  }
-
-  /* Table adjustments */
-  .ncr-trends table {
-      font-size: 10px;
-      overflow-x: auto;
-      width: 100%;
-  }
-
-  /* Buttons adjustments */
-  .actions button {
-      font-size: 12px;
-      padding: 5px;
-  }
-}
-
-
-
-
+/* Mobile screens and tablet (768px and below) */
 @media (max-width: 768px) {
   .sidebar {
-      width: 100%;
+      width: 50%;
       height: auto;
       position: fixed;
       bottom: 0;
@@ -1258,4 +1178,5 @@ canvas {
       overflow-x: auto;
       width: 100%;
   }
+
 }
