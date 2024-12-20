@@ -256,6 +256,67 @@ function editNCR(ncrFormID) {
     populateNCRInputs(ncrFormID);
 }
 
+function archiveNCR(ncrFormID, ncrFormNo) {
+    fetch(`/api/ncrForms/${ncrFormID}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch NCR form');
+            return response.json();
+        })
+        .then(data => {
+            const { engFormID, purFormID, ncrStage } = data;
+
+            if (ncrStage === 'ARC') {
+                alert('This NCR form is already archived.');
+                return;
+            }
+
+            // Check for incomplete fields
+            const incompleteFields = [];
+            if (!engFormID) incompleteFields.push('Engineering Form');
+            //if (!purFormID) incompleteFields.push('Purchasing Form');
+
+            let confirmationMessage = `Are you sure you want to archive this NCR form?`;
+            if (incompleteFields.length > 0) {
+                confirmationMessage += `\nThe following form(s) are not completed: ${incompleteFields.join(', ')}.`;
+            }
+
+            // Ask for confirmation
+            if (!confirm(confirmationMessage)) {
+                return;
+            }
+
+            // Proceed to archive the form
+            fetch(`/api/ncrForms/${ncrFormID}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    ncrStage: 'ARC',
+                    ncrStatusID: 2, 
+                }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('NCR form archived successfully!');
+                        window.location.reload(); // Refresh the page
+                    } else {
+                        return response.json().then(error => {
+                            throw new Error(error.message || 'Failed to archive NCR form');
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error archiving NCR form:', error);
+                    alert(`Error: ${error.message}`);
+                });
+        })
+        .catch(error => {
+            console.error('Error fetching NCR form:', error);
+            alert(`Error: ${error.message}`);
+        });
+}
+
 function printNCR(ncrFormID) {
     const isConfirmed = confirm('Are you sure you want to generate and print the NCR report?');
     if (!isConfirmed) return;

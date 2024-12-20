@@ -18,7 +18,6 @@ const sendEmail = (to, subject, text) => {
       text: text // plain text body
     };
   
-    //disabled while in debugging state
     //return transporter.sendMail(mailOptions);
   };
   

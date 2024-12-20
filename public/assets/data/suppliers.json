@@ -148,5 +148,15 @@
     "supAddress": "789 Steel Ave",
     "supCity": "San Diego",
     "supCountry": "USA"
+  },
+  {
+    "supContactName": "Mario",
+    "supContactEmail": "mario@example.com",
+    "supContactPhone": "9052312605",
+    "supName": "Mario Express",
+    "supAddress": "123 Street Avenue",
+    "supCity": "St Catharines",
+    "supCountry": "Canada",
+    "supID": 16
   }
 ]

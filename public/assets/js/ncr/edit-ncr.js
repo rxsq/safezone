@@ -417,8 +417,6 @@ submitQuaBtn.addEventListener('click', async function(event) {
         console.error('Error updating quality and NCR data:', error);
         alert('An error occurred while updating quality and NCR data.');
     }
-
-  
 });
 
   // EventListener code for submit button
@@ -468,6 +466,11 @@ document.getElementById("description-defect").addEventListener("input", function
 const submitEngBtn = document.getElementById('submit-engineering-btn');
 submitEngBtn.addEventListener('click', async function (event) {
     event.preventDefault();
+
+    const ncrResponse = await fetch(`/api/ncrForms/${ncrID}`)
+    const ncrData = await ncrResponse.json();
+
+    const ncrFormNo = ncrData.ncrFormNo;
 
     console.log("engineering form: " + engineeringForm);
 
@@ -536,7 +539,7 @@ submitEngBtn.addEventListener('click', async function (event) {
             engDate: document.getElementById('engineer-date').value 
         };
 
-        if (engineeringForm) {
+        if (ncrData.ncrStage != "ENG") {
             // Update existing engineering form
             const response = await fetch(`/api/engineerForms/${engineeringForm}`, {
                 method: 'PUT',
@@ -568,6 +571,8 @@ submitEngBtn.addEventListener('click', async function (event) {
                 const ncrFormID = ncrID;
                 const updatedNCRData = { engFormID: newEngFormID, ncrStage: "PUR" };
 
+                console.log('NCR FORM ID: ' + ncrFormID);
+
                 // Update the NCR form with the new engineering form ID
                 const updateResponse = await fetch(`/api/ncrForms/${ncrFormID}`, {
                     method: 'PUT',
@@ -579,6 +584,7 @@ submitEngBtn.addEventListener('click', async function (event) {
 
                 if (updateResponse.ok) {
                     alert('Engineering form created successfully.');
+                    notifyDepartmentManager(ncrFormNo, "Purchasing")
                     location.reload();
                 } else {
                     alert('Error updating NCR form with engineering form ID.');
@@ -774,7 +780,7 @@ async function getPurchasingFormID(status) {
             }
 
             const data = await response.json();
-            return data.length + 1;
+            return (data.length + 1);
         }
         catch(error){
             console.error('Error generating new purchasing form ID', error);
@@ -825,6 +831,7 @@ Please review and proceed with the necessary actions at your earliest convenienc
         case "Purchasing": empID = 3; break;
     }
 
+    try{
     // Add a new notification for the employee
     const notificationResponse = await fetch('/api/notifications/add', {
         method: 'POST',
@@ -844,7 +851,9 @@ Please review and proceed with the necessary actions at your earliest convenienc
     } else {
         console.error('Error adding notification:', notificationResult.error);
     }
-
+}catch(error){
+    alert('Error: ' + error);
+}
 
 }
 
@@ -880,33 +889,28 @@ document.getElementById('followup-no').addEventListener('change', function(){
 document.getElementById('save-changes-qua-draft').addEventListener('click', async function() {
     if (qualityForm) {
         console.log(qualityForm);
-        
-        // Get the image file from the input element
-        const imageFileInput = document.getElementById('image-upload');  
-        const imageFile = imageFileInput?.files[0] || null;  
 
-        // Create FormData to send image and other form data together
-        const formData = new FormData();
-        
-        formData.append('qualFormID', qualityForm);
-        formData.append('qualItemDesc', document.getElementById('description-item').value.trim() || '');
-        formData.append('qualIssueDesc', document.getElementById('description-defect').value.trim() || '');
-        formData.append('qualItemID', Number(document.getElementById('po-prod-no').value.trim()) || null);
-        formData.append('qualSalesOrderNo', Number(document.getElementById('sales-order-no').value.trim()) || null);
-        formData.append('qualQtyReceived', Number(document.getElementById('quantity-received').value.trim()) || null);
-        formData.append('qualQtyDefective', Number(document.getElementById('quantity-defective').value.trim()) || null);
-        formData.append('qualItemNonConforming', Number(document.querySelector('input[name="item-nonconforming"]:checked')?.value) || null);
-        formData.append('qualRepID', Number(sessionStorage.getItem('empID')) || null);
-        formData.append('qualDate', document.getElementById('quality-rep-date').value.trim() || '');
-
-        if (imageFile) {
-            formData.append('qualImageFile', imageFile); 
-        }
+        // Prepare form data as a plain object
+        const qualityFormData = {
+            qualFormID: qualityForm,
+            qualItemDesc: document.getElementById('description-item').value.trim() || '',
+            qualIssueDesc: document.getElementById('description-defect').value.trim() || '',
+            qualItemID: Number(document.getElementById('po-prod-no').value.trim()) || null,
+            qualSalesOrderNo: Number(document.getElementById('sales-order-no').value.trim()) || null,
+            qualQtyReceived: Number(document.getElementById('quantity-received').value.trim()) || null,
+            qualQtyDefective: Number(document.getElementById('quantity-defective').value.trim()) || null,
+            qualItemNonConforming: Number(document.querySelector('input[name="item-nonconforming"]:checked')?.value) || null,
+            qualRepID: Number(sessionStorage.getItem('empID')) || null,
+            qualDate: document.getElementById('quality-rep-date').value.trim() || ''
+        };
 
         try {
             const response = await fetch(`/api/qualityForms/${qualityForm}`, {
                 method: 'PUT',
-                body: formData  
+                headers: {
+                    'Content-Type': 'application/json',  // Ensure JSON is sent
+                },
+                body: JSON.stringify(qualityFormData)  // Send the data as JSON
             });
 
             if (response.ok) {
